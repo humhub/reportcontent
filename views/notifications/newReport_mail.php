@@ -1,6 +1,6 @@
 <?php $this->beginContent('application.modules_core.notification.views.notificationLayoutMail', array('notification' => $notification)); ?>
 
-<?php switch ($sourceObject->getReason()){
+<?php switch ($sourceObject->reason){
 	case 1: 
 		echo Yii::t('ReportContentModule.views_notifications_newReport', "An user has reported your post for not belonging to the space.");
 		break;

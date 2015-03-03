@@ -76,5 +76,22 @@ class ReportContentController extends Controller
         echo CJSON::encode($json);
         Yii::app()->end();
     }
+    
+    public function actionAppropriate() {
+    
+        $this->forcePostRequest();
+    
+        $json = array();
+        $json['success'] = false;
+    
+        $reportId = Yii::app()->request->getParam('id');
+        $report = ReportContent::model()->findByPk($reportId);
+        if($report->canDelete() && $report->delete())
+            $json['success'] = true;
+    
+        echo CJSON::encode($json);
+        Yii::app()->end();
+    }
+  
 }
 ?>

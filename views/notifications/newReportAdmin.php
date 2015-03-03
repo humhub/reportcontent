@@ -1,6 +1,6 @@
 <?php $this->beginContent('application.modules_core.notification.views.notificationLayout', array('notification' => $notification, 'showSpace' => true)); ?>
 
-<?php switch ($sourceObject->getReason()){
+<?php switch ((int)($sourceObject->reason)){
 	case 1: 
 		echo Yii::t('ReportContentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% for not belonging to the space.", array(
 		'%displayName%' => '<strong>' . CHtml::encode($creator->displayName) . '</strong>',
