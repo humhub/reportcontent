@@ -8,8 +8,7 @@
             <?php echo Yii::t('ReportContentModule.views_spaceAdmin_index', 'Here you can manage reported posts for this space.'); ?>
         </p>
 
-         <?php $this->renderPartial('/reportContentAdminGrid', array('reportedContent' => $reportedContent, 'pages' => $pages, 'item_count' => $item_count,
-            'page_size' => $page_size))?>
+         <?php $this->widget('application.modules.reportcontent.widgets.ReportContentAdminGrid', array('reportedContent' => $reportedContent))?>
 
     </div>
 </div>
