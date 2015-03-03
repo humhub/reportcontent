@@ -90,13 +90,10 @@ class ReportContent extends HActiveRecordContentAddon
         switch($reason){
             case ReportContent::REASON_NOT_BELONG:
                 return Yii::t('ReportContentModule.models_ReportContent', "Doesn't belong to space");
-                break;
             case ReportContent::REASON_OFFENSIVE:
                 return Yii::t('ReportContentModule.models_ReportContent', "Offensive");
-                break;
             case ReportContent::REASON_SPAM:
                 return Yii::t('ReportContentModule.models_ReportContent', "Spam");
-                break;
         }
     }
 
