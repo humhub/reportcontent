@@ -48,6 +48,45 @@ class ReportContentModule extends HWebModule
         }
     }
     
+    /**
+     * Defines what to do if admin menu is initialized.
+     *
+     * @param type $event
+     */
+    public static function onAdminMenuInit($event)
+    {
+        $event->sender->addItem(array(
+            'label' => Yii::t('ReportContentModule.base', 'Reported posts'),
+            'url' => Yii::app()->createUrl('//reportcontent/admin'),
+            'group' => 'manage',
+            'icon' => '<i class="fa fa-exclamation-triangle"></i>',
+            'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'reportcontent' && Yii::app()->controller->id == 'admin'),
+            'sortOrder' => 510,
+        ));
+    }
+    
+    public static function onSpaceAdminMenuInit($event)
+    {
+        $space = Yii::app()->getController()->getSpace();
+        if($space->isAdmin())
+            $event->sender->addItem(array(
+                'label' => Yii::t('ReportContentModule.base', 'Reported posts'),
+                'url' => Yii::app()->createUrl('//reportcontent/spaceAdmin', array('sguid'=>$space->guid)),
+                'group' => 'admin',
+                'icon' => '<i class="fa fa-exclamation-triangle"></i>',
+                'isActive' => (Yii::app()->controller->module && Yii::app()->controller->module->id == 'reportcontent' && Yii::app()->controller->id == 'spaceAdmin'),
+                'sortOrder' => 510,
+            ));
+    }
+    
+    protected function beforeDelete()
+    {
+    
+        Notification::remove('ReportContent', $this->id);
+    
+        return parent::beforeDelete();
+    }
+    
     public function disable()
     {
         if (parent::disable()) {

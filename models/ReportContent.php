@@ -17,6 +17,9 @@
 class ReportContent extends HActiveRecordContentAddon
 {
 
+    const REASON_NOT_BELONG =1;
+    const REASON_OFFENSIVE = 2;
+    const REASON_SPAM = 3;
     /**
      * Returns the static model of the specified AR class.
      *
@@ -67,7 +70,14 @@ class ReportContent extends HActiveRecordContentAddon
             )
         );
     }
-
+    
+   public function relations()
+    {
+        return array(
+            'user' => array(static::BELONGS_TO, 'User', 'created_by')
+        );
+    }
+    
     protected function afterSave()
     {
         // Send Notifications
@@ -75,9 +85,16 @@ class ReportContent extends HActiveRecordContentAddon
         NewReportAdminNotification::fire($this);
     }
 
-    public function getReason()
+    public static function getReason($reason)
     {
-        return $this->reason;
+        switch($reason){
+            case ReportContent::REASON_NOT_BELONG:
+                return Yii::t('ReportContentModule.models_ReportContent', "Doesn't belong to space");
+            case ReportContent::REASON_OFFENSIVE:
+                return Yii::t('ReportContentModule.models_ReportContent', "Offensive");
+            case ReportContent::REASON_SPAM:
+                return Yii::t('ReportContentModule.models_ReportContent', "Spam");
+        }
     }
 
     /**
@@ -93,11 +110,11 @@ class ReportContent extends HActiveRecordContentAddon
             return false;
         
         if ($userId == "")
-            $user = Yii::app()->user;
-        else
-            $user = User::model()->findByPk($userId);
+            $userId = Yii::app()->user->id;
         
-        if ($user->isAdmin())
+        $user = User::model()->findByPk($userId);
+        
+        if ($user->super_admin)
             return false;
         
         if ($post->created_by == $user->id)
@@ -113,6 +130,30 @@ class ReportContent extends HActiveRecordContentAddon
             return false;
         
         return true;
+    }
+   
+    
+    protected function beforeDelete()
+    {
+        Notification::remove('ReportContent', $this->id);
+    
+        return parent::beforeDelete();
+    }
+    
+    public function canDelete($userId=""){
+     
+        if($userId=="")
+            $userId = Yii::app()->user->id;
+        
+        if(Yii::app()->user->isAdmin()){
+            return true;
+        }
+
+        if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($userId)) {
+            return true;
+        }
+        
+        return false;
     }
 }
 ?>
