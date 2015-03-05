@@ -8,7 +8,8 @@
             <?php echo Yii::t('ReportContentModule.views_admin_index', 'Here you can manage reported users posts.'); ?>
         </p>
         
-        <?php $this->widget('application.modules.reportcontent.widgets.ReportContentAdminGrid', array('reportedContent' => $reportedContent))?>
+        <?php $this->renderPartial('/reportContentAdminGrid', array('reportedContent' => $reportedContent, 'pages' => $pages, 'item_count' => $item_count,
+            'page_size' => $page_size))?>
 
     </div>
 </div>

@@ -81,16 +81,34 @@ class ReportContentController extends Controller
     
         $this->forcePostRequest();
     
-        $json = array();
-        $json['success'] = false;
-    
         $reportId = Yii::app()->request->getParam('id');
         $report = ReportContent::model()->findByPk($reportId);
-        if($report->canDelete() && $report->delete())
-            $json['success'] = true;
+        if($report->canDelete()) $report->delete();
+        
+        if(!$report->content->space_id)
+            return $this->htmlRedirect($this->createUrl('//reportcontent/admin', array()));
+        else{
+            $space = Space::model()->findByPk($report->content->space_id);
+            return $this->htmlRedirect($this->createUrl('//reportcontent/spaceAdmin', array('sguid' => $space->guid)));
+        }
+    }
     
-        echo CJSON::encode($json);
-        Yii::app()->end();
+    public function actionDeleteContent(){
+        $this->forcePostRequest();
+        
+        $model = Yii::app()->request->getParam('model');
+        $id = Yii::app()->request->getParam('id');
+         
+        $content = Content::get($model, $id);
+
+        if ($content->content->canDelete()) $content->delete();
+        
+        if(!$content->content->space_id)
+            return $this->htmlRedirect($this->createUrl('//reportcontent/admin', array()));
+        else{
+            $space = Space::model()->findByPk($content->content->space_id);
+            return $this->htmlRedirect($this->createUrl('//reportcontent/spaceAdmin', array('sguid' => $space->guid)));
+        } 
     }
   
 }

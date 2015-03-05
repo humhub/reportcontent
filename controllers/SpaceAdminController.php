@@ -53,15 +53,16 @@ class SpaceAdminController extends Controller
         $criteria = new CDbCriteria;
         $criteria->join = 'inner join content ON content.object_id = t.object_id and t.object_model = content.object_model and content.space_id ='.$this->getSpace()->id;
         
-        $reportedContent = ReportContent::model()->findAll($criteria);
-        $dataProvider = new CArrayDataProvider($reportedContent, array(
-            'id' => 'id',
-            'pagination' => array(
-                'pageSize' => 5
-            )
-        ));
+        $item_count = ReportContent::model()->count($criteria);
+        $page_size = 5;
         
-        $this->render('index', array('reportedContent' => $dataProvider));
+        $pages = new CPagination($item_count);
+        $pages->setPageSize($page_size);
+        $pages->applyLimit($criteria);
+
+        $reportedContent = ReportContent::model()->findAll($criteria);
+        $this->render('index', array('reportedContent' => $reportedContent, 'pages'=> $pages, 'item_count' =>$item_count,
+            'page_size' => $page_size));
          
     }
    
