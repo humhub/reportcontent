@@ -105,6 +105,11 @@ class ReportContent extends HActiveRecordContentAddon
      */
     public static function canReportPost($postId, $userId = "")
     {
+        if (Yii::app()->user->isGuest) {
+            return false;
+        }
+        
+        
         $post = Post::model()->findByPk($postId);
         if (! $post)
             return false;
@@ -142,6 +147,10 @@ class ReportContent extends HActiveRecordContentAddon
     
     public function canDelete($userId=""){
      
+        if (Yii::app()->user->isGuest) {
+            return false;
+        }
+        
         if($userId=="")
             $userId = Yii::app()->user->id;
         
