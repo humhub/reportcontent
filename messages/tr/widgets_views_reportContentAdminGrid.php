@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Appropriate' => '',
-  'Content' => '',
-  'Delete post' => '',
-  'Reason' => '',
-  'Reporter' => '',
+  'Appropriate' => 'Uygun',
+  'Content' => 'İçerik',
+  'Delete post' => 'Mesajı sil',
+  'Reason' => 'Neden',
+  'Reporter' => 'Tarafından',
 );
