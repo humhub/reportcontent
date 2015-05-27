@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Appropriate' => '',
-  'Content' => '',
-  'Delete post' => '',
-  'Reason' => '',
-  'Reporter' => '',
+  'Appropriate' => 'Passende',
+  'Content' => 'Indhold',
+  'Delete post' => 'Slet opslag',
+  'Reason' => 'Grundlag',
+  'Reporter' => 'Anmelder',
 );
