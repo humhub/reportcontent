@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Appropriate' => '',
-  'Content' => '',
-  'Delete post' => '',
-  'Reason' => '',
-  'Reporter' => '',
+  'Appropriate' => 'Tinkamas',
+  'Content' => 'Turinys',
+  'Delete post' => 'Ištrinti skelbimą',
+  'Reason' => 'Priežastis',
+  'Reporter' => 'Pranešėjas',
 );
