@@ -1,5 +1,11 @@
 <?php
 
+namespace humhub\modules\reportcontent\widgets;
+
+use humhub\modules\reportcontent\models\ReportContent;
+use humhub\modules\post\models\Post;
+use humhub\modules\reportcontent\models\ReportReasonForm;
+
 /**
  * ReportContentWidget for reporting a post
  *
@@ -7,7 +13,7 @@
  *
  * @package humhub.modules.reportcontent.widgets
  */
-class ReportContentWidget extends HWidget
+class ReportContentWidget extends \humhub\components\Widget
 {
 
     /**
@@ -22,13 +28,15 @@ class ReportContentWidget extends HWidget
      */
     public function run()
     {
-        if ((get_class($this->content) == "Post") && ReportContent::canReportPost($this->content->id)) {
-            
-            $this->render('reportSpamLink', array(
-                'object' => $this->content,
-                'model' => new ReportReasonForm()
+        if ((get_class($this->content) == Post::className()) && ReportContent::canReportPost($this->content->id)) {
+
+            return $this->render('reportSpamLink', array(
+                        'object' => $this->content,
+                        'model' => new ReportReasonForm()
             ));
         }
     }
+
 }
+
 ?>

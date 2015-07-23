@@ -1,16 +1,19 @@
 <?php
 
+namespace humhub\modules\reportcontent\models;
+
+use Yii;
+
 /**
  * ReportReasonForm
  *
  * @package humhub.modules.reportcontent.forms
  * @author Marjana Pesic
  */
-class ReportReasonForm extends CFormModel
+class ReportReasonForm extends \yii\base\Model
 {
 
     public $object_id;
-
     public $reason;
 
     /**
@@ -18,7 +21,6 @@ class ReportReasonForm extends CFormModel
      */
     public function init()
     {
-        CHtml::$afterRequiredLabel = '';
         return parent::init();
     }
 
@@ -28,10 +30,7 @@ class ReportReasonForm extends CFormModel
     public function rules()
     {
         return array(
-            array(
-                'reason, object_id',
-                'required'
-            )
+            array(['reason', 'object_id'], 'required')
         );
     }
 
@@ -43,8 +42,10 @@ class ReportReasonForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'reason' => Yii::t('ReportContent.base', 'Why do you want to report this post?')
+            'reason' => Yii::t('ReportcontentModule.base', 'Why do you want to report this post?')
         );
     }
+
 }
+
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-class m141220_192625_initial extends EDbMigration
+class m141220_192625_initial extends humhub\components\Migration
 {
 
     public function up()
@@ -14,7 +14,7 @@ class m141220_192625_initial extends EDbMigration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL'
-        ), '');
+                ), '');
     }
 
     public function down()
@@ -22,5 +22,7 @@ class m141220_192625_initial extends EDbMigration
         echo "m141220_192625_initial does not support migration down.\n";
         return false;
     }
+
 }
+
 ?>

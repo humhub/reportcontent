@@ -1,48 +1,23 @@
 <?php
 
+namespace humhub\modules\reportcontent\controllers;
+
+use Yii;
+use yii\helpers\Url;
+use humhub\modules\post\models\Post;
+use humhub\modules\reportcontent\models\ReportContent;
+use humhub\modules\reportcontent\models\ReportReasonForm;
+use humhub\modules\space\models\Space;
+use humhub\modules\content\models\Content;
+
 /**
  * Defines report post actions
  *
  * @package humhub.modules.reportcontent.controllers
  * @author Marjana Pesic
  */
-class ReportContentController extends Controller
+class ReportContentController extends \humhub\components\Controller
 {
-
-    /**
-     *
-     * @return array action filters
-     */
-    public function filters()
-    {
-        return array(
-            'accessControl'
-        ); // perform access control for CRUD operations
-    }
-
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * 
-     * @return array access control rules
-     */
-    public function accessRules()
-    {
-        return array(
-            array(
-                'allow', // allow authenticated user to perform 'create' and 'update' actions
-                'users' => array(
-                    '@'
-                )
-            ),
-            array(
-                'deny', // deny all users
-                'users' => array(
-                    '*'
-                )
-            )
-        );
-    }
 
     /**
      * Handles AJAX Post Request to submit new ReportContent
@@ -50,66 +25,64 @@ class ReportContentController extends Controller
     public function actionReport()
     {
         $this->forcePostRequest();
-        
+
+        Yii::$app->response->format = 'json';
+
         $json = array();
         $json['success'] = false;
-        
+
         $form = new ReportReasonForm();
-        
-        if (isset($_POST['ReportReasonForm'])) {
-            $_POST['ReportReasonForm'] = Yii::app()->input->stripClean($_POST['ReportReasonForm']);
-            $form->attributes = $_POST['ReportReasonForm'];
-            
-            if ($form->validate() && ReportContent::canReportPost($form->object_id)) {
-                
-                $report = new ReportContent();
-                $report->created_by = Yii::app()->user->id;
-                $report->reason = $form->reason;
-                $report->object_model = 'Post';
-                $report->object_id = $form->object_id;
-                $report->save();
-                
+        if ($form->load(Yii::$app->request->post()) && $form->validate() && ReportContent::canReportPost($form->object_id)) {
+            $report = new ReportContent();
+            $report->created_by = Yii::$app->user->id;
+            $report->reason = $form->reason;
+            $report->object_model = Post::className();
+            $report->object_id = $form->object_id;
+            if ($report->save()) {
                 $json['success'] = true;
             }
         }
-        
-        echo CJSON::encode($json);
-        Yii::app()->end();
+
+        return $json;
     }
-    
-    public function actionAppropriate() {
-    
+
+    public function actionAppropriate()
+    {
         $this->forcePostRequest();
-    
-        $reportId = Yii::app()->request->getParam('id');
-        $report = ReportContent::model()->findByPk($reportId);
-        if($report->canDelete()) $report->delete();
-        
-        if(!$report->content->space_id)
-            return $this->htmlRedirect($this->createUrl('//reportcontent/admin', array()));
-        else{
-            $space = Space::model()->findByPk($report->content->space_id);
-            return $this->htmlRedirect($this->createUrl('//reportcontent/spaceAdmin', array('sguid' => $space->guid)));
+
+        $reportId = Yii::$app->request->get('id');
+        $report = ReportContent::findOne(['id' => $reportId]);
+        if ($report->canDelete())
+            $report->delete();
+
+        if (!$report->content->space_id)
+            return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
+        else {
+            $space = Space::findOne(['id' => $report->content->space_id]);
+            return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
         }
     }
-    
-    public function actionDeleteContent(){
+
+    public function actionDeleteContent()
+    {
         $this->forcePostRequest();
-        
-        $model = Yii::app()->request->getParam('model');
-        $id = Yii::app()->request->getParam('id');
-         
+
+        $model = Yii::$app->request->get('model');
+        $id = Yii::$app->request->get('id');
+
         $content = Content::get($model, $id);
 
-        if ($content->content->canDelete()) $content->delete();
-        
-        if(!$content->content->space_id)
-            return $this->htmlRedirect($this->createUrl('//reportcontent/admin', array()));
-        else{
-            $space = Space::model()->findByPk($content->content->space_id);
-            return $this->htmlRedirect($this->createUrl('//reportcontent/spaceAdmin', array('sguid' => $space->guid)));
-        } 
+        if ($content->content->canDelete())
+            $content->delete();
+
+        if (!$content->content->space_id)
+            return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
+        else {
+            $space = Space::findOne(['id' => $content->content->space_id]);
+            return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+        }
     }
-  
+
 }
+
 ?>
