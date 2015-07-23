@@ -22,7 +22,7 @@ class ReportContentWidget extends HWidget
      */
     public function run()
     {
-        if (ReportContent::canReportPost($this->content->id)) {
+        if ((get_class($this->content) == "Post") && ReportContent::canReportPost($this->content->id)) {
             
             $this->render('reportSpamLink', array(
                 'object' => $this->content,

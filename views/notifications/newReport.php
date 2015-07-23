@@ -1,4 +1,4 @@
-<?php $this->beginContent('application.modules_core.notification.views.notificationLayout', array('notification' => $notification)); ?>
+<?php $this->beginContent('application.modules_core.notification.views.notificationLayout', array('notification' => $notification, 'hideUserImage' => true, 'hideSpaceImage' => true)); ?>
 
 <?php switch ($sourceObject->reason){
 	case 1: 

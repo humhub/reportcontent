@@ -111,14 +111,16 @@ class ReportContent extends HActiveRecordContentAddon
         
         
         $post = Post::model()->findByPk($postId);
-        if (! $post)
-            return false;
+        if (!$post)
+            return false;     
         
         if ($userId == "")
             $userId = Yii::app()->user->id;
         
         $user = User::model()->findByPk($userId);
-        
+        if(!$user)
+            return false;
+       
         if ($user->super_admin)
             return false;
         
