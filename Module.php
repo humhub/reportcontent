@@ -2,7 +2,6 @@
 
 namespace humhub\modules\reportcontent;
 
-
 /**
  * ReportContentModule is responsible for allowing useres to report posts.
  *
@@ -12,16 +11,16 @@ namespace humhub\modules\reportcontent;
 class Module extends \humhub\components\Module
 {
 
+    /**
+     * @inheritdoc
+     */
     public function disable()
     {
-        if (parent::disable()) {
-            foreach (Notification::model()->findAllByAttributes(array('source_object_model' => 'ReportContent')) as $notification) {
-                $notification->delete();
-            }
-            ReportContent::model()->deleteAll();
-            return true;
+        parent::disable();
+
+        foreach (models\ReportContent::find()->all() as $reportContent) {
+            $reportContent->delete();
         }
-        return false;
     }
 
 }
