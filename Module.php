@@ -16,11 +16,11 @@ class Module extends \humhub\components\Module
      */
     public function disable()
     {
-        parent::disable();
-
         foreach (models\ReportContent::find()->all() as $reportContent) {
             $reportContent->delete();
         }
+
+        parent::disable();
     }
 
 }
