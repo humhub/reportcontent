@@ -3,7 +3,7 @@
 	"name": "Report Content",
 	"description": "This module allows users to report posts for various reasons to space and super admins. It will help to reduce spam inside the network.",
 	"keywords": ["report", "content", "spam"],
-	"version": "0.1.3",
+	"version": "0.2.0",
 	"authors": [
 		{
 			"name": "Marjana Pesic"
@@ -13,6 +13,6 @@
 	"license": "AGPL",
 	"time": "2015-02-06",
 	"humhub": {
-		"minVersion": "0.8.0"
+		"minVersion": "0.20"
 	}
 }
