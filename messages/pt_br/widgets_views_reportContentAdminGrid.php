@@ -1,8 +1,8 @@
 <?php
 return array (
   'Appropriate' => 'Apropriado',
-  'Content' => '',
-  'Delete post' => '@@@@',
+  'Content' => 'Conteúdo',
+  'Delete post' => 'Apagar postagem',
   'Reason' => 'Motivo',
   'Reporter' => 'Relator',
 );
