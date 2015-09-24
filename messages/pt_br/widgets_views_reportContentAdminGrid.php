@@ -17,17 +17,17 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    '<strong>Confirm</strong> post deletion' => '',
-    '<strong>Confirm</strong> report deletion' => '',
-    'Cancel' => '',
-    'Delete' => '',
-    'Delete report' => '',
-    'Do you really want to delete this post? All likes and comments will be lost!' => '',
-    'Do you really want to delete this report?' => '',
-    'There are no reported posts.' => '',
     'Appropriate' => 'Apropriado',
+    '<strong>Confirm</strong> post deletion' => '<strong>Confirme</strong> exclusão da postagem',
+    '<strong>Confirm</strong> report deletion' => '<strong>Confirme</strong> exclusão da denúncia',
+    'Cancel' => 'Cancelar',
     'Content' => 'Conteúdo',
-    'Delete post' => 'Apagar postagem',
+    'Delete' => 'Excluir',
+    'Delete post' => 'Excluir postagem',
+    'Delete report' => 'Excluir denúncia',
+    'Do you really want to delete this post? All likes and comments will be lost!' => 'Você realmente quer excluir esta postagem? Todas as curtidas e comentários serão perdidos!',
+    'Do you really want to delete this report?' => 'Você realmente quer excluir esta denúncia?',
     'Reason' => 'Motivo',
     'Reporter' => 'Relator',
+    'There are no reported posts.' => 'Não há postagens denunciadas.',
 ];
