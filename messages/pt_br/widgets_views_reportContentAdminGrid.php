@@ -17,7 +17,6 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Appropriate' => 'Apropriado',
     '<strong>Confirm</strong> post deletion' => '<strong>Confirme</strong> exclusão da postagem',
     '<strong>Confirm</strong> report deletion' => '<strong>Confirme</strong> exclusão da denúncia',
     'Cancel' => 'Cancelar',

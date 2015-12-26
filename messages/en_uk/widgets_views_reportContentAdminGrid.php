@@ -29,5 +29,4 @@ return [
     'Reason' => '',
     'Reporter' => '',
     'There are no reported posts.' => '',
-    'Appropriate' => '@@@@',
 ];

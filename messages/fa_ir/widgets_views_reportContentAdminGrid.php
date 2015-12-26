@@ -25,7 +25,6 @@ return [
     'Do you really want to delete this post? All likes and comments will be lost!' => '',
     'Do you really want to delete this report?' => '',
     'There are no reported posts.' => '',
-    'Appropriate' => 'مناسب',
     'Content' => 'محتوا',
     'Delete post' => 'حذف پست',
     'Reason' => 'علت',
