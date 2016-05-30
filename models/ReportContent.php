@@ -73,7 +73,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
 
             if ($this->content->space !== null) {
                 $query = User::find()
-                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.admin_role=1', [':spaceId' => $this->content->space->id])
+                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->space->id, ':groupId' => 'admin'])
                         ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
             } else {
                 $query = User::find()->where(['super_admin' => 1]);
@@ -113,51 +113,65 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
         }
 
         $post = Post::findOne(['id' => $postId]);
-        if (!$post)
+        if (!$post) {
             return false;
+        }
 
         if ($userId != "") {
             $user = User::findOne(['id' => $userId]);
         } else {
             $user = Yii::$app->user->getIdentity();
         }
-
-        if (!$user)
+        
+        if (!$user) {
             return false;
-
-        if ($user->super_admin)
+        }
+        
+        if ($user->super_admin) {
             return false;
+        }
 
-        if ($post->created_by == $user->id)
+        // Can't report own content
+        if ($post->created_by == $user->id) {
             return false;
+        }
 
-        if ($post->content->container instanceof Space && ($post->content->getContainer()->isAdmin($user->id) || $post->content->getContainer()->isAdmin($post->created_by)))
+        // Don't report space admin content
+        if ($post->content->container instanceof Space 
+                && ($post->content->getContainer()->isAdmin($user->id) 
+                || $post->content->getContainer()->isAdmin($post->created_by))) {
             return false;
+        }
 
-        if (ReportContent::findOne(['object_model' => Post::className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null)
+        // Check if post exists
+        if (ReportContent::findOne(['object_model' => Post::className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null) {
             return false;
-
-        if (User::findOne(['id' => $post->created_by, 'super_admin' => 1]) !== null)
+        }
+        
+        // Don't report system admin content
+        if (User::findOne(['id' => $post->created_by])->super_admin) {
             return false;
+        }
 
         return true;
     }
 
-    public function canDelete($userId = "")
+    public function canDelete($userId = null)
     {
 
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
-
-        if (Yii::$app->user->isAdmin()) {
+        
+        $user = ($userId == null) ? Yii::$app->user->getIdentity() 
+                : User::findOne(['id' => $userId]);
+        
+        if ($user->super_admin) {
             return true;
         }
 
-        if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($userId)) {
+        if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($user->id)) {
             return true;
         }
 

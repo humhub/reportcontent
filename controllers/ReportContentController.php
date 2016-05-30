@@ -52,15 +52,27 @@ class ReportContentController extends \humhub\components\Controller
 
         $reportId = Yii::$app->request->get('id');
         $report = ReportContent::findOne(['id' => $reportId]);
-        if ($report->canDelete())
+        
+        if ($report->canDelete()) {
             $report->delete();
-
-        if (!$report->content->space_id)
-            return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
-        else {
-            $space = Space::findOne(['id' => $report->content->space_id]);
-            return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
         }
+
+        if (version_compare(Yii::$app->version, '1.1', 'lt')) {
+            if (!$report->content->space_id) {
+                return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
+            } else {
+                $space = Space::findOne(['id' => $report->content->space_id]);
+                return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+            }
+        } else {
+            if (!$report->content->contentcontainer_id) {
+                return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
+            } else {
+                $space = Space::findOne(['contentcontainer_id' => $report->content->contentcontainer_id]);
+                return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+            }
+        }
+        
     }
 
     public function actionDeleteContent()
@@ -71,16 +83,29 @@ class ReportContentController extends \humhub\components\Controller
         $id = Yii::$app->request->get('id');
 
         $content = Content::get($model, $id);
-
-        if ($content->content->canDelete())
+        
+        if ($content->content->canDelete()) {
             $content->delete();
-
-        if (!$content->content->space_id)
-            return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
-        else {
-            $space = Space::findOne(['id' => $content->content->space_id]);
-            return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
         }
+        
+        if (version_compare(Yii::$app->version, '1.1', 'lt')) {
+            if (!$content->content->space_id) {
+                return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
+            } else {
+                $space = Space::findOne(['id' => $content->content->space_id]);
+                return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+            }
+        } else {
+            if (!$content->content->contentcontainer_id) {
+                return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
+            } else {
+                
+                $space = Space::findOne(['contentcontainer_id' => $content->content->contentcontainer_id]);
+                return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+            }
+        }
+
+        
     }
 
 }
