@@ -27,21 +27,21 @@ class ReportContentController extends \humhub\components\Controller
         $this->forcePostRequest();
 
         Yii::$app->response->format = 'json';
-
-        $json = array();
-        $json['success'] = false;
-
+        
         $form = new ReportReasonForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && ReportContent::canReportPost($form->object_id)) {
-            $report = new ReportContent();
-            $report->created_by = Yii::$app->user->id;
-            $report->reason = $form->reason;
-            $report->object_model = Post::className();
-            $report->object_id = $form->object_id;
-            if ($report->save()) {
-                $json['success'] = true;
-            }
+        
+        $json = [];
+        if($form->load(Yii::$app->request->post()) && $form->save()) {
+            $json['success'] = true;
+        } else {
+            $post = $form->getPostModel();
+            
+            $json['success'] = false;
+            $json['content'] = \humhub\modules\reportcontent\widgets\ReportContentModal::widget([
+                'post' => $post
+            ]);
         }
+        
 
         return $json;
     }
@@ -52,27 +52,30 @@ class ReportContentController extends \humhub\components\Controller
 
         $reportId = Yii::$app->request->get('id');
         $report = ReportContent::findOne(['id' => $reportId]);
-        
-        if ($report->canDelete()) {
-            $report->delete();
-        }
 
         if (version_compare(Yii::$app->version, '1.1', 'lt')) {
-            if (!$report->content->space_id) {
+            if ($report->canDelete()) {
+                $report->delete();
+            }
+            
+            if (Yii::$app->request->get('admin')) {
                 return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
             } else {
                 $space = Space::findOne(['id' => $report->content->space_id]);
                 return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
             }
         } else {
-            if (!$report->content->contentcontainer_id) {
+            if ($report->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+                $report->delete();
+            }
+            
+            if (Yii::$app->request->get('admin')) {
                 return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
             } else {
                 $space = Space::findOne(['contentcontainer_id' => $report->content->contentcontainer_id]);
                 return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
             }
         }
-        
     }
 
     public function actionDeleteContent()
@@ -83,29 +86,30 @@ class ReportContentController extends \humhub\components\Controller
         $id = Yii::$app->request->get('id');
 
         $content = Content::get($model, $id);
-        
-        if ($content->content->canDelete()) {
-            $content->delete();
-        }
-        
+
         if (version_compare(Yii::$app->version, '1.1', 'lt')) {
-            if (!$content->content->space_id) {
+            if ($content->content->canDelete()) {
+                $content->delete();
+            }
+
+            if (Yii::$app->request->get('admin')) {
                 return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
             } else {
                 $space = Space::findOne(['id' => $content->content->space_id]);
                 return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
             }
         } else {
-            if (!$content->content->contentcontainer_id) {
+            if ($content->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+                $content->delete();
+            }
+            
+            if (Yii::$app->request->get('admin')) {
                 return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
             } else {
-                
-                $space = Space::findOne(['contentcontainer_id' => $content->content->contentcontainer_id]);
+                $space = $content->content->getSpace();
                 return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
             }
         }
-
-        
     }
 
 }

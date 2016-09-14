@@ -20,10 +20,15 @@ use Yii;
 class Events extends \yii\base\Object
 {
 
+    /**
+     * Adds the report button to the wallentry control.
+     * 
+     * @param type $event
+     */
     public static function onWallEntryControlsInit($event)
     {
         $event->sender->addWidget(widgets\ReportContentWidget::className(), array(
-            'content' => $event->sender->object
+            'post' => $event->sender->object
         ));
     }
 
@@ -60,9 +65,10 @@ class Events extends \yii\base\Object
     {
         $space = $event->sender->space;
         
-        $isSpaceAdmin = version_compare(Yii::$app->version, '1.1', 'lt') ? $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_ADMIN
+        $isSpaceAdmin = version_compare(Yii::$app->version, '1.1', 'lt') ? 
+                $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_ADMIN || $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_OWNER
                 : $space->isAdmin(Yii::$app->user->id);
-        
+
         if ($isSpaceAdmin) {
             $event->sender->addItem(array(
                 'label' => Yii::t('ReportcontentModule.base', 'Reported posts'),

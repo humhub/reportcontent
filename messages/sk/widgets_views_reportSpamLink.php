@@ -17,7 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
-    'Does not belong to this space' => '',
+    'Does not belong here' => '',
     'Help Us Understand What\'s Happening' => '',
     'It\'s offensive' => '',
     'It\'s spam' => '',

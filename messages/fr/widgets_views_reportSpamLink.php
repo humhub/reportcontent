@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Does not belong to this space' => '',
+  'Does not belong here' => '',
   'Help Us Understand What\'s Happening' => '',
   'It\'s offensive' => '',
   'It\'s spam' => '',
