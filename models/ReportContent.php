@@ -156,6 +156,11 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
         if ($user->super_admin) {
             return true;
         }
+        
+        if(version_compare(Yii::$app->version, '1.0', 'gt') 
+                && $this->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+            return true;
+        }
 
         if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($user->id)) {
             return true;

@@ -3,6 +3,7 @@
 namespace humhub\modules\reportcontent\models;
 
 use humhub\modules\content\models\Content;
+use humhub\modules\space\models\Space;
 
 use Yii;
 
@@ -77,8 +78,10 @@ class ReportReasonForm extends \yii\base\Model
         $report->object_model = $model->className();
         $report->object_id = $model->getPrimaryKey();
         
-        // If we report a space admin post, we create a system admin only post
-        if($post->content->getContainer()->isAdmin($post->content->created_by)) {
+        $contentContainer = $post->content->getContainer();
+        
+        // If we report a space admin post, we create a system admin only report (only visible in admin area)
+        if(!($contentContainer instanceof Space) || $contentContainer->isAdmin($post->content->created_by)) {
             $report->system_admin_only = true;
         }
 

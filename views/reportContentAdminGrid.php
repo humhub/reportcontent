@@ -39,7 +39,7 @@ use yii\helpers\Url;
                     <td>
                         <div class="content" style="max-height: 40px; max-width:250px;">              
 
-                            <p id="content-message-<?php echo $report->id ?>" style="display: inline;" class="contentAnchor"><?php print Html::encode($report->getSource()->getContentDescription()) ?></p>
+                            <p id="content-message-<?php echo $report->id ?>" style="display: inline;" class="contentAnchor"><?= \humhub\widgets\RichText::widget(['text' => $report->getSource()->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) ?></p>
                             <br/>    
                             <small class="media">
                                 <span class="time"><?php echo Yii::t('ReportcontentModule.base', 'created by :displayName', array(':displayName' => Html::a(Html::encode($report->getSource()->content->user->displayName), $report->getSource()->content->user->getUrl()))) ?></span>

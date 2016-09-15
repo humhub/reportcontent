@@ -49,7 +49,6 @@ use humhub\compat\CActiveForm;
             dataType: 'json',
             data: $form.serialize(),
             success: function (result) {
-                debugger;
                 if (result.success) {
                     $('#globalModal').modal('hide');
                 } else {

@@ -65,15 +65,16 @@ class ReportContentController extends \humhub\components\Controller
                 return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
             }
         } else {
-            if ($report->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+            $container = $report->content->getContainer();
+            
+            if ($report->canDelete()) {
                 $report->delete();
             }
             
             if (Yii::$app->request->get('admin')) {
                 return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
             } else {
-                $space = Space::findOne(['contentcontainer_id' => $report->content->contentcontainer_id]);
-                return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+                return $this->htmlRedirect($container->createUrl('/reportcontent/space-admin'));
             }
         }
     }
@@ -86,9 +87,10 @@ class ReportContentController extends \humhub\components\Controller
         $id = Yii::$app->request->get('id');
 
         $content = Content::get($model, $id);
+        $isSystemAdmin = Yii::$app->user->getIdentity()->super_admin;
 
         if (version_compare(Yii::$app->version, '1.1', 'lt')) {
-            if ($content->content->canDelete()) {
+            if ($isSystemAdmin || $content->content->canDelete()) {
                 $content->delete();
             }
 
@@ -99,15 +101,16 @@ class ReportContentController extends \humhub\components\Controller
                 return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
             }
         } else {
-            if ($content->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+            $container = $content->content->getContainer();
+            
+            if ($isSystemAdmin || $content->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
                 $content->delete();
             }
             
             if (Yii::$app->request->get('admin')) {
                 return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
             } else {
-                $space = $content->content->getSpace();
-                return $this->htmlRedirect($space->createUrl('/reportcontent/space-admin'));
+                return $this->htmlRedirect($container->createUrl('/reportcontent/space-admin'));
             }
         }
     }
