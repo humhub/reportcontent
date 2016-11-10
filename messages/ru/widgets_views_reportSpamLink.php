@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Does not belong to this space' => 'Не принадлежит к этому пространству',
+  'Does not belong here' => 'Не принадлежит к этому пространству',
   'Help Us Understand What\'s Happening' => 'Помогите нам понять, что происходит',
   'It\'s offensive' => 'Это нарушение',
   'It\'s spam' => 'Это спам',

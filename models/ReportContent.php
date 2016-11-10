@@ -5,7 +5,7 @@ namespace humhub\modules\reportcontent\models;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\modules\post\models\Post;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 
 /**
@@ -19,7 +19,8 @@ use humhub\modules\content\models\Content;
  * @property integer $created_by
  * @property string $updated_at
  * @property integer $updated_by
- *
+ * @property boolean $system_admin_only
+ * 
  * @package humhub.modules.reportcontent.models
  */
 class ReportContent extends \humhub\modules\content\components\ContentAddonActiveRecord
@@ -28,6 +29,19 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
     const REASON_NOT_BELONG = 1;
     const REASON_OFFENSIVE = 2;
     const REASON_SPAM = 3;
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'mustBeInstanceOf' => [ContentActiveRecord::className()],
+            ]
+        ];
+    }
 
     /**
      *
@@ -39,44 +53,32 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
     }
 
     /**
-     *
      * @return array validation rules for model attributes.
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
-            array(
-                ['object_id', 'reason', 'created_by'],
-                'required'
-            ),
-            array(
-                ['object_id', 'created_by', 'updated_by'],
-                'integer',
-            ),
-            array(
-                'created_at',
-                'string',
-                'max' => 45
-            ),
-            array(
-                ['updated_at'],
-                'safe'
-            )
+            [['object_id', 'reason'], 'required'],
+            [['object_id', 'created_by', 'updated_by'], 'integer',],
+            ['created_at', 'string', 'max' => 45],
+            [['updated_at'], 'safe']
         );
     }
 
+    /**
+     * Sends a notification to eihter space admins or system admins after the creation of a report.
+     */
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-
-            if ($this->content->space !== null) {
+            if ($this->content->space !== null && !$this->content->getContainer()->isAdmin($this->content->created_by)) {
                 $query = User::find()
-                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.admin_role=1', [':spaceId' => $this->content->space->id])
+                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->space->id, ':groupId' => 'admin'])
                         ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
-            } else {
+            } else if (version_compare(Yii::$app->version, '1.1', 'lt')) {
                 $query = User::find()->where(['super_admin' => 1]);
+            } else {
+                $query = \humhub\modules\user\models\Group::getAdminGroup()->users;
             }
 
             $notification = new \humhub\modules\reportcontent\notifications\NewReportAdmin;
@@ -106,58 +108,61 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
      * @param
      *            int postId
      */
-    public static function canReportPost($postId, $userId = "")
+    public static function canReportPost(ContentActiveRecord $post, $userId = null)
     {
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
-        $post = Post::findOne(['id' => $postId]);
-        if (!$post)
-            return false;
+        $user = ($userId != null) ? User::findOne(['id' => $userId]) : Yii::$app->user->getIdentity();
 
-        if ($userId != "") {
-            $user = User::findOne(['id' => $userId]);
-        } else {
-            $user = Yii::$app->user->getIdentity();
+        if ($user == null || $user->super_admin) {
+            return false;
         }
 
-        if (!$user)
+        // Can't report own content
+        if ($post->content->created_by == $user->id) {
             return false;
+        }
 
-        if ($user->super_admin)
+        // Space admins can't report since they can simply delete content
+        if ($post->content->container instanceof Space && $post->content->getContainer()->isAdmin($user->id)) {
             return false;
+        }
 
-        if ($post->created_by == $user->id)
+        // Check if post exists
+        if (ReportContent::findOne(['object_model' => $post->className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null) {
             return false;
+        }
 
-        if ($post->content->container instanceof Space && ($post->content->getContainer()->isAdmin($user->id) || $post->content->getContainer()->isAdmin($post->created_by)))
+        // Don't report system admin content
+        if (User::findOne(['id' => $post->content->created_by])->super_admin) {
             return false;
-
-        if (ReportContent::findOne(['object_model' => Post::className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null)
-            return false;
-
-        if (User::findOne(['id' => $post->created_by, 'super_admin' => 1]) !== null)
-            return false;
+        }
 
         return true;
     }
 
-    public function canDelete($userId = "")
+    public function canDelete($userId = null)
     {
 
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
-        if ($userId == "")
-            $userId = Yii::$app->user->id;
 
-        if (Yii::$app->user->isAdmin()) {
+        $user = ($userId == null) ? Yii::$app->user->getIdentity() : User::findOne(['id' => $userId]);
+
+        if ($user->super_admin) {
+            return true;
+        }
+        
+        if(version_compare(Yii::$app->version, '1.0', 'gt') 
+                && $this->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
             return true;
         }
 
-        if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($userId)) {
+        if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($user->id)) {
             return true;
         }
 

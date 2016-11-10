@@ -12,8 +12,7 @@ class AdminController extends \humhub\modules\admin\components\Controller
      */
     public function actionIndex()
     {
-        $query = ReportContent::find()->joinWith('content')->andWhere(['IS', 'content.space_id', new \yii\db\Expression('NULL')]);
-
+        $query = ReportContent::find();
         $countQuery = clone $query;
         $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
         $query->offset($pagination->offset)->limit($pagination->limit);

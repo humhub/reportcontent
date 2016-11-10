@@ -3,7 +3,7 @@
 namespace humhub\modules\reportcontent\widgets;
 
 use humhub\modules\reportcontent\models\ReportContent;
-use humhub\modules\post\models\Post;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\reportcontent\models\ReportReasonForm;
 
 /**
@@ -21,17 +21,18 @@ class ReportContentWidget extends \humhub\components\Widget
      * 
      * @var type
      */
-    public $content;
+    public $post;
 
     /**
      * Executes the widget.
      */
     public function run()
     {
-        if ((get_class($this->content) == Post::className()) && ReportContent::canReportPost($this->content->id)) {
+        if ($this->post instanceof ContentActiveRecord && ReportContent::canReportPost($this->post)) {
 
-            return $this->render('reportSpamLink', array(
-                        'object' => $this->content,
+            return $this->render('reportContentLink', array(
+                        'object' => $this->post,
+                        'content' => $this->post->content,
                         'model' => new ReportReasonForm()
             ));
         }

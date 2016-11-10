@@ -22,7 +22,6 @@ use yii\helpers\Url;
                 <th></th>
                 <th><?php echo Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Reporter'); ?></th>
                 <th></th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -40,11 +39,11 @@ use yii\helpers\Url;
                     <td>
                         <div class="content" style="max-height: 40px; max-width:250px;">              
 
-                            <p id="content-message-<?php echo $report->id ?>" style="display: inline;" class="contentAnchor"><?php print Html::encode($report->getSource()->message) ?></p>
+                            <p id="content-message-<?php echo $report->id ?>" style="display: inline;" class="contentAnchor"><?= \humhub\widgets\RichText::widget(['text' => $report->getSource()->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) ?></p>
                             <br/>    
                             <small class="media">
                                 <span class="time"><?php echo Yii::t('ReportcontentModule.base', 'created by :displayName', array(':displayName' => Html::a(Html::encode($report->getSource()->content->user->displayName), $report->getSource()->content->user->getUrl()))) ?></span>
-                                <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $report->getSource()->created_at]); ?>
+                                <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $report->content->created_at]); ?>
                             </small>     
                         </div>
                     </td>
@@ -72,16 +71,14 @@ use yii\helpers\Url;
                         echo \humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => 'delete_' . $report->id,
                             'title' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', '<strong>Confirm</strong> report deletion'),
-                            'message' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Do you really want to delete this report?'),
-                            'buttonTrue' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Delete'),
+                            'message' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Do you really want to approve this post?'),
+                            'buttonTrue' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Approve'),
                             'buttonFalse' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Cancel'),
-                            'class' => 'btn btn-primary btn-sm',
-                            'linkContent' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Delete report'),
-                            'linkHref' => Url::to(["//reportcontent/report-content/appropriate", 'id' => $report->id]),
+                            'cssClass' =>  'btn btn-success btn-sm',
+                            'linkContent' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Approve post'),
+                            'linkHref' => Url::to(["//reportcontent/report-content/appropriate", 'id' => $report->id, 'admin' => $isAdmin]),
                         ));
                         ?>
-                    </td>
-                    <td style="vertical-align:middle">
                         <?php
                         echo \humhub\widgets\ModalConfirm::widget(array(
                             'uniqueID' => $report->id,
@@ -89,11 +86,12 @@ use yii\helpers\Url;
                             'message' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Do you really want to delete this post? All likes and comments will be lost!'),
                             'buttonTrue' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Delete'),
                             'buttonFalse' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Cancel'),
-                            'class' => 'btn btn-sm btn-danger',
+                            'cssClass' => 'btn btn-sm btn-danger',
                             'linkContent' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Delete post'),
-                            'linkHref' => Url::to(["//reportcontent/report-content/delete-content", 'model' => get_class($report->getSource()), 'id' => $report->getSource()->id]),
+                            'linkHref' => Url::to(["//reportcontent/report-content/delete-content", 'admin' => $isAdmin, 'model' => get_class($report->getSource()), 'id' => $report->getSource()->id]),
                         ));
                         ?>
+                        <a href="<?= $report->content->getUrl() ?>" class="btn btn-sm btn-primary"><i aria-hidden="true" class="fa fa-eye"></i></a>
                     </td>
                 <?php endforeach; ?>
         </tbody>
