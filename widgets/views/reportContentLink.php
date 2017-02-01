@@ -1,10 +1,11 @@
 <?php
 
 use yii\helpers\Url;
+
 ?>
 <!-- Link in menu for reporting the post -->
 <li>
-    <a data-content-id="<?= $content->id ?>" href="#" class="reportContentLink"> 
+    <a data-content-id="<?php echo $content->id ?>" href="#" class="reportContentLink"> 
         <?php echo '<i class="fa fa-exclamation-circle"></i> ' . Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Report post'); ?>
     </a> 
 </li>
@@ -14,7 +15,7 @@ use yii\helpers\Url;
         evt.preventDefault();
         
         var contentId = $(this).data('content-id');
-        $.ajax('<?= Url::to(['/reportcontent/report-content/report']); ?>', {
+        $.ajax('<?php echo Url::to(['/reportcontent/report-content/report']); ?>', {
             method: 'POST',
             dataType: 'json',
             data: {
