@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\compat\CActiveForm;
+use humhub\compat\ActiveForm;
 ?>
 <!-- Modal with reasons of report -->
 <div class="modal-dialog modal-dialog-small">
@@ -16,7 +16,7 @@ use humhub\compat\CActiveForm;
             </h4>
         </div>
         <hr />
-        <?php $form = CActiveForm::begin(['id' => 'report-content-form']); ?>
+        <?php $form = ActiveForm::begin(['id' => 'report-content-form']); ?>
             <?php echo $form->hiddenField($model, 'content_id', ['value' => $content->id]); ?>
         <div class="modal-body text-left">
             <?=
@@ -30,10 +30,10 @@ use humhub\compat\CActiveForm;
                 <hr />
                 <div class="modal-footer">
                     <a href="#" id="submitReport" class="btn btn-primary" data-ui-loader>
-                <?= Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Submit'); ?>
+                <?php echo Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Submit'); ?>
                     </a>
                 </div>
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
             </div>
         </div>
 
@@ -44,7 +44,7 @@ use humhub\compat\CActiveForm;
                 evt.preventDefault();
                 var $form = $(this).closest('form');
 
-                $.ajax('<?= Url::to(['/reportcontent/report-content/report']); ?>', {
+                $.ajax('<?php echo Url::to(['/reportcontent/report-content/report']); ?>', {
             method: 'POST',
             dataType: 'json',
             data: $form.serialize(),
