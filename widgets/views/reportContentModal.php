@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\compat\ActiveForm;
+use yii\widgets\ActiveForm;
 ?>
 <!-- Modal with reasons of report -->
 <div class="modal-dialog modal-dialog-small">
@@ -11,13 +11,13 @@ use humhub\compat\ActiveForm;
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <strong>
-<?php echo Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Help Us Understand What\'s Happening'); ?>
+<?= Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Help Us Understand What\'s Happening'); ?>
                 </strong>
             </h4>
         </div>
         <hr />
         <?php $form = ActiveForm::begin(['id' => 'report-content-form']); ?>
-            <?php echo $form->hiddenField($model, 'content_id', ['value' => $content->id]); ?>
+            <?= $form->hiddenField($model, 'content_id', ['value' => $content->id]); ?>
         <div class="modal-body text-left">
             <?=
             $form->field($model, 'reason')->radioList($model->getReasonOptions(), [
@@ -30,7 +30,7 @@ use humhub\compat\ActiveForm;
                 <hr />
                 <div class="modal-footer">
                     <a href="#" id="submitReport" class="btn btn-primary" data-ui-loader>
-                <?php echo Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Submit'); ?>
+                <?= Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Submit'); ?>
                     </a>
                 </div>
         <?php ActiveForm::end(); ?>
@@ -44,7 +44,7 @@ use humhub\compat\ActiveForm;
                 evt.preventDefault();
                 var $form = $(this).closest('form');
 
-                $.ajax('<?php echo Url::to(['/reportcontent/report-content/report']); ?>', {
+                $.ajax('<?= Url::to(['/reportcontent/report-content/report']); ?>', {
             method: 'POST',
             dataType: 'json',
             data: $form.serialize(),
