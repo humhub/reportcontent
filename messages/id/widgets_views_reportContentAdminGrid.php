@@ -5,7 +5,7 @@ return array (
   'Approve' => '',
   'Approve post' => '',
   'Cancel' => 'Batal',
-  'Content' => '',
+  'Content' => 'Konten',
   'Delete' => 'Hapus',
   'Delete post' => '',
   'Do you really want to approve this post?' => '',

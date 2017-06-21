@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> post deletion' => '',
+  '<strong>Confirm</strong> post deletion' => '<strong>Bekreft</strong> sletting av innlegg',
   '<strong>Confirm</strong> report deletion' => '',
   'Approve' => '',
   'Approve post' => '',
