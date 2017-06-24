@@ -5,7 +5,7 @@ use yii\helpers\Url;
 <!-- Link in menu for reporting the post -->
 <li>
     <a data-content-id="<?= $content->id ?>" href="#" class="reportContentLink"> 
-        <?php echo '<i class="fa fa-exclamation-circle"></i> ' . Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Report post'); ?>
+        <?= '<i class="fa fa-exclamation-circle"></i> ' . Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Report post'); ?>
     </a> 
 </li>
 

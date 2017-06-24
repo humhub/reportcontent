@@ -36,7 +36,7 @@ class ReportReasonForm extends \yii\base\Model
         return array(
             [['content_id'], 'required'],
             [['reason'], 'safe'],
-            // Workaround for not displaying reaquired * on radio labels.
+            // Workaround for not displaying required * on radio labels.
             [['content_id'], 'requiredReason']
         );
     }

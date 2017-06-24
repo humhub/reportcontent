@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\compat\CActiveForm;
+use yii\widgets\ActiveForm;
 ?>
 <!-- Modal with reasons of report -->
 <div class="modal-dialog modal-dialog-small">
@@ -11,13 +11,13 @@ use humhub\compat\CActiveForm;
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <strong>
-<?php echo Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Help Us Understand What\'s Happening'); ?>
+<?= Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Help Us Understand What\'s Happening'); ?>
                 </strong>
             </h4>
         </div>
         <hr />
-        <?php $form = CActiveForm::begin(['id' => 'report-content-form']); ?>
-            <?php echo $form->hiddenField($model, 'content_id', ['value' => $content->id]); ?>
+        <?php $form = ActiveForm::begin(['id' => 'report-content-form']); ?>
+            <?= $form->hiddenField($model, 'content_id', ['value' => $content->id]); ?>
         <div class="modal-body text-left">
             <?=
             $form->field($model, 'reason')->radioList($model->getReasonOptions(), [
@@ -33,7 +33,7 @@ use humhub\compat\CActiveForm;
                 <?= Yii::t('ReportcontentModule.widgets_views_reportSpamLink', 'Submit'); ?>
                     </a>
                 </div>
-        <?php CActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
             </div>
         </div>
 
