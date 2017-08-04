@@ -1,10 +1,13 @@
 <?php
+
 namespace humhub\modules\reportcontent\models;
+
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+
 /**
  * This is the model class for table "report_content".
  *
@@ -22,9 +25,11 @@ use humhub\modules\content\models\Content;
  */
 class ReportContent extends \humhub\modules\content\components\ContentAddonActiveRecord
 {
+
     const REASON_NOT_BELONG = 1;
     const REASON_OFFENSIVE = 2;
     const REASON_SPAM = 3;
+
     /**
      * @inheritdoc
      */
@@ -37,6 +42,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
             ]
         ];
     }
+
     /**
      *
      * @return string the associated database table name
@@ -45,6 +51,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
     {
         return 'report_content';
     }
+
     /**
      * @return array validation rules for model attributes.
      */
@@ -57,6 +64,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
             [['updated_at'], 'safe']
         );
     }
+
     /**
      * Sends a notification to eihter space admins or system admins after the creation of a report.
      */
@@ -72,13 +80,16 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
             } else {
                 $query = \humhub\modules\user\models\Group::getAdminGroup()->users;
             }
+
             $notification = new \humhub\modules\reportcontent\notifications\NewReportAdmin;
             $notification->source = $this;
             $notification->originator = Yii::$app->user->getIdentity();
             $notification->sendBulk($query);
         }
+
         return parent::afterSave($insert, $changedAttributes);
     }
+
     public static function getReason($reason)
     {
         switch ($reason) {
@@ -90,6 +101,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
                 return Yii::t('ReportcontentModule.models_ReportContent', "Spam");
         }
     }
+
     /**
      * Checks if the given or current user can report post with given id.
      *
@@ -101,34 +113,46 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
         if (Yii::$app->user->isGuest) {
             return false;
         }
+
         $user = ($userId != null) ? User::findOne(['id' => $userId]) : Yii::$app->user->getIdentity();
+
         if ($user == null || $user->super_admin) {
             return true;
         }
+
         // Can't report own content
         if ($post->content->created_by == $user->id) {
             return true;
         }
+
         // Space admins can't report since they can simply delete content
         if ($post->content->container instanceof Space && $post->content->getContainer()->isAdmin($user->id)) {
-            return true;
+            return false;
         }
+
         // Check if post exists
         if (ReportContent::findOne(['object_model' => $post->className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null) {
             return true;
         }
+
         // Don't report system admin content
         if (User::findOne(['id' => $post->content->created_by])->super_admin) {
-            return true;
+            return false;
         }
+
         return true;
     }
+
     public function canDelete($userId = null)
     {
+
         if (Yii::$app->user->isGuest) {
             return false;
         }
+
+
         $user = ($userId == null) ? Yii::$app->user->getIdentity() : User::findOne(['id' => $userId]);
+
         if ($user->super_admin) {
             return true;
         }
@@ -137,18 +161,24 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
                 && $this->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
             return true;
         }
+
         if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($user->id)) {
             return true;
         }
+
         return false;
     }
+
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
+
     public function getContent()
     {
         return $this->hasOne(Content::className(), ['object_id' => 'object_id', 'object_model' => 'object_model']);
     }
+
 }
+
 ?>
