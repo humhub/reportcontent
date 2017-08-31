@@ -57,12 +57,12 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
      */
     public function rules()
     {
-        return array(
+        return [
             [['object_id', 'reason'], 'required'],
             [['object_id', 'created_by', 'updated_by'], 'integer',],
             ['created_at', 'string', 'max' => 45],
             [['updated_at'], 'safe']
-        );
+        ];
     }
 
     /**
@@ -117,12 +117,12 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
         $user = ($userId != null) ? User::findOne(['id' => $userId]) : Yii::$app->user->getIdentity();
 
         if ($user == null || $user->super_admin) {
-            return true;
+            return false;
         }
 
         // Can't report own content
         if ($post->content->created_by == $user->id) {
-            return true;
+            return false;
         }
 
         // Space admins can't report since they can simply delete content
