@@ -4,6 +4,6 @@ return array (
   'Please provide a reason, why you want to report this content.' => 'Kérjük, indokold meg, miért akarod jelenteni ezt a tartalmat.',
   'Reported posts' => 'Jelentett bejegyzések',
   'Why do you want to report this post?' => 'Miért akarod jelenteni ezt a bejegyzést?',
-  'by :displayName' => '',
-  'created by :displayName' => '',
+  'by :displayName' => ':displayName által',
+  'created by :displayName' => ':displayName által létrehozva',
 );
