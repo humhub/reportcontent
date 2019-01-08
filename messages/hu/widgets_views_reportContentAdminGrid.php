@@ -8,7 +8,7 @@ return array (
   'Content' => 'Tartalom',
   'Delete' => 'Törlés',
   'Delete post' => 'Poszt törlése',
-  'Do you really want to approve this post?' => 'Tényleg elfogadod ezt a bejegyzést?',
+  'Do you really want to approve this post?' => 'Tényleg jóváhagyod ezt a bejegyzést?',
   'Do you really want to delete this post? All likes and comments will be lost!' => 'Tényleg törölni akarod ezt a bejegyzést? Minden lájk és hozzászólás törölve lesz!',
   'Reason' => 'Ok',
   'Reporter' => 'Bejelentő',
