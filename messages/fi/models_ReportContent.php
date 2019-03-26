@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'Doesn\'t belong to space' => '',
-    'Offensive' => '',
-    'Spam' => '',
-];
+return array (
+  'Doesn\'t belong to space' => 'Ei kuulu tälle sivulle',
+  'Offensive' => 'Luokkaava',
+  'Spam' => 'Roskaposti',
+);
