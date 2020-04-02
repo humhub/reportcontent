@@ -2,6 +2,11 @@
 
 namespace humhub\modules\reportcontent\models;
 
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\reportcontent\notifications\NewReportAdmin;
+use humhub\modules\user\models\Group;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -23,7 +28,7 @@ use humhub\modules\content\models\Content;
  * 
  * @package humhub.modules.reportcontent.models
  */
-class ReportContent extends \humhub\modules\content\components\ContentAddonActiveRecord
+class ReportContent extends ContentAddonActiveRecord
 {
 
     const REASON_NOT_BELONG = 1;
@@ -37,7 +42,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::className(),
+                'class' => PolymorphicRelation::className(),
                 'mustBeInstanceOf' => [ContentActiveRecord::className()],
             ]
         ];
@@ -71,17 +76,15 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            if ($this->content->contentContainer !== null && !$this->content->getContainer()->isAdmin($this->content->created_by)) {
+            if ($this->content->contentContainer instanceof Space && !$this->content->contentContainer->isAdmin($this->content->created_by)) {
                 $query = User::find()
                         ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->contentContainer->id, ':groupId' => 'admin'])
                         ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
-            } else if (version_compare(Yii::$app->version, '1.1', 'lt')) {
-                $query = User::find()->where(['super_admin' => 1]);
             } else {
-                $query = \humhub\modules\user\models\Group::getAdminGroup()->users;
+                $query = Group::getAdminGroup()->getUsers();
             }
 
-            $notification = new \humhub\modules\reportcontent\notifications\NewReportAdmin;
+            $notification = new NewReportAdmin;
             $notification->source = $this;
             $notification->originator = Yii::$app->user->getIdentity();
             $notification->sendBulk($query);
@@ -102,12 +105,6 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
         }
     }
 
-    /**
-     * Checks if the given or current user can report post with given id.
-     *
-     * @param
-     *            int postId
-     */
     public static function canReportPost(ContentActiveRecord $post, $userId = null)
     {
         if (Yii::$app->user->isGuest) {
@@ -116,7 +113,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
 
         $user = ($userId != null) ? User::findOne(['id' => $userId]) : Yii::$app->user->getIdentity();
 
-        if ($user == null || $user->super_admin) {
+        if ($user == null || $user->isSystemAdmin()) {
             return false;
         }
 
@@ -136,7 +133,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
         }
 
         // Don't report system admin content
-        if (User::findOne(['id' => $post->content->created_by])->super_admin) {
+        if (User::findOne(['id' => $post->content->created_by])->isSystemAdmin()) {
             return false;
         }
 
@@ -153,12 +150,12 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
 
         $user = ($userId == null) ? Yii::$app->user->getIdentity() : User::findOne(['id' => $userId]);
 
-        if ($user->super_admin) {
+        if ($user->isSystemAdmin()) {
             return true;
         }
         
         if(version_compare(Yii::$app->version, '1.0', 'gt') 
-                && $this->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+                && $this->content->getContainer()->permissionManager->can(new ManageContent())) {
             return true;
         }
 

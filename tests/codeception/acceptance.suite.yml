@@ -19,7 +19,9 @@ modules:
         PhpBrowser:
             url: http://localhost:8080/
         WebDriver:
-            url: http://localhost:8080/
-            browser: phantomjs
-            window_size: 1024x768
+            url: 'http://localhost:8080/'
+            browser: chrome
+            window_size: 1920x1200
+            restart: true
+            port: 4444
             lang: en
