@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\Html;
 use yii\helpers\Url;
 ?>
 <!-- Link in menu for reporting the post -->
@@ -9,7 +10,7 @@ use yii\helpers\Url;
     </a> 
 </li>
 
-<script>
+<?= Html::beginTag('script') ?>
     $('.reportContentLink').off('click').on('click', function (evt) {
         evt.preventDefault();
         
@@ -31,4 +32,4 @@ use yii\helpers\Url;
         });
 
     });
-</script>
+<?= Html::endTag('script') ?>

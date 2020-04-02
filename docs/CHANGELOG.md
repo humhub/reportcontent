@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.3.0  (July 2, 2018)
+-----------------------
+- Fix #31: Reporting a post creates HTTP500 status and breaks admin overview of reported posts 
+
 0.2.5  (July 2, 2018)
 -----------------------
 - Fix: PHP 7.2 compatibility issues

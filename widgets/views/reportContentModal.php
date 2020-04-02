@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use humhub\compat\CActiveForm;
 ?>
 <!-- Modal with reasons of report -->
@@ -39,7 +39,7 @@ use humhub\compat\CActiveForm;
 
 
 
-        <script type="text/javascript">
+<?= Html::beginTag('script') ?>
             $('#submitReport').on('click', function (evt) {
                 evt.preventDefault();
                 var $form = $(this).closest('form');
@@ -57,4 +57,4 @@ use humhub\compat\CActiveForm;
             }
         });
     });
-</script>
+<?= Html::endTag('script') ?>

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\reportcontent\models\ReportContent;
-use yii\helpers\Html;
+use humhub\libs\Html;
 use yii\helpers\Url;
 ?>
 
@@ -28,10 +28,10 @@ use yii\helpers\Url;
             <?php foreach ($reportedContent as $report) : ?>
                 <tr>
                     <td width="52px">
-                        <a href="<?php echo $report->getSource()->content->user->getUrl(); ?>">
+                        <a href="<?php echo $report->getSource()->content->createdBy->getUrl(); ?>">
 
                             <img class="media-object img-rounded"
-                                 src="<?php echo $report->getSource()->content->user->profileImage->getUrl(); ?>" width="48"
+                                 src="<?php echo $report->getSource()->content->createdBy->profileImage->getUrl(); ?>" width="48"
                                  height="48" alt="48x48" data-src="holder.js/48x48"
                                  style="width: 48px; height: 48px;">
                         </a>
@@ -42,7 +42,7 @@ use yii\helpers\Url;
                             <p id="content-message-<?php echo $report->id ?>" style="display: inline;" class="contentAnchor"><?= \humhub\widgets\RichText::widget(['text' => $report->getSource()->getContentDescription(), 'minimal' => true, 'maxLength' => 60]) ?></p>
                             <br/>    
                             <small class="media">
-                                <span class="time"><?php echo Yii::t('ReportcontentModule.base', 'created by :displayName', array(':displayName' => Html::a(Html::encode($report->getSource()->content->user->displayName), $report->getSource()->content->user->getUrl()))) ?></span>
+                                <span class="time"><?php echo Yii::t('ReportcontentModule.base', 'created by :displayName', array(':displayName' => Html::a(Html::encode($report->getSource()->content->createdBy->displayName), $report->getSource()->content->createdBy->getUrl()))) ?></span>
                                 <?php echo \humhub\widgets\TimeAgo::widget(['timestamp' => $report->content->created_at]); ?>
                             </small>     
                         </div>
@@ -103,8 +103,7 @@ use yii\helpers\Url;
 
 <?php endif; ?>
 
-<script type="text/javascript">
-
+<?= Html::beginTag('script') ?>
     $(document).ready(function () {
         $('.contentAnchor').each(function () {
             var divh = $(this).parent().height();
@@ -117,4 +116,4 @@ use yii\helpers\Url;
             }
         });
     });
-</script>
+<?= Html::endTag('script') ?>

@@ -71,9 +71,9 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            if ($this->content->space !== null && !$this->content->getContainer()->isAdmin($this->content->created_by)) {
+            if ($this->content->contentContainer !== null && !$this->content->getContainer()->isAdmin($this->content->created_by)) {
                 $query = User::find()
-                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->space->id, ':groupId' => 'admin'])
+                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->contentContainer->id, ':groupId' => 'admin'])
                         ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
             } else if (version_compare(Yii::$app->version, '1.1', 'lt')) {
                 $query = User::find()->where(['super_admin' => 1]);
