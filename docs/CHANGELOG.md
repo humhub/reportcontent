@@ -3,7 +3,8 @@ Changelog
 
 0.3.0  (July 2, 2018)
 -----------------------
-- Fix #31: Reporting a post creates HTTP500 status and breaks admin overview of reported posts 
+- Fix #31: Reporting a post creates HTTP500 status and breaks admin overview of reported posts
+- Chg: Updated min HumHub version to 1.3
 
 0.2.5  (July 2, 2018)
 -----------------------
