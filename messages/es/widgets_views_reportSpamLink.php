@@ -1,9 +1,9 @@
 <?php
 return array (
-  'Does not belong here' => '',
-  'Help Us Understand What\'s Happening' => '',
-  'It\'s offensive' => '',
-  'It\'s spam' => '',
-  'Report post' => '',
+  'Does not belong here' => 'No pertenece aquí',
+  'Help Us Understand What\'s Happening' => 'Ayúdanos a entender qué sucede',
+  'It\'s offensive' => 'Es ofensivo',
+  'It\'s spam' => 'Es spam',
+  'Report post' => 'Reportar post',
   'Submit' => 'Enviar',
 );
