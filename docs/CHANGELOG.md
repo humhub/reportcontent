@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.2.7  (October 18, 2020)
+-----------------------
+- Fix: Removed usage of legacy richtext
+- Enh: Reworked report overview
+- Enh: Updated translations
+
 0.2.6  (July 2, 2018)
 -----------------------
 - Fix #31: Reporting a post creates HTTP500 status and breaks admin overview of reported posts

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\reportcontent\controllers;
 
+use humhub\modules\content\permissions\ManageContent;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\post\models\Post;
@@ -25,8 +26,6 @@ class ReportContentController extends \humhub\components\Controller
     public function actionReport()
     {
         $this->forcePostRequest();
-
-        Yii::$app->response->format = 'json';
         
         $form = new ReportReasonForm();
         
@@ -43,7 +42,7 @@ class ReportContentController extends \humhub\components\Controller
         }
         
 
-        return $json;
+        return $this->asJson($json);
     }
 
     public function actionAppropriate()
@@ -103,7 +102,7 @@ class ReportContentController extends \humhub\components\Controller
         } else {
             $container = $content->content->getContainer();
             
-            if ($isSystemAdmin || $content->content->getContainer()->permissionManager->can(new \humhub\modules\content\permissions\ManageContent())) {
+            if ($isSystemAdmin || $content->content->getContainer()->permissionManager->can(new ManageContent())) {
                 $content->delete();
             }
             
