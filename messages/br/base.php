@@ -5,6 +5,5 @@ return [
     'Please provide a reason, why you want to report this content.' => '',
     'Reported posts' => '',
     'Why do you want to report this post?' => '',
-    'by :displayName' => '',
     'created by :displayName' => '',
 ];
