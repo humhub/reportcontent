@@ -1,13 +1,12 @@
 <?php
-
-return [
-    'Cancel' => 'Отказ',
-    '<strong>Approve</strong> content' => '',
-    'Approve' => '',
-    'Content' => '',
-    'Do you really want to approve this post?' => '',
-    'Reason' => '',
-    'Reporter' => '',
-    'Review' => '',
-    'There are no reported posts.' => '',
-];
+return array (
+  '<strong>Approve</strong> content' => '<strong>Одобри</strong> съдържание',
+  'Approve' => 'Одобри',
+  'Cancel' => 'Отказ',
+  'Content' => 'Съдържание',
+  'Do you really want to approve this post?' => 'Наистина ли искате да одобрите тази публикация?',
+  'Reason' => 'Причина',
+  'Reporter' => 'Докладчик',
+  'Review' => 'Преглед',
+  'There are no reported posts.' => 'Няма докладвани публикации.',
+);
