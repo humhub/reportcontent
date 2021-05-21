@@ -43,19 +43,21 @@ class ReportContentCest
 
         $I->expectTo('see a report notification');
 
-        $I->waitForText('Approve post');
-        $I->see('Delete post');
+        $I->waitForText('Manage reported posts');
+        $I->seeElement('a[data-original-title="Review"]');
 
-        $I->amGoingTo('delete the post in report view');
-        $I->click('Delete post');
-        $I->wait(2);
-        $I->jsClick('.modalConfirm:visible');
+        $I->amGoingTo('delete the post after review');
+        $I->jsClick('a[data-original-title="Review"]');
+        $I->waitForText('Back to stream');
+        $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
+        $I->click('Delete');
+        $I->waitForText('Confirm post deletion');
+        $I->jsClick('button[data-modal-confirm]');
 
         $I->wait(5);
 
-        $I->expect('not to see the report anymore');
-        $I->dontSee('Approve post');
-        $I->dontSee('Delete post');
+        $I->expect('not to see the deleted post');
+        $I->see('This space is still empty!');
 
         $I->expect('not to see the reported post');
         $I->amOnSpace3();
@@ -97,21 +99,21 @@ class ReportContentCest
         $I->click('Reported posts');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Approve post');
-        $I->see('Delete post');
+        $I->waitForText('Manage reported posts');
+        $I->seeElement('a[data-original-title="Approve"]');
 
-        $I->amGoingTo('delete the post in report view');
-        $I->click('Approve post');
+        $I->amGoingTo('approve the post in report view');
+        $I->jsClick('a[data-original-title="Approve"]');
         $I->wait(2);
-        $I->click('Approve');
+        $I->jsClick('.modalConfirm:visible');
 
         $I->wait(5);
 
         $I->expect('not to see the report anymore');
-        $I->dontSee('Approve post');
-        $I->dontSee('Delete post');
+        $I->dontSee('Some bad words!');
+        $I->see('There are no reported posts.');
 
-        $I->expect('not to see the reported post');
+        $I->expect('see the approved post in Space stream');
         $I->amOnSpace3();
         $I->wait(5);
         $I->see('Some bad words!');
@@ -153,24 +155,24 @@ class ReportContentCest
         $I->wait(2);
         $I->click('Reported posts');
 
-        $I->dontSee('Approve post');
-        $I->dontSee('Delete post');
+        $I->dontSeeElement('a[data-original-title="Approve"]');
+        $I->dontSeeElement('a[data-original-title="Review"]');
 
         $I->amOnPage('index-test.php?r=reportcontent/admin');
 
-        $I->see('Approve post');
-        $I->see('Delete post');
+        $I->seeElement('a[data-original-title="Approve"]');
+        $I->seeElement('a[data-original-title="Review"]');
 
         $I->amGoingTo('approve the reported post');
-        $I->click('Approve post');
+        $I->jsClick('a[data-original-title="Approve"]');
         $I->wait(2);
-        $I->click('Approve');
+        $I->jsClick('.modalConfirm:visible');
 
         $I->wait(5);
 
         $I->expect('not to see the report');
-        $I->dontSee('Approve post');
-        $I->dontSee('Delete post');
+        $I->dontSee('Some bad words!');
+        $I->see('There are no reported posts.');
 
         $I->amOnSpace4();
         $I->expect('not to still see the post');
@@ -212,19 +214,21 @@ class ReportContentCest
         $I->amOnPage('index-test.php?r=reportcontent/admin');
 
         $I->expectTo('see a report notification');
-        $I->see('Approve post');
-        $I->see('Delete post');
+        $I->seeElement('a[data-original-title="Approve"]');
+        $I->seeElement('a[data-original-title="Review"]');
 
-        $I->amGoingTo('delete the post in report view');
-        $I->click('Delete post');
-        $I->wait(2);
-        $I->jsClick('.modalConfirm:visible');
+        $I->amGoingTo('delete the post after review');
+        $I->jsClick('a[data-original-title="Review"]');
+        $I->waitForText('Back to stream');
+        $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
+        $I->click('Delete');
+        $I->waitForText('Confirm post deletion');
+        $I->jsClick('button[data-modal-confirm]');
 
         $I->wait(5);
 
-        $I->expect('not to see the report anymore');
-        $I->dontSee('Approve post');
-        $I->dontSee('Delete post');
+        $I->expect('not to see the deleted post');
+        $I->see('No matches with your selected filters!');
 
         $I->amOnUser1Profile();
         $I->expect('not to see the reported post');
