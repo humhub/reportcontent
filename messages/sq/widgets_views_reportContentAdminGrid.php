@@ -3,7 +3,7 @@ return array (
   '<strong>Approve</strong> content' => '',
   'Approve' => '',
   'Cancel' => 'Anulo',
-  'Content' => '',
+  'Content' => 'Përmbajtja',
   'Do you really want to approve this post?' => '',
   'Reason' => '',
   'Reporter' => '',
