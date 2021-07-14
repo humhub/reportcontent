@@ -158,7 +158,7 @@ class ReportContentCest
         $I->dontSeeElement('a[data-original-title="Approve"]');
         $I->dontSeeElement('a[data-original-title="Review"]');
 
-        $I->amOnPage('index-test.php?r=reportcontent/admin');
+        $I->amOnRoute(['/reportcontent/admin']);
 
         $I->seeElement('a[data-original-title="Approve"]');
         $I->seeElement('a[data-original-title="Review"]');
@@ -211,7 +211,7 @@ class ReportContentCest
         $I->seeInNotifications('Some bad words!');
 
         $I->wantToTest('the deletion of the report post');
-        $I->amOnPage('index-test.php?r=reportcontent/admin');
+        $I->amOnRoute(['/reportcontent/admin']);
 
         $I->expectTo('see a report notification');
         $I->seeElement('a[data-original-title="Approve"]');
