@@ -1,6 +1,10 @@
 Changelog
 =========
 
+0.2.8 (unreleased)
+-----------------------
+- Enh #4823: Remove CHTML/CActiveForm usages
+
 0.2.7  (October 18, 2020)
 -----------------------
 - Fix: Removed usage of legacy richtext
