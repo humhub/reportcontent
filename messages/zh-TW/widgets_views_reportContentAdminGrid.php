@@ -2,7 +2,7 @@
 return array (
   '<strong>Approve</strong> content' => '',
   'Approve' => '',
-  'Cancel' => '',
+  'Cancel' => '取消',
   'Content' => '内容',
   'Do you really want to approve this post?' => '',
   'Reason' => '',

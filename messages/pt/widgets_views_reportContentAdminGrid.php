@@ -5,7 +5,7 @@ return array (
   'Cancel' => 'Cancelar',
   'Content' => 'Conteúdo',
   'Do you really want to approve this post?' => '',
-  'Reason' => '',
+  'Reason' => 'Motivo',
   'Reporter' => '',
   'Review' => '',
   'There are no reported posts.' => '',
