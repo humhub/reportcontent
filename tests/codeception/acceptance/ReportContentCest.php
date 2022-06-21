@@ -221,7 +221,8 @@ class ReportContentCest
 
         $I->amGoingTo('delete the post after review');
         $I->jsClick('a[data-original-title="Review"]');
-        $I->waitForText('Back to stream');
+        $I->waitForText('Some bad words');
+        $I->wait(2);
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
         $I->waitForText('Confirm post deletion');
