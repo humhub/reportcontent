@@ -18,7 +18,8 @@ use humhub\modules\content\models\Content;
  *
  * The followings are the available columns in table 'report_content':
  * @property integer $id
- * @property integer $post_id
+ * @property string $object_model
+ * @property integer $object_id
  * @property integer $reason
  * @property string $created_at
  * @property integer $created_by

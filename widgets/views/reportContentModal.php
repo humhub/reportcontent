@@ -43,7 +43,7 @@ use yii\helpers\Url;
 </div>
 
 
-<script <?= Html::setNonce() ?>>
+<script <?= Html::nonce() ?>>
     $('#submitReport').on('click', function (evt) {
         evt.preventDefault();
         var $form = $(this).closest('form');
