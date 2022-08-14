@@ -63,12 +63,12 @@ class ReportContent extends ContentAddonActiveRecord
      */
     public function rules()
     {
-        return array(
+        return [
             [['object_id', 'reason'], 'required'],
             [['object_id', 'created_by', 'updated_by'], 'integer',],
             ['created_at', 'string', 'max' => 45],
             [['updated_at'], 'safe']
-        );
+        ];
     }
 
     /**
