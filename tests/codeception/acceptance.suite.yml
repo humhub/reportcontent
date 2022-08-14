@@ -25,3 +25,6 @@ modules:
             restart: true
             port: 4444
             lang: en
+            capabilities:
+                chromeOptions:
+                    args: [ "--lang=en-US" ]

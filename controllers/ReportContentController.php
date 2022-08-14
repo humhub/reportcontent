@@ -3,6 +3,7 @@
 namespace humhub\modules\reportcontent\controllers;
 
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\reportcontent\widgets\ReportContentModal;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\post\models\Post;
@@ -26,23 +27,16 @@ class ReportContentController extends \humhub\components\Controller
     public function actionReport()
     {
         $this->forcePostRequest();
-        
-        $form = new ReportReasonForm();
-        
-        $json = [];
-        if($form->load(Yii::$app->request->post()) && $form->save()) {
-            $json['success'] = true;
-        } else {
-            $post = $form->getPostModel();
-            
-            $json['success'] = false;
-            $json['content'] = \humhub\modules\reportcontent\widgets\ReportContentModal::widget([
-                'post' => $post
-            ]);
-        }
-        
 
-        return $this->asJson($json);
+        $form = new ReportReasonForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
+            return $this->asJson(['success' => true]);
+        }
+
+        return $this->asJson([
+            'content' => ReportContentModal::widget(['post' => $form->getPostModel()])
+        ]);
     }
 
     public function actionAppropriate()

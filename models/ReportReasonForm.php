@@ -2,6 +2,7 @@
 
 namespace humhub\modules\reportcontent\models;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 
@@ -66,22 +67,20 @@ class ReportReasonForm extends \yii\base\Model
      */
     public function save()
     {
-        $post = $this->getPostModel();
-        if(!$this->validate() || !ReportContent::canReportPost($post)) {
+        $model = $this->getPostModel();
+        if (!$this->validate() || !ReportContent::canReportPost($model)) {
             return false;
         }
-        
-        $model = $this->getPostModel();
 
         $report = new ReportContent();
         $report->reason = $this->reason;
-        $report->object_model = $model->className();
+        $report->object_model = get_class($model);
         $report->object_id = $model->getPrimaryKey();
-        
-        $contentContainer = $post->content->getContainer();
-        
+
+        $contentContainer = $model->content->getContainer();
+
         // If we report a space admin post, we create a system admin only report (only visible in admin area)
-        if(!($contentContainer instanceof Space) || $contentContainer->isAdmin($post->content->created_by)) {
+        if (!($contentContainer instanceof Space) || $contentContainer->isAdmin($model->content->created_by)) {
             $report->system_admin_only = true;
         }
 
@@ -90,7 +89,7 @@ class ReportReasonForm extends \yii\base\Model
 
     /**
      * Returns the associated post model instance.
-     * @return type
+     * @return ContentActiveRecord|null
      */
     public function getPostModel()
     {
@@ -103,7 +102,7 @@ class ReportReasonForm extends \yii\base\Model
 
     /**
      * Returns a option list for all available reasons.
-     * @return type
+     * @return array
      */
     public function getReasonOptions()
     {
@@ -115,5 +114,3 @@ class ReportReasonForm extends \yii\base\Model
     }
 
 }
-
-?>

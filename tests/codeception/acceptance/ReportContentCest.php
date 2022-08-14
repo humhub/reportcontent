@@ -48,16 +48,18 @@ class ReportContentCest
 
         $I->amGoingTo('delete the post after review');
         $I->jsClick('a[data-original-title="Review"]');
-        $I->waitForText('Back to stream');
+        $I->waitForElement('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
-        $I->waitForText('Confirm post deletion');
+        $I->waitForText('Delete content?');
+        $I->jsClick('[for=admindeletecontentform-notify]');
         $I->jsClick('button[data-modal-confirm]');
 
         $I->wait(5);
+        $I->click('Stream');
 
         $I->expect('not to see the deleted post');
-        $I->see('This space is still empty!');
+        $I->waitForText('This space is still empty!');
 
         $I->expect('not to see the reported post');
         $I->amOnSpace3();
@@ -219,7 +221,8 @@ class ReportContentCest
 
         $I->amGoingTo('delete the post after review');
         $I->jsClick('a[data-original-title="Review"]');
-        $I->waitForText('Back to stream');
+        $I->waitForText('Some bad words');
+        $I->wait(2);
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
         $I->waitForText('Confirm post deletion');
