@@ -132,7 +132,7 @@ class ReportContent extends \humhub\modules\content\components\ContentAddonActiv
 
         // Check if post exists
         if (ReportContent::findOne(['object_model' => $post->className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null) {
-            return true;
+            return false;
         }
 
         // Don't report system admin content
