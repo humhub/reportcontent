@@ -225,13 +225,14 @@ class ReportContentCest
         $I->wait(2);
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
-        $I->waitForText('Confirm post deletion');
+        $I->waitForText('Delete content?');
+        $I->jsClick('[for=admindeletecontentform-notify]');
         $I->jsClick('button[data-modal-confirm]');
 
         $I->wait(5);
 
         $I->expect('not to see the deleted post');
-        $I->see('No matches with your selected filters!');
+        $I->dontSee('Some bad words!');
 
         $I->amOnUser1Profile();
         $I->expect('not to see the reported post');
