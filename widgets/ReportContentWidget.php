@@ -2,6 +2,7 @@
 
 namespace humhub\modules\reportcontent\widgets;
 
+use humhub\components\Widget;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\reportcontent\models\ReportReasonForm;
@@ -13,14 +14,9 @@ use humhub\modules\reportcontent\models\ReportReasonForm;
  *
  * @package humhub.modules.reportcontent.widgets
  */
-class ReportContentWidget extends \humhub\components\Widget
+class ReportContentWidget extends Widget
 {
 
-    /**
-     * Content Object with SIContentBehaviour
-     * 
-     * @var type
-     */
     public $post;
 
     /**
@@ -31,9 +27,9 @@ class ReportContentWidget extends \humhub\components\Widget
         if ($this->post instanceof ContentActiveRecord && ReportContent::canReportPost($this->post)) {
 
             return $this->render('reportContentLink', array(
-                        'object' => $this->post,
-                        'content' => $this->post->content,
-                        'model' => new ReportReasonForm()
+                'object' => $this->post,
+                'content' => $this->post->content,
+                'model' => new ReportReasonForm()
             ));
         }
     }

@@ -10,6 +10,10 @@ namespace humhub\modules\reportcontent;
  */
 class Module extends \humhub\components\Module
 {
+    /**
+     * @inheridoc
+     */
+    public $resourcesPath = 'resources';
 
     /**
      * @inheritdoc

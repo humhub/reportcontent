@@ -7,52 +7,41 @@ use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 
 use Yii;
+use yii\base\Model;
 
-/**
- * ReportReasonForm
- *
- * @package humhub.modules.reportcontent.forms
- * @author Marjana Pesic
- */
-class ReportReasonForm extends \yii\base\Model
+class ReportReasonForm extends Model
 {
-
     public $content_id;
     public $reason;
     private $_postModel;
 
-    /**
-     * Initalization of form, removing * from required field
-     */
-    public function init()
-    {
-        return parent::init();
-    }
 
     /**
-     * Declares the validation rules.
+     * @inheritDoc
      */
     public function rules()
     {
-        return array(
+        return [
             [['content_id'], 'required'],
             [['reason'], 'safe'],
-            // Workaround for not displaying reaquired * on radio labels.
+            // Workaround for not displaying required * on radio labels.
             [['content_id'], 'requiredReason']
-        );
+        ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function requiredReason($attribute, $model)
     {
         if (empty($this->reason)) {
-            $this->addError('reason', Yii::t('ReportcontentModule.base', 'Please provide a reason, why you want to report this content.'));
+            $this->addError('reason',
+                Yii::t('ReportcontentModule.base', 'Please provide a reason, why you want to report this content.'));
         }
     }
 
     /**
-     * Declares customized attribute labels.
-     * If not declared here, an attribute would have a label that is
-     * the same as its name with the first letter in upper case.
+     * @inheritDoc
      */
     public function attributeLabels()
     {
@@ -63,6 +52,7 @@ class ReportReasonForm extends \yii\base\Model
 
     /**
      * Validates the the formdata and creates a new ReportContent model if validation succeeded.
+     *
      * @return boolean if validation and persisting of the report model succeeded
      */
     public function save()

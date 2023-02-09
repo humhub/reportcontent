@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.0 (Unreleased)
+----------------------
+- Enh: Refactoring
+
 0.2.8 (April 14, 2022)
 ----------------------
 - Enh #4823: Remove CHTML/CActiveForm usages

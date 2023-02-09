@@ -2,25 +2,24 @@
 
 namespace humhub\modules\reportcontent\controllers;
 
+use humhub\modules\admin\components\Controller;
 use humhub\modules\reportcontent\models\ReportContent;
+use yii\data\Pagination;
 
-class AdminController extends \humhub\modules\admin\components\Controller
+class AdminController extends Controller
 {
 
-    /**
-     * Configuration Action for Super Admins
-     */
     public function actionIndex()
     {
         $query = ReportContent::find();
         $countQuery = clone $query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
         $query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render('index', array(
-                    'reportedContent' => $query->all(),
-                    'pagination' => $pagination,
-        ));
+        return $this->render('index', [
+            'reportedContent' => $query->all(),
+            'pagination' => $pagination,
+        ]);
     }
 
 }

@@ -1,30 +1,14 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\reportcontent;
 
 use humhub\modules\reportcontent\models\ReportContent;
+use humhub\modules\space\models\Space;
 use yii\helpers\Url;
 use Yii;
 
-/**
- * Description of Events
- *
- * @author luke
- */
 class Events
 {
-
-    /**
-     * Adds the report button to the wallentry control.
-     * 
-     * @param type $event
-     */
     public static function onWallEntryControlsInit($event)
     {
         $event->sender->addWidget(widgets\ReportContentWidget::className(), array(
@@ -32,23 +16,13 @@ class Events
         ));
     }
 
-    /**
-     * On content deletion make sure to delete all its reports
-     *
-     * @param CEvent $event
-     */
     public static function onContentDelete($event)
     {
-        foreach (ReportContent::findAll(array('object_model' => get_class($event->sender), 'object_id' => $event->sender->id)) as $report) {
+        foreach (ReportContent::findAll(['object_model' => get_class($event->sender), 'object_id' => $event->sender->id]) as $report) {
             $report->delete();
         }
     }
 
-    /**
-     * Defines what to do if admin menu is initialized.
-     *
-     * @param type $event
-     */
     public static function onAdminMenuInit($event)
     {
         $event->sender->addItem(array(
@@ -63,21 +37,18 @@ class Events
 
     public static function onSpaceAdminMenuInit($event)
     {
+        /** @var Space $space */
         $space = $event->sender->space;
-        
-        $isSpaceAdmin = version_compare(Yii::$app->version, '1.1', 'lt') ? 
-                $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_ADMIN || $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_OWNER
-                : $space->isAdmin(Yii::$app->user->id);
 
-        if ($isSpaceAdmin) {
-            $event->sender->addItem(array(
+        if ($space->isAdmin(Yii::$app->user->id)) {
+            $event->sender->addItem([
                 'label' => Yii::t('ReportcontentModule.base', 'Reported posts'),
                 'url' => $space->createUrl('/reportcontent/space-admin'),
                 'group' => 'admin',
                 'icon' => '<i class="fa fa-exclamation-triangle"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'space-admin'),
                 'sortOrder' => 510,
-            ));
+            ]);
         }
     }
 

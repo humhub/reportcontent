@@ -16,11 +16,6 @@ use humhub\modules\reportcontent\models\ReportReasonForm;
 class ReportContentModal extends \humhub\components\Widget
 {
 
-    /**
-     * Content Object with SIContentBehaviour
-     * 
-     * @var type
-     */
     public $post;
 
     /**
@@ -31,9 +26,9 @@ class ReportContentModal extends \humhub\components\Widget
         if ($this->post instanceof ContentActiveRecord && ReportContent::canReportPost($this->post)) {
 
             return $this->render('reportContentModal', [
-                        'object' => $this->post,
-                        'content' => $this->post->content,
-                        'model' => new ReportReasonForm()
+                'object' => $this->post,
+                'content' => $this->post->content,
+                'model' => new ReportReasonForm()
             ]);
         }
     }

@@ -26,7 +26,7 @@ use humhub\modules\content\models\Content;
  * @property string $updated_at
  * @property integer $updated_by
  * @property boolean $system_admin_only
- * 
+ *
  * @package humhub.modules.reportcontent.models
  */
 class ReportContent extends ContentAddonActiveRecord
@@ -79,8 +79,8 @@ class ReportContent extends ContentAddonActiveRecord
         if ($insert) {
             if ($this->content->contentContainer instanceof Space && !$this->content->contentContainer->isAdmin($this->content->created_by)) {
                 $query = User::find()
-                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->contentContainer->id, ':groupId' => 'admin'])
-                        ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
+                    ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->contentContainer->id, ':groupId' => 'admin'])
+                    ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
             } else {
                 $query = Group::getAdminGroup()->getUsers();
             }
@@ -154,9 +154,8 @@ class ReportContent extends ContentAddonActiveRecord
         if ($user->isSystemAdmin()) {
             return true;
         }
-        
-        if(version_compare(Yii::$app->version, '1.0', 'gt') 
-                && $this->content->getContainer()->permissionManager->can(new ManageContent())) {
+
+        if ($this->content->getContainer()->permissionManager->can(new ManageContent())) {
             return true;
         }
 
