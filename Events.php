@@ -11,9 +11,9 @@ class Events
 {
     public static function onWallEntryControlsInit($event)
     {
-        $event->sender->addWidget(widgets\ReportContentWidget::className(), array(
+        $event->sender->addWidget(widgets\ReportContentWidget::class, [
             'post' => $event->sender->object
-        ));
+        ]);
     }
 
     public static function onContentDelete($event)

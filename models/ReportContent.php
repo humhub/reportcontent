@@ -42,10 +42,7 @@ class ReportContent extends ContentAddonActiveRecord
     public function behaviors()
     {
         return [
-            [
-                'class' => PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [ContentActiveRecord::className()],
-            ]
+            ['class' => PolymorphicRelation::class, 'mustBeInstanceOf' => [ContentActiveRecord::class]]
         ];
     }
 
@@ -114,17 +111,12 @@ class ReportContent extends ContentAddonActiveRecord
 
         $user = ($userId != null) ? User::findOne(['id' => $userId]) : Yii::$app->user->getIdentity();
 
-        if ($user == null || $user->isSystemAdmin()) {
+        if ($user == null) {
             return false;
         }
 
         // Can't report own content
         if ($post->content->created_by == $user->id) {
-            return false;
-        }
-
-        // Space admins can't report since they can simply delete content
-        if ($post->content->container instanceof Space && $post->content->getContainer()->isAdmin($user->id)) {
             return false;
         }
 
@@ -134,9 +126,11 @@ class ReportContent extends ContentAddonActiveRecord
         }
 
         // Don't report system admin content
+        /*
         if (User::findOne(['id' => $post->content->created_by])->isSystemAdmin()) {
             return false;
         }
+        */
 
         return true;
     }
