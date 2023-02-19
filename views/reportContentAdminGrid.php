@@ -29,7 +29,7 @@ use yii\helpers\Url;
                 'class' => DataColumn::class,
                 'format' => 'raw',
                 'value' => function($report) {
-                    return UserImage::widget(['user' => $report->getSource()->content->createdBy, 'width' => 34]);
+                    return UserImage::widget(['user' => $report->content->createdBy, 'width' => 34]);
                 }
             ],
             [
@@ -37,8 +37,8 @@ use yii\helpers\Url;
                 'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Content'),
                 'format' => 'raw',
                 'value' => function($report) {
-                    $result = Html::tag('p',  RichText::preview($report->getSource()->getContentDescription(), 60));
-                    $userLink = Html::a(Html::encode($report->getSource()->content->createdBy->displayName), $report->getSource()->content->createdBy->getUrl());
+                    $result = Html::tag('p',  RichText::preview($report->content->getModel()->getContentDescription(), 60));
+                    $userLink = Html::a(Html::encode($report->content->createdBy->displayName), $report->content->createdBy->getUrl());
                     $displayNameLink = Yii::t('ReportcontentModule.base', 'created by :displayName',  [':displayName' => $userLink]);
                     $result .= Html::tag('small', $displayNameLink .' '. TimeAgo::widget(['timestamp' => $report->content->created_at]), ['class' => 'media']);
                     return $result;

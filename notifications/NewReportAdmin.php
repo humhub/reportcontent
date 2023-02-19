@@ -30,21 +30,21 @@ class NewReportAdmin extends BaseNotification
 
         switch ($this->source->reason) {
             case 1:
-                return Yii::t('ReportcontentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% for not belonging to the space.", [
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% for not belonging to the space.", [
                     '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
-                    '%contentTitle%' => $this->getContentInfo($this->source->content->getPolymorphicRelation())
+                    '%contentTitle%' => $this->getContentInfo($this->source->content)
                 ]);
                 break;
             case 2:
-                return Yii::t('ReportcontentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% as offensive.", [
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as offensive.", [
                     '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
-                    '%contentTitle%' => $this->getContentInfo($this->source->content->getPolymorphicRelation())
+                    '%contentTitle%' => $this->getContentInfo($this->source->content)
                 ]);
                 break;
             case 3:
-                return Yii::t('ReportcontentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% as spam.", [
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as spam.", [
                     '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
-                    '%contentTitle%' => $this->getContentInfo($this->source->content->getPolymorphicRelation())
+                    '%contentTitle%' => $this->getContentInfo($this->source->content)
                 ]);
                 break;
         }

@@ -4,31 +4,33 @@ namespace humhub\modules\reportcontent\controllers;
 
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\reportcontent\widgets\ReportContentModal;
+use humhub\widgets\ModalClose;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\reportcontent\models\ReportContent;
-use humhub\modules\reportcontent\models\ReportReasonForm;
 use humhub\modules\content\models\Content;
 
-class ReportContentController extends \humhub\components\Controller
+class ReportController extends \humhub\components\Controller
 {
-
-    /**
-     * Handles AJAX Post Request to submit new ReportContent
-     */
-    public function actionReport()
+    public function actionIndex()
     {
-        $this->forcePostRequest();
+        $contentId = (int)Yii::$app->request->get('contentId');
+        $commentId = Yii::$app->request->get('commentId');
+        $userId = (int)Yii::$app->user->id;
 
-        $form = new ReportReasonForm();
-
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            return $this->asJson(['success' => true]);
+        $model = ReportContent::findOne(['content_id' => $contentId, 'comment_id' => $commentId, 'created_by' => $userId]);
+        if ($model === null) {
+            $model = new ReportContent();
+            $model->content_id = $contentId;
+            $model->comment_id = $commentId;
+            $model->created_by = $userId;
         }
 
-        return $this->asJson([
-            'content' => ReportContentModal::widget(['post' => $form->getPostModel()])
-        ]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return ModalClose::widget(['success' => Yii::t('ReportcontentModule.base', 'Thank you for the report.')]);
+        }
+
+        return $this->renderAjax('index', ['model' => $model]);
     }
 
     public function actionAppropriate()

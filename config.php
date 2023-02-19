@@ -9,8 +9,6 @@ return [
     'events' => [
         [humhub\modules\content\widgets\WallEntryControls::class, humhub\modules\content\widgets\WallEntryControls::EVENT_INIT,
             ['humhub\modules\reportcontent\Events', 'onWallEntryControlsInit']],
-        [humhub\modules\content\components\ContentActiveRecord::class, \humhub\modules\content\components\ContentActiveRecord::EVENT_BEFORE_DELETE,
-            ['humhub\modules\reportcontent\Events', 'onContentDelete']],
         [humhub\modules\admin\widgets\AdminMenu::class, humhub\modules\admin\widgets\AdminMenu::EVENT_INIT,
             ['humhub\modules\reportcontent\Events', 'onAdminMenuInit']],
         [humhub\modules\space\widgets\HeaderControlsMenu::class, humhub\modules\space\widgets\HeaderControlsMenu::EVENT_INIT,

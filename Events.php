@@ -11,17 +11,11 @@ class Events
 {
     public static function onWallEntryControlsInit($event)
     {
-        $event->sender->addWidget(widgets\ReportContentWidget::class, [
-            'post' => $event->sender->object
+        $event->sender->addWidget(widgets\ReportContentLink::class, [
+            'record' => $event->sender->object
         ]);
     }
 
-    public static function onContentDelete($event)
-    {
-        foreach (ReportContent::findAll(['object_model' => get_class($event->sender), 'object_id' => $event->sender->id]) as $report) {
-            $report->delete();
-        }
-    }
 
     public static function onAdminMenuInit($event)
     {
