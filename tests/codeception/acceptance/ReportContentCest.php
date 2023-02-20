@@ -162,7 +162,7 @@ class ReportContentCest
         $I->wait(2);
         $I->click('Reported posts');
 
-        $I->waitForText('Here you can manage reported users posts.');
+        $I->waitForText('Here you can manage reported posts for this space.');
 
         $I->dontSeeElement('a[data-original-title="Approve"]');
         $I->dontSeeElement('a[data-original-title="Review"]');
