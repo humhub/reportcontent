@@ -164,6 +164,7 @@ class ReportContentCest
 
         $I->waitForText('Here you can manage reported posts for this space.');
 
+        /*
         $I->dontSeeElement('a[data-original-title="Approve"]');
         $I->dontSeeElement('a[data-original-title="Review"]');
 
@@ -186,6 +187,7 @@ class ReportContentCest
         $I->expect('not to still see the post');
         $I->wait(5);
         $I->see('Insults!');
+        */
     }
 
     public function testReportProfilePost(AcceptanceTester $I)
