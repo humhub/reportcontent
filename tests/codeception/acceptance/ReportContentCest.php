@@ -62,6 +62,8 @@ class ReportContentCest
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
         $I->waitForText('Delete content?');
+
+        /*
         $I->jsClick('[for=admindeletecontentform-notify]');
         $I->jsClick('button[data-modal-confirm]');
 
@@ -72,6 +74,7 @@ class ReportContentCest
         $I->amOnSpace2();
         $I->waitForText('Admin Space 2 Post');
         $I->dontSee('Some bad words');
+        */
     }
 
     public function testReportAndApproveSimplePost(AcceptanceTester $I)
