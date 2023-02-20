@@ -78,13 +78,14 @@ class ReportContent extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        $contentContainer = Content::findOne(['id' => $this->content_id])->container;
-
+        $content = Content::findOne(['id' => $this->content_id]);
+        $contentContainer = $content->container;
         // If we report a space admin post, we create a system admin only report (only visible in admin area)
         /** @var Space $contentContainer */
         if ($contentContainer instanceof Space) {
-            $membership = $contentContainer->getMembership($this->created_by);
-            if ($membership->isPrivileged()) {
+            $membership = $contentContainer->getMembership($content->created_by);
+
+            if ($membership && $membership->isPrivileged()) {
                 $this->system_admin_only = true;
             }
         }
@@ -100,7 +101,7 @@ class ReportContent extends ActiveRecord
         if ($insert) {
             if (empty($this->system_admin_only) && $this->content->container instanceof Space) {
                 $query = Membership::getSpaceMembersQuery($this->content->container)
-                    ->where(['IN', 'group_id', [Space::USERGROUP_OWNER, Space::USERGROUP_ADMIN, Space::USERGROUP_MODERATOR]]);
+                    ->andWhere(['IN', 'group_id', [Space::USERGROUP_OWNER, Space::USERGROUP_ADMIN, Space::USERGROUP_MODERATOR]]);
             } else {
                 $query = Group::getAdminGroup()->getUsers();
             }

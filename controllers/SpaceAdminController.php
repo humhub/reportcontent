@@ -22,9 +22,12 @@ class SpaceAdminController extends \humhub\modules\content\components\ContentCon
     public function actionIndex()
     {
         $query = ReportContent::find()->joinWith('content')
-            ->where(['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id,])
-            ->andWhere(['not', ['content.created_by' => Yii::$app->user->id]])
-            ->andWhere(['system_admin_only' => 0]);
+            ->where(['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id])
+            ->andWhere(['not', ['content.created_by' => Yii::$app->user->id]]);
+
+        if (!Yii::$app->user->isAdmin()) {
+            $query->andWhere(['system_admin_only' => 0]);
+        }
 
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);

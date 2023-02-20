@@ -42,8 +42,11 @@ class ReportController extends \humhub\components\Controller
 
         $container = $report->content->getContainer();
 
-        if ($report->canDelete()) {
+        if ($report->canDelete(Yii::$app->user->getIdentity())) {
             $report->delete();
+        } else {
+            $this->view->setStatusMessage('warning', 'Could not delete Report!');
+
         }
 
         if (Yii::$app->request->get('admin')) {
