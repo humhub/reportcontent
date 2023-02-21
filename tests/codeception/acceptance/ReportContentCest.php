@@ -63,18 +63,16 @@ class ReportContentCest
         $I->click('Delete');
         $I->waitForText('Delete content?');
 
-        /*
         $I->jsClick('[for=admindeletecontentform-notify]');
         $I->jsClick('button[data-modal-confirm]');
 
-        //$I->wait(5);
+        $I->wait(5);
         $I->click('Stream');
 
         $I->expect('not to see the deleted post');
         $I->amOnSpace2();
         $I->waitForText('Admin Space 2 Post');
         $I->dontSee('Some bad words');
-        */
     }
 
     public function testReportAndApproveSimplePost(AcceptanceTester $I)
