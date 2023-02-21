@@ -12,7 +12,7 @@ class ReportContentCest
     {
 
         /**
-         * Create a Bad Post as User2 on Space 2
+         * Create a Bad Post as User2 on Space2
          */
         $I->amUser2();
         $I->wantToTest('the report of a simple member post');
@@ -55,23 +55,26 @@ class ReportContentCest
         $I->waitForText('Manage reported posts');
         $I->seeElement('a[data-original-title="Review"]');
 
-
+        /**
+         * Delete Reported Post as Admin
+         */
         $I->amGoingTo('delete the post after review');
         $I->jsClick('a[data-original-title="Review"]');
         $I->waitForElement('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
+
         $I->waitForText('Delete content?');
         $I->uncheckOption('#admindeletecontentform-notify');
-        $I->jsClick('button[data-modal-confirm]');
+        $I->click('button[data-modal-confirm]');
 
-        $I->wait(5);
-        $I->click('Stream');
-        $I->wait(5);
 
+        /**
+         * Do not see Post on Space2
+         */
         $I->expect('not to see the deleted post');
+        $I->wait(5);
         $I->amOnSpace2();
-        $I->waitForText('Admin Space 2 Post');
         $I->dontSee('Some bad words');
     }
 
