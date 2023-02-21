@@ -132,12 +132,18 @@ class ReportContentCest
 
     public function testReportSpaceAdminPost(AcceptanceTester $I)
     {
+        /**
+         * Create Post as User1 on Space4
+         */
         $I->amUser1();
         $I->wantToTest('the report of a space admin post');
         $I->amGoingTo('add a new post as space admin');
         $I->amOnSpace4();
         $I->createPost('Insults!');
 
+        /**
+         * User2 Report that Post
+         */
         $I->amGoingTo('report the post as space member');
         $I->amUser2(true);
         $I->amOnSpace4();
@@ -150,11 +156,17 @@ class ReportContentCest
         $I->click('#submitReport');
         $I->wait(1);
 
+        /**
+         * Space Admin gets no Notification
+         */
         $I->wantToTest('that the space admin does not get an notification');
         $I->amUser1(true);
         $I->expect('not to see a report notification');
         $I->dontSeeInNotifications('has reported post');
 
+        /**
+         * Global Admin gets Notification
+         */
         $I->wantToTest('the approval of the reported post');
         $I->amAdmin(true);
         $I->wait(4);
@@ -166,22 +178,18 @@ class ReportContentCest
         $I->wait(2);
         $I->click('Reported posts');
 
+        /**
+         * Global Admin Approves
+         */
+
         $I->waitForText('Here you can manage reported posts for this space.');
-
-        /*
-        $I->dontSeeElement('a[data-original-title="Approve"]');
-        $I->dontSeeElement('a[data-original-title="Review"]');
-
-        $I->amOnRoute(['/reportcontent/admin']);
 
         $I->seeElement('a[data-original-title="Approve"]');
         $I->seeElement('a[data-original-title="Review"]');
 
         $I->amGoingTo('approve the reported post');
-        $I->jsClick('a[data-original-title="Approve"]');
-        //$I->wait(2);
-        //$I->jsClick('.modalConfirm:visible');
-        //$I->wait(5);
+        $I->click('a[data-original-title="Approve"]');
+        $I->wait(5);
 
         $I->expect('not to see the report');
         $I->dontSee('Some bad words!');
@@ -191,7 +199,6 @@ class ReportContentCest
         $I->expect('not to still see the post');
         $I->wait(5);
         $I->see('Insults!');
-        */
     }
 
     public function testReportProfilePost(AcceptanceTester $I)
