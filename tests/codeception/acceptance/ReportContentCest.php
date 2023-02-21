@@ -62,8 +62,7 @@ class ReportContentCest
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
         $I->waitForText('Delete content?');
-
-        $I->jsClick('[for=admindeletecontentform-notify]');
+        $I->uncheckOption('#admindeletecontentform-notify');
         $I->jsClick('button[data-modal-confirm]');
 
         $I->wait(5);
