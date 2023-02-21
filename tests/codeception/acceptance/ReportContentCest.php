@@ -67,6 +67,7 @@ class ReportContentCest
 
         $I->wait(5);
         $I->click('Stream');
+        $I->wait(5);
 
         $I->expect('not to see the deleted post');
         $I->amOnSpace2();
