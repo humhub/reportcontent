@@ -1,9 +1,7 @@
 <?php
 
-use humhub\libs\Html;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\helpers\Url;
 
 /**
  * @var $content \humhub\modules\content\models\Content
@@ -35,7 +33,8 @@ use yii\helpers\Url;
         <hr/>
 
         <div class="modal-footer">
-            <a href="#" id="submitReport" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit" data-action-submit>
+            <a href="#" id="submitReport" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit"
+               data-action-submit>
                 <?= Yii::t('ReportcontentModule.base', 'Submit'); ?>
             </a>
         </div>

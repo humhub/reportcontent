@@ -2,8 +2,10 @@
 
 namespace humhub\modules\reportcontent;
 
+use humhub\modules\comment\widgets\CommentControls;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\menu\MenuLink;
 use yii\helpers\Url;
 use Yii;
 
@@ -14,6 +16,27 @@ class Events
         $event->sender->addWidget(widgets\ReportContentLink::class, [
             'record' => $event->sender->object
         ]);
+    }
+
+
+    public static function onCommentControlsInit($event)
+    {
+        /** @var CommentControls $menu */
+        $menu = $event->sender;
+
+        $menu->addEntry(new MenuLink([
+            'label' => Yii::t('ReportcontentModule.base', 'Report'),
+            'icon' => 'fa-exclamation-triangle',
+            'url' => '#',
+            'htmlOptions' => [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-click-url' => Url::to([
+                    '/reportcontent/report', 'contentId' => $menu->comment->content->id,
+                    'commentId' => $menu->comment->id
+                ])
+            ],
+            'sortOrder' => 1000,
+        ]));
     }
 
 

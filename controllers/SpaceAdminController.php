@@ -13,7 +13,7 @@ class SpaceAdminController extends \humhub\modules\content\components\ContentCon
     public function beforeAction($action)
     {
         if (!$this->contentContainer->isAdmin()) {
-            throw new HttpException(403, 'Access denied - Space Administrator only!');
+            return $this->forbidden();
         }
 
         return parent::beforeAction($action);

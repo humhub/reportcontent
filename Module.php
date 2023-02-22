@@ -11,7 +11,7 @@ namespace humhub\modules\reportcontent;
 class Module extends \humhub\components\Module
 {
     /**
-     * @inheridoc
+     * @inheritdoc
      */
     public $resourcesPath = 'resources';
 

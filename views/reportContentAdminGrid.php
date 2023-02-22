@@ -1,15 +1,15 @@
 <?php
 
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\libs\Html;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\GridView;
-use humhub\widgets\ModalConfirm;
-use humhub\widgets\TimeAgo;
 use yii\data\ArrayDataProvider;
 use yii\grid\DataColumn;
-use yii\helpers\Url;
 
 /* @var $reportedContent array */
 /* @var $isAdmin boolean */
@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
 <?php if (empty($reportedContent)) : ?>
     <br/> <br/>
-    <?= Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'There are no reported posts.') ?>
+    <?= Yii::t('ReportcontentModule.base', 'There are no reported posts.') ?>
     <br/> <br/>
 <?php else : ?>
     <?= GridView::widget([
@@ -34,19 +34,44 @@ use yii\helpers\Url;
             ],
             [
                 'class' => DataColumn::class,
-                'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Content'),
+                'label' => Yii::t('ReportcontentModule.base', 'Content'),
                 'format' => 'raw',
                 'value' => function ($report) {
-                    $result = Html::tag('p', RichText::preview($report->content->getModel()->getContentDescription(), 60));
+                    /** @var ContentActiveRecord|Comment $reportedRecord */
+                    $reportedRecord = null;
+                    if (!empty($report->comment_id)) {
+                        $reportedRecord = Comment::findOne(['id' => $report->comment_id]);
+                    } else {
+                        $reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
+                    }
+
+                    $result = Html::beginTag('p');
+                    $result .= Html::encode($reportedRecord->getContentName()) . ': ';
+                    $result .= RichTextToShortTextConverter::process(
+                        $reportedRecord->getContentDescription(),
+                        [RichTextToShortTextConverter::OPTION_MAX_LENGTH => 200]
+                    );
+                    $result .= Html::endTag('p');
+
                     $userLink = Html::a(Html::encode($report->content->createdBy->displayName), $report->content->createdBy->getUrl());
-                    $displayNameLink = Yii::t('ReportcontentModule.base', 'created by :displayName', [':displayName' => $userLink]);
-                    $result .= Html::tag('small', $displayNameLink . ' ' . TimeAgo::widget(['timestamp' => $report->content->created_at]), ['class' => 'media']);
+
+                    $result .= Html::beginTag('small');
+                    $result .= Yii::t('ReportcontentModule.base', 'Created by {author} at {dateTime}. Reported by {reporter}.',
+                        [
+                            'author' => $userLink,
+                            'dateTime' => Yii::$app->formatter->asDateTime($report->content->created_at, 'short'),
+                            'reporter' => Html::a(Html::encode($report->user->displayName), $report->user->getUrl())
+                        ]
+                    );
+
+
                     return $result;
                 }
             ],
             [
                 'class' => DataColumn::class,
-                'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Reason'),
+                'label' => Yii::t('ReportcontentModule.base', 'Reason'),
+                'options' => ['style' => 'width:120px;'],
                 'format' => 'raw',
                 'value' => function ($report) {
                     return '<strong>' . Html::encode(ReportContent::getReason($report->reason)) . '</strong>';
@@ -55,23 +80,7 @@ use yii\helpers\Url;
             [
                 'class' => DataColumn::class,
                 'format' => 'raw',
-                'value' => function ($report) {
-                    return UserImage::widget(['user' => $report->user, 'width' => 34]);
-                }
-            ],
-            [
-                'class' => DataColumn::class,
-                'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Reporter'),
-                'format' => 'raw',
-                'value' => function ($report) {
-                    $result = '<p>' . Html::tag('strong', Html::a(Html::encode($report->user->displayName), $report->user->getUrl())) . '</p>';
-                    $result .= Html::tag('small', TimeAgo::widget(['timestamp' => $report->created_at]), ['class' => 'media']);
-                    return $result;
-                }
-            ],
-            [
-                'class' => DataColumn::class,
-                'format' => 'raw',
+                'options' => ['style' => 'width:85px;'],
                 'value' => function ($report) use ($isAdmin) {
                     $approve = Html::a(
                         '<i class="fa fa-check-square-o"></i>', ['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin],
@@ -80,7 +89,7 @@ use yii\helpers\Url;
 
                     $review = Html::a('<i aria-hidden="true" class="fa fa-eye"></i>', $report->content->getUrl(), [
                         'class' => 'btn btn-sm btn-primary tt',
-                        'title' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Review'),
+                        'title' => Yii::t('ReportcontentModule.base', 'Review'),
                         'data-ui-loader' => '1'
                     ]);
 

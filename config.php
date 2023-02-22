@@ -15,7 +15,9 @@ return [
             ['humhub\modules\reportcontent\Events', 'onSpaceAdminMenuInit']],
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN,
             ['humhub\modules\reportcontent\Events', 'onIntegrityCheck']],
-    ],
-];
+        [\humhub\modules\comment\widgets\CommentControls::class, \humhub\modules\ui\menu\widgets\Menu::EVENT_INIT,
+            ['humhub\modules\reportcontent\Events', 'onCommentControlsInit']],
+    ]
 
+]
 ?>
