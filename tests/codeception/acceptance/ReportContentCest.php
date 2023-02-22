@@ -49,10 +49,10 @@ class ReportContentCest
         $I->wantToTest('the deletion of the report post');
         $I->amOnSpace2();
         $I->jsClick('.controls-header .fa-cog');
-        $I->click('Reported posts');
+        $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Manage reported posts');
+        $I->waitForText('Manage reported content');
         $I->seeElement('a[data-original-title="Review"]');
 
         /**
@@ -109,11 +109,11 @@ class ReportContentCest
         $I->wantToTest('the deletion of the report post');
         $I->amOnSpace3();
         $I->jsClick('.controls-header .fa-cog');
-        $I->waitForText('Reported posts');
-        $I->click('Reported posts');
+        $I->waitForText('Reported Content');
+        $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Manage reported posts');
+        $I->waitForText('Manage reported content');
         $I->seeElement('a[data-original-title="Approve"]');
 
         $I->amGoingTo('approve the post in report view');
@@ -123,7 +123,7 @@ class ReportContentCest
 
         $I->expect('not to see the report anymore');
         $I->dontSee('Some bad words!');
-        $I->see('There are no reported posts.');
+        $I->see('There is no content reported for review.');
 
         $I->expect('see the approved post in Space stream');
         $I->amOnSpace3();
@@ -177,13 +177,13 @@ class ReportContentCest
         $I->amOnSpace4();
         $I->jsClick('.controls-header .fa-cog');
         $I->wait(2);
-        $I->click('Reported posts');
+        $I->click('Reported Content');
 
         /**
          * Global Admin Approves
          */
 
-        $I->waitForText('Here you can manage reported posts for this space.');
+        $I->waitForText('Here you can manage reported content for this Space.');
 
         $I->seeElement('a[data-original-title="Approve"]');
         $I->seeElement('a[data-original-title="Review"]');
@@ -194,7 +194,7 @@ class ReportContentCest
 
         $I->expect('not to see the report');
         $I->dontSee('Some bad words!');
-        $I->see('There are no reported posts.');
+        $I->see('There is no content reported for review.');
 
         $I->amOnSpace4();
         $I->expect('not to still see the post');

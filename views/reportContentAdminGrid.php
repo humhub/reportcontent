@@ -17,9 +17,10 @@ use yii\grid\DataColumn;
 ?>
 
 <?php if (empty($reportedContent)) : ?>
-    <br/> <br/>
-    <?= Yii::t('ReportcontentModule.base', 'There are no reported posts.') ?>
-    <br/> <br/>
+    <br/>
+    <p class="alert alert-success">
+        <?= Yii::t('ReportcontentModule.base', 'There is no content reported for review.') ?>
+    </p>
 <?php else : ?>
     <?= GridView::widget([
         'dataProvider' => new ArrayDataProvider(['allModels' => $reportedContent]),

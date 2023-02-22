@@ -6,7 +6,7 @@
 
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('ReportcontentModule.base', 'Manage <strong>reported posts</strong>') ?></div>
+    <div class="panel-heading"><?= Yii::t('ReportcontentModule.base', 'Manage <strong>Reported Content</strong>') ?></div>
     <div class="panel-body">
 
         <p>

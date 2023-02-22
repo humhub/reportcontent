@@ -82,7 +82,7 @@ class ReportContent extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'reason' => Yii::t('ReportcontentModule.base', 'Why do you want to report this post?')
+            'reason' => Yii::t('ReportcontentModule.base', 'Why do you want to report this?')
         ];
     }
 
@@ -142,7 +142,7 @@ class ReportContent extends ActiveRecord
     public static function getReasons()
     {
         return [
-            ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', "Doesn't belong to space"),
+            ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', "Doesn't belong in this Space"),
             ReportContent::REASON_OFFENSIVE => Yii::t('ReportcontentModule.base', "Offensive"),
             ReportContent::REASON_SPAM => Yii::t('ReportcontentModule.base', "Spam"),
         ];

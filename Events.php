@@ -47,7 +47,7 @@ class Events
     public static function onAdminMenuInit($event)
     {
         $event->sender->addItem(array(
-            'label' => Yii::t('ReportcontentModule.base', 'Reported posts'),
+            'label' => Yii::t('ReportcontentModule.base', 'Reported Content'),
             'url' => Url::to(['/reportcontent/admin']),
             'group' => 'manage',
             'icon' => '<i class="fa fa-exclamation-triangle"></i>',
@@ -63,7 +63,7 @@ class Events
 
         if ($space->isAdmin(Yii::$app->user->id)) {
             $event->sender->addItem([
-                'label' => Yii::t('ReportcontentModule.base', 'Reported posts'),
+                'label' => Yii::t('ReportcontentModule.base', 'Reported Content'),
                 'url' => $space->createUrl('/reportcontent/space-admin'),
                 'group' => 'admin',
                 'icon' => '<i class="fa fa-exclamation-triangle"></i>',
