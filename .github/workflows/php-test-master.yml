@@ -8,3 +8,4 @@ jobs:
     uses: humhub/actions/.github/workflows/module-tests-master.yml@main
     with:
       module-id: reportcontent
+
