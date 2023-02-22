@@ -67,8 +67,8 @@ class ReportContentCest
         $I->waitForText('Delete content?');
         $I->uncheckOption('#admindeletecontentform-notify');
         $I->click('button[data-modal-confirm]');
-
-
+        $I->wait(10);
+        
         /**
          * Do not see Post on Space2
          */
