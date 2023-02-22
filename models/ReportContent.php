@@ -163,7 +163,7 @@ class ReportContent extends ActiveRecord
         return true;
     }
 
-    private static function canReportComment(Comment $comment, User $user)
+    public static function canReportComment(Comment $comment, User $user)
     {
         if ($user === null) {
             return false;

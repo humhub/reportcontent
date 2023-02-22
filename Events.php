@@ -24,6 +24,10 @@ class Events
         /** @var CommentControls $menu */
         $menu = $event->sender;
 
+       if (!ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())) {
+            return;
+        }
+
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('ReportcontentModule.base', 'Report'),
             'icon' => 'fa-exclamation-triangle',
