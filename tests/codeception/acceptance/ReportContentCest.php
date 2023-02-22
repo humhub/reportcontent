@@ -73,8 +73,8 @@ class ReportContentCest
          * Do not see Post on Space2
          */
         $I->expect('not to see the deleted post');
-        $I->wait(5);
         $I->amOnSpace2();
+        $I->waitForText("Like");
         $I->dontSee('Some bad words');
     }
 
