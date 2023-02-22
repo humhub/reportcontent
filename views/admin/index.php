@@ -10,7 +10,7 @@
     <div class="panel-body">
 
         <p>
-            <?= Yii::t('ReportcontentModule.base', 'Here you can manage reported users posts.') ?>
+            <?= Yii::t('ReportcontentModule.base', 'Here you can manage reported content.') ?>
         </p>
 
         <?= $this->render('/reportContentAdminGrid', ['isAdmin' => 1, 'reportedContent' => $reportedContent, 'pagination' => $pagination]) ?>

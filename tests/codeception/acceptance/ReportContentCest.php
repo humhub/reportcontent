@@ -52,7 +52,7 @@ class ReportContentCest
         $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Manage reported content');
+        $I->waitForText('Manage Reported Content');
         $I->seeElement('a[data-original-title="Review"]');
 
         /**
@@ -113,7 +113,7 @@ class ReportContentCest
         $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Manage reported content');
+        $I->waitForText('Manage Reported Content');
         $I->seeElement('a[data-original-title="Approve"]');
 
         $I->amGoingTo('approve the post in report view');
