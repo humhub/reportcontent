@@ -20,7 +20,7 @@ class ReportContentCest
         $I->amOnSpace2();
         $I->click('Join');
         $I->waitForText('on your mind');
-        $I->createPost('Some bad words!');
+        $I->createPost('Some bad words2!');
 
         /**
          * Report Post as User3
@@ -44,7 +44,7 @@ class ReportContentCest
         $I->amUser1(true);
         $I->expectTo('see a report notification');
         $I->seeInNotifications('has reported');
-        $I->seeInNotifications('Some bad words!');
+        $I->seeInNotifications('Some bad words2!');
 
         $I->wantToTest('the deletion of the report post');
         $I->amOnSpace2();
@@ -73,9 +73,10 @@ class ReportContentCest
          * Do not see Post on Space2
          */
         $I->expect('not to see the deleted post');
+        $I->amUser3(true);
         $I->amOnSpace2();
         $I->waitForText("Like");
-        $I->dontSee('Some bad words');
+        $I->dontSee('Some bad words2');
     }
 
     public function testReportAndApproveSimplePost(AcceptanceTester $I)
