@@ -2,6 +2,8 @@
 
 namespace humhub\modules\reportcontent;
 
+use humhub\modules\reportcontent\models\Configuration;
+
 /**
  * ReportContentModule is responsible for allowing useres to report posts.
  *
@@ -15,6 +17,8 @@ class Module extends \humhub\components\Module
      */
     public $resourcesPath = 'resources';
 
+    private ?Configuration $_configuration = null;
+
     /**
      * @inheritdoc
      */
@@ -27,6 +31,17 @@ class Module extends \humhub\components\Module
         parent::disable();
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getConfiguration(): Configuration
+    {
+        if ($this->_configuration === null) {
+            $this->_configuration = new Configuration(['settingsManager' => $this->settings]);
+            $this->_configuration->loadBySettings();
+        }
+        return $this->_configuration;
+    }
 }
 
 ?>

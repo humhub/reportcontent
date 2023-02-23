@@ -1,6 +1,10 @@
 <?php
 
 use humhub\commands\IntegrityController;
+use humhub\components\ActiveRecord;
+use humhub\modules\post\models\Post;
+use humhub\modules\reportcontent\Events;
+use humhub\modules\comment\models\Comment;
 
 return [
     'id' => 'reportcontent',
@@ -17,6 +21,9 @@ return [
             ['humhub\modules\reportcontent\Events', 'onIntegrityCheck']],
         [\humhub\modules\comment\widgets\CommentControls::class, \humhub\modules\ui\menu\widgets\Menu::EVENT_INIT,
             ['humhub\modules\reportcontent\Events', 'onCommentControlsInit']],
+
+        [Post::class, ActiveRecord::EVENT_APPEND_RULES, [Events::class, 'onPostAppendRules']],
+        [Comment::class, ActiveRecord::EVENT_APPEND_RULES, [Events::class, 'onCommentAppendRules']],
     ]
 
 ]

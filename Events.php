@@ -2,7 +2,9 @@
 
 namespace humhub\modules\reportcontent;
 
+use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\CommentControls;
+use humhub\modules\post\models\Post;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
@@ -24,7 +26,7 @@ class Events
         /** @var CommentControls $menu */
         $menu = $event->sender;
 
-       if (!ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())) {
+        if (!ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())) {
             return;
         }
 
@@ -84,7 +86,64 @@ class Events
                 }
             }
         }
+    }
 
+    public static function onPostAppendRules($event)
+    {
+        $event->result = [
+            [['message'], function ($attribute) {
+                /* @var Post $this */
+                if (self::matchProfanityFilter($this->message)) {
+                    if (self::blockFilteredPosts()) {
+                        $this->addError($attribute, Yii::t('ReportcontentModule.base',
+                            'Your comment does not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
+                        ));
+                    } else {
+                        ;
+                    }
+                }
+            }, 'skipOnEmpty' => false],
+        ];
+    }
+
+    public static function onCommentAppendRules($event)
+    {
+        $event->result = [
+            [['message'], function ($attribute) {
+                /* @var Comment $this */
+                if (self::matchProfanityFilter($this->message)) {
+                    if (self::blockFilteredPosts()) {
+                        $this->addError($attribute, Yii::t('ReportcontentModule.base',
+                            'Your comment doe not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
+                        ));
+                    } else {
+                        ;
+                    }
+                }
+            }, 'skipOnEmpty' => false],
+        ];
+    }
+
+    private static function blockFilteredPosts(): bool
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('reportcontent');
+
+        return $module->getConfiguration()->blockContributions;
+    }
+
+    private static function matchProfanityFilter($text): bool
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('reportcontent');
+
+        foreach ($module->getConfiguration()->profanityFilter as $word) {
+            if (strpos($text, $word) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
