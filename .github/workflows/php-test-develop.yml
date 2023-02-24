@@ -7,6 +7,6 @@ on:
 
 jobs:
   tests:
-    uses: humhub-contrib/actions/.github/workflows/module-tests-develop-test.yml@main
+    uses: humhub/actions/.github/workflows/module-tests-develop.yml@main
     with:
       module-id: reportcontent
