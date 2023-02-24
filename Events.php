@@ -165,8 +165,10 @@ class Events
         /** @var Module $module */
         $module = Yii::$app->getModule('reportcontent');
 
+        $text = mb_strtolower($text);
+
         foreach ($module->getConfiguration()->profanityFilter as $word) {
-            if (strpos($text, $word) !== false) {
+            if (mb_strpos($text, $word) !== false) {
                 return true;
             }
         }

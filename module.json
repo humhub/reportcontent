@@ -11,14 +11,14 @@
   "version": "1.0.0",
   "authors": [
     {
-      "name": "HumHub Team"
+      "name": "HumHub Staff"
     },
     {
       "name": "Marjana Pesic"
     }
   ],
   "homepage": "https://github.com/humhub/reportcontent",
-  "license": "AGPLv3",
+  "license": "AGPL-3.0-or-later",
   "humhub": {
     "minVersion": "1.13"
   }
