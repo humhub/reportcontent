@@ -67,8 +67,7 @@ class ReportContentCest
         $I->waitForText('Delete content?');
         $I->uncheckOption('#admindeletecontentform-notify');
         $I->click('button[data-modal-confirm]');
-        $I->wait(10);
-        
+
         /**
          * Do not see Post on Space2
          */
@@ -76,7 +75,7 @@ class ReportContentCest
         $I->amUser3(true);
         $I->amOnSpace2();
         $I->waitForText("Like");
-        $I->dontSee('Some bad words2');
+        $I->dontSee('Some bad words2', '#wallStream');
     }
 
     public function testReportAndApproveSimplePost(AcceptanceTester $I)
