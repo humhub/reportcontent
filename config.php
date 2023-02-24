@@ -23,7 +23,9 @@ return [
             ['humhub\modules\reportcontent\Events', 'onCommentControlsInit']],
 
         [Post::class, ActiveRecord::EVENT_APPEND_RULES, [Events::class, 'onPostAppendRules']],
+        [Post::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onPostAfterSave']],
         [Comment::class, ActiveRecord::EVENT_APPEND_RULES, [Events::class, 'onCommentAppendRules']],
+        [Comment::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onCommentAfterSave']],
     ]
 
 ]

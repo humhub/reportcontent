@@ -74,6 +74,9 @@ class Configuration extends Model
         $this->settingsManager->setSerialized('profanityFilterList', $words);
         $this->settingsManager->set('blockContributions', $this->blockContributions);
 
+        // To rebuild array
+        $this->loadBySettings();
+
         return true;
     }
 

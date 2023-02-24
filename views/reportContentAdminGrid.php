@@ -61,7 +61,7 @@ use yii\grid\DataColumn;
                         [
                             'author' => $userLink,
                             'dateTime' => Yii::$app->formatter->asDateTime($report->content->created_at, 'short'),
-                            'reporter' => Html::a(Html::encode($report->user->displayName), $report->user->getUrl())
+                            'reporter' => ($report->user) ? Html::a(Html::encode($report->user->displayName), $report->user->getUrl()) : '-'
                         ]
                     );
 

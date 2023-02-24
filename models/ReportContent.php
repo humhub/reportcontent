@@ -35,6 +35,7 @@ class ReportContent extends ActiveRecord
     const REASON_NOT_BELONG = 1;
     const REASON_OFFENSIVE = 2;
     const REASON_SPAM = 3;
+    const REASON_FILTER = 10;
 
     /**
      *
@@ -56,7 +57,7 @@ class ReportContent extends ActiveRecord
             [['reason'], function ($attribute, $params, $validator) {
                 $content = Content::findOne(['id' => $this->content_id]);
                 $user = User::findOne(['id' => $this->created_by]);
-                if (!$content || !$user || !$content->canView($user) ) {
+                if (!$content || !$user || !$content->canView($user)) {
                     throw new InvalidArgumentException('Content or User cannot be null and must be visible!');
                 }
 
@@ -109,7 +110,12 @@ class ReportContent extends ActiveRecord
             }
         }
 
-        return parent::beforeSave($insert);
+        $noCreator = empty($this->created_by);
+        $beforeSave = parent::beforeSave($insert);
+        if ($noCreator) {
+            $this->created_by = null;
+        }
+        return $beforeSave;
     }
 
     /**
@@ -127,7 +133,7 @@ class ReportContent extends ActiveRecord
 
             $notification = new NewReportAdmin;
             $notification->source = $this;
-            $notification->originator = User::findOne(['id' => $this->created_by]);
+            $notification->originator = (!empty($this->created_by)) ? User::findOne(['id' => $this->created_by]) : null;
             $notification->sendBulk($query);
         }
 
@@ -139,13 +145,21 @@ class ReportContent extends ActiveRecord
         return self::getReasons()[$reason];
     }
 
-    public static function getReasons()
+    public static function getReasons($selectable = false)
     {
-        return [
+        $reasons = [
             ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', "Doesn't belong in this Space"),
             ReportContent::REASON_OFFENSIVE => Yii::t('ReportcontentModule.base', "Offensive"),
             ReportContent::REASON_SPAM => Yii::t('ReportcontentModule.base', "Spam"),
         ];
+
+        if ($selectable) {
+            return $reasons;
+        }
+
+        $reasons[ReportContent::REASON_FILTER] = Yii::t('ReportcontentModule.base', "Profenity Detection");
+
+        return $reasons;
     }
 
 

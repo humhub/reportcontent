@@ -98,12 +98,42 @@ class Events
                         $this->addError($attribute, Yii::t('ReportcontentModule.base',
                             'Your comment does not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
                         ));
-                    } else {
-                        ;
                     }
                 }
             }, 'skipOnEmpty' => false],
         ];
+    }
+
+
+    public static function onPostAfterSave($event)
+    {
+        /** @var Post $post */
+        $post = $event->sender;
+
+        if (self::matchProfanityFilter($post->message) && !self::blockFilteredPosts()) {
+            $report = new ReportContent();
+            $report->reason = ReportContent::REASON_FILTER;
+            $report->content_id = $post->content->id;
+            if (!$report->save(false)) {
+                Yii::error('Could not save report for Post! ' . print_r($report->getErrors(), 1), 'reportcontent');
+            }
+        }
+    }
+
+    public static function onCommentAfterSave($event)
+    {
+        /** @var Comment $comment */
+        $comment = $event->sender;
+
+        if (self::matchProfanityFilter($comment->message) && !self::blockFilteredPosts()) {
+            $report = new ReportContent();
+            $report->reason = ReportContent::REASON_FILTER;
+            $report->content_id = $comment->content->id;
+            $report->comment_id = $comment->id;
+            if (!$report->save(false)) {
+                Yii::error('Could not save report for Comment! ' . print_r($report->getErrors(), 1), 'reportcontent');
+            }
+        }
     }
 
     public static function onCommentAppendRules($event)
@@ -116,8 +146,6 @@ class Events
                         $this->addError($attribute, Yii::t('ReportcontentModule.base',
                             'Your comment doe not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
                         ));
-                    } else {
-                        ;
                     }
                 }
             }, 'skipOnEmpty' => false],

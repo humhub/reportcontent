@@ -23,6 +23,10 @@ use yii\helpers\Html;
  */
 class NewReportAdmin extends BaseNotification
 {
+    /**
+     * @inheritdoc
+     */
+    public $requireOriginator = false;
 
     /**
      * @inheritdoc
@@ -44,21 +48,27 @@ class NewReportAdmin extends BaseNotification
         }
 
         switch ($this->source->reason) {
-            case 1:
+            case ReportContent::REASON_NOT_BELONG:
                 return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% for not belonging to the space.", [
-                    '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
                     '%contentTitle%' => $this->getContentInfo($reportedRecord)
                 ]);
                 break;
-            case 2:
+            case ReportContent::REASON_OFFENSIVE:
                 return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as offensive.", [
-                    '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
                     '%contentTitle%' => $this->getContentInfo($reportedRecord)
                 ]);
                 break;
-            case 3:
+            case ReportContent::REASON_SPAM:
                 return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as spam.", [
-                    '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
+                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
+                ]);
+                break;
+            case ReportContent::REASON_FILTER:
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as profanity.", [
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
                     '%contentTitle%' => $this->getContentInfo($reportedRecord)
                 ]);
                 break;

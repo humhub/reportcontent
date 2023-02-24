@@ -28,7 +28,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
         <?= $form->field($model, 'comment_id')->hiddenInput()->label(false); ?>
 
         <div class="modal-body text-left">
-            <?= $form->field($model, 'reason')->radioList($model::getReasons()); ?>
+            <?= $form->field($model, 'reason')->radioList($model::getReasons(true)); ?>
         </div>
         <hr/>
 
