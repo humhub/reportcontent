@@ -1,58 +1,55 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\reportcontent;
 
+use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\widgets\CommentControls;
+use humhub\modules\post\models\Post;
 use humhub\modules\reportcontent\models\ReportContent;
+use humhub\modules\space\models\Space;
+use humhub\modules\ui\menu\MenuLink;
 use yii\helpers\Url;
 use Yii;
 
-/**
- * Description of Events
- *
- * @author luke
- */
 class Events
 {
-
-    /**
-     * Adds the report button to the wallentry control.
-     * 
-     * @param type $event
-     */
     public static function onWallEntryControlsInit($event)
     {
-        $event->sender->addWidget(widgets\ReportContentWidget::className(), array(
-            'post' => $event->sender->object
-        ));
+        $event->sender->addWidget(widgets\ReportContentLink::class, [
+            'record' => $event->sender->object
+        ]);
     }
 
-    /**
-     * On content deletion make sure to delete all its reports
-     *
-     * @param CEvent $event
-     */
-    public static function onContentDelete($event)
+
+    public static function onCommentControlsInit($event)
     {
-        foreach (ReportContent::findAll(array('object_model' => get_class($event->sender), 'object_id' => $event->sender->id)) as $report) {
-            $report->delete();
+        /** @var CommentControls $menu */
+        $menu = $event->sender;
+
+        if (!ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())) {
+            return;
         }
+
+        $menu->addEntry(new MenuLink([
+            'label' => Yii::t('ReportcontentModule.base', 'Report'),
+            'icon' => 'fa-exclamation-triangle',
+            'url' => '#',
+            'htmlOptions' => [
+                'data-action-click' => 'ui.modal.load',
+                'data-action-click-url' => Url::to([
+                    '/reportcontent/report', 'contentId' => $menu->comment->content->id,
+                    'commentId' => $menu->comment->id
+                ])
+            ],
+            'sortOrder' => 1000,
+        ]));
     }
 
-    /**
-     * Defines what to do if admin menu is initialized.
-     *
-     * @param type $event
-     */
+
     public static function onAdminMenuInit($event)
     {
         $event->sender->addItem(array(
-            'label' => Yii::t('ReportcontentModule.base', 'Reported posts'),
+            'label' => Yii::t('ReportcontentModule.base', 'Reported Content'),
             'url' => Url::to(['/reportcontent/admin']),
             'group' => 'manage',
             'icon' => '<i class="fa fa-exclamation-triangle"></i>',
@@ -63,21 +60,18 @@ class Events
 
     public static function onSpaceAdminMenuInit($event)
     {
+        /** @var Space $space */
         $space = $event->sender->space;
-        
-        $isSpaceAdmin = version_compare(Yii::$app->version, '1.1', 'lt') ? 
-                $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_ADMIN || $space->getUserGroup() === \humhub\modules\space\models\Space::USERGROUP_OWNER
-                : $space->isAdmin(Yii::$app->user->id);
 
-        if ($isSpaceAdmin) {
-            $event->sender->addItem(array(
-                'label' => Yii::t('ReportcontentModule.base', 'Reported posts'),
+        if ($space->isAdmin(Yii::$app->user->id)) {
+            $event->sender->addItem([
+                'label' => Yii::t('ReportcontentModule.base', 'Reported Content'),
                 'url' => $space->createUrl('/reportcontent/space-admin'),
                 'group' => 'admin',
                 'icon' => '<i class="fa fa-exclamation-triangle"></i>',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'space-admin'),
                 'sortOrder' => 510,
-            ));
+            ]);
         }
     }
 
@@ -92,7 +86,92 @@ class Events
                 }
             }
         }
+    }
 
+    public static function onPostAppendRules($event)
+    {
+        $event->result = [
+            [['message'], function ($attribute) {
+                /* @var Post $this */
+                if (self::matchProfanityFilter($this->message)) {
+                    if (self::blockFilteredPosts()) {
+                        $this->addError($attribute, Yii::t('ReportcontentModule.base',
+                            'Your comment does not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
+                        ));
+                    }
+                }
+            }, 'skipOnEmpty' => false],
+        ];
+    }
+
+
+    public static function onPostAfterSave($event)
+    {
+        /** @var Post $post */
+        $post = $event->sender;
+
+        if (self::matchProfanityFilter($post->message) && !self::blockFilteredPosts()) {
+            $report = new ReportContent();
+            $report->reason = ReportContent::REASON_FILTER;
+            $report->content_id = $post->content->id;
+            if (!$report->save(false)) {
+                Yii::error('Could not save report for Post! ' . print_r($report->getErrors(), 1), 'reportcontent');
+            }
+        }
+    }
+
+    public static function onCommentAfterSave($event)
+    {
+        /** @var Comment $comment */
+        $comment = $event->sender;
+
+        if (self::matchProfanityFilter($comment->message) && !self::blockFilteredPosts()) {
+            $report = new ReportContent();
+            $report->reason = ReportContent::REASON_FILTER;
+            $report->content_id = $comment->content->id;
+            $report->comment_id = $comment->id;
+            if (!$report->save(false)) {
+                Yii::error('Could not save report for Comment! ' . print_r($report->getErrors(), 1), 'reportcontent');
+            }
+        }
+    }
+
+    public static function onCommentAppendRules($event)
+    {
+        $event->result = [
+            [['message'], function ($attribute) {
+                /* @var Comment $this */
+                if (self::matchProfanityFilter($this->message)) {
+                    if (self::blockFilteredPosts()) {
+                        $this->addError($attribute, Yii::t('ReportcontentModule.base',
+                            'Your comment doe not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
+                        ));
+                    }
+                }
+            }, 'skipOnEmpty' => false],
+        ];
+    }
+
+    private static function blockFilteredPosts(): bool
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('reportcontent');
+
+        return $module->getConfiguration()->blockContributions;
+    }
+
+    private static function matchProfanityFilter($text): bool
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('reportcontent');
+
+        foreach ($module->getConfiguration()->profanityFilter as $word) {
+            if (strpos($text, $word) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

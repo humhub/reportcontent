@@ -1,15 +1,15 @@
 <?php
 
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\libs\Html;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\GridView;
-use humhub\widgets\ModalConfirm;
-use humhub\widgets\TimeAgo;
 use yii\data\ArrayDataProvider;
 use yii\grid\DataColumn;
-use yii\helpers\Url;
 
 /* @var $reportedContent array */
 /* @var $isAdmin boolean */
@@ -17,9 +17,10 @@ use yii\helpers\Url;
 ?>
 
 <?php if (empty($reportedContent)) : ?>
-    <br/> <br/>
-    <?= Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'There are no reported posts.') ?>
-    <br/> <br/>
+    <br/>
+    <p class="alert alert-success">
+        <?= Yii::t('ReportcontentModule.base', 'There is no content reported for review.') ?>
+    </p>
 <?php else : ?>
     <?= GridView::widget([
         'dataProvider' => new ArrayDataProvider(['allModels' => $reportedContent]),
@@ -28,70 +29,72 @@ use yii\helpers\Url;
             [
                 'class' => DataColumn::class,
                 'format' => 'raw',
-                'value' => function($report) {
-                    return UserImage::widget(['user' => $report->getSource()->content->createdBy, 'width' => 34]);
+                'value' => function ($report) {
+                    return UserImage::widget(['user' => $report->content->createdBy, 'width' => 34]);
                 }
             ],
             [
                 'class' => DataColumn::class,
-                'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Content'),
+                'label' => Yii::t('ReportcontentModule.base', 'Content'),
                 'format' => 'raw',
-                'value' => function($report) {
-                    $result = Html::tag('p',  RichText::preview($report->getSource()->getContentDescription(), 60));
-                    $userLink = Html::a(Html::encode($report->getSource()->content->createdBy->displayName), $report->getSource()->content->createdBy->getUrl());
-                    $displayNameLink = Yii::t('ReportcontentModule.base', 'created by :displayName',  [':displayName' => $userLink]);
-                    $result .= Html::tag('small', $displayNameLink .' '. TimeAgo::widget(['timestamp' => $report->content->created_at]), ['class' => 'media']);
-                    return $result;
-                }
-            ],
-            [
-                'class' => DataColumn::class,
-                'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Reason'),
-                'format' => 'raw',
-                'value' => function($report) {
-                  return '<strong>'.  Html::encode(ReportContent::getReason($report->reason)) . '</strong>';
-                }
-            ],
-            [
-                'class' => DataColumn::class,
-                'format' => 'raw',
-                'value' => function($report) {
-                    return UserImage::widget(['user' => $report->user, 'width' => 34]);
-                }
-            ],
-            [
-                'class' => DataColumn::class,
-                'label' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Reporter'),
-                'format' => 'raw',
-                'value' => function($report) {
-                    $result = '<p>'. Html::tag('strong', Html::a(Html::encode($report->user->displayName), $report->user->getUrl())).'</p>';
-                    $result .= Html::tag('small', TimeAgo::widget(['timestamp' => $report->created_at]), ['class' => 'media']);
-                    return $result;
-                }
-            ],
-            [
-                'class' => DataColumn::class,
-                'format' => 'raw',
-                'value' => function($report) use($isAdmin) {
-                    $approve = ModalConfirm::widget([
-                        'uniqueID' => $report->id,
-                        'title' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', '<strong>Approve</strong> content'),
-                        'linkTooltipText' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Approve'),
-                        'message' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Do you really want to approve this post?'),
-                        'buttonTrue' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Approve'),
-                        'buttonFalse' => Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Cancel'),
-                        'cssClass' => 'btn btn-success btn-sm tt',
-                        'linkContent' => '<i class="fa fa-check-square-o"></i>',
-                        'linkHref' => Url::to(["//reportcontent/report-content/appropriate", 'id' => $report->id, 'admin' => $isAdmin]),
-                    ]);
+                'value' => function ($report) {
+                    /** @var ContentActiveRecord|Comment $reportedRecord */
+                    $reportedRecord = null;
+                    if (!empty($report->comment_id)) {
+                        $reportedRecord = Comment::findOne(['id' => $report->comment_id]);
+                    } else {
+                        $reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
+                    }
 
-                    $review =  Html::a('<i aria-hidden="true" class="fa fa-eye"></i>', $report->content->getUrl(), [
+                    $result = Html::beginTag('p');
+                    $result .= Html::encode($reportedRecord->getContentName()) . ': ';
+                    $result .= RichTextToShortTextConverter::process(
+                        $reportedRecord->getContentDescription(),
+                        [RichTextToShortTextConverter::OPTION_MAX_LENGTH => 200]
+                    );
+                    $result .= Html::endTag('p');
+
+                    $userLink = Html::a(Html::encode($report->content->createdBy->displayName), $report->content->createdBy->getUrl());
+
+                    $result .= Html::beginTag('small');
+                    $result .= Yii::t('ReportcontentModule.base', 'Created by {author} at {dateTime}. Reported by {reporter}.',
+                        [
+                            'author' => $userLink,
+                            'dateTime' => Yii::$app->formatter->asDateTime($report->content->created_at, 'short'),
+                            'reporter' => ($report->user) ? Html::a(Html::encode($report->user->displayName), $report->user->getUrl()) : '-'
+                        ]
+                    );
+
+
+                    return $result;
+                }
+            ],
+            [
+                'class' => DataColumn::class,
+                'label' => Yii::t('ReportcontentModule.base', 'Reason'),
+                'options' => ['style' => 'width:120px;'],
+                'format' => 'raw',
+                'value' => function ($report) {
+                    return '<strong>' . Html::encode(ReportContent::getReason($report->reason)) . '</strong>';
+                }
+            ],
+            [
+                'class' => DataColumn::class,
+                'format' => 'raw',
+                'options' => ['style' => 'width:85px;'],
+                'value' => function ($report) use ($isAdmin) {
+                    $approve = Html::a(
+                        '<i class="fa fa-check-square-o"></i>', ['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin],
+                        ['data-method' => 'POST', 'class' => 'btn btn-success btn-sm tt', 'data-original-title' => 'Approve']
+                    );
+
+                    $review = Html::a('<i aria-hidden="true" class="fa fa-eye"></i>', $report->content->getUrl(), [
                         'class' => 'btn btn-sm btn-primary tt',
-                        'title' =>  Yii::t('ReportcontentModule.widgets_views_reportContentAdminGrid', 'Review'),
+                        'title' => Yii::t('ReportcontentModule.base', 'Review'),
                         'data-ui-loader' => '1'
                     ]);
 
-                    return $approve .' '.$review;
+                    return $approve . ' ' . $review;
                 }
             ],
         ]

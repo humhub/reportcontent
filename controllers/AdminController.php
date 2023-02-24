@@ -2,25 +2,44 @@
 
 namespace humhub\modules\reportcontent\controllers;
 
+use humhub\modules\admin\components\Controller;
 use humhub\modules\reportcontent\models\ReportContent;
+use humhub\modules\reportcontent\Module;
+use Yii;
+use yii\data\Pagination;
 
-class AdminController extends \humhub\modules\admin\components\Controller
+/**
+ *
+ * @property Module $module
+ */
+class AdminController extends Controller
 {
 
-    /**
-     * Configuration Action for Super Admins
-     */
     public function actionIndex()
     {
         $query = ReportContent::find();
         $countQuery = clone $query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
         $query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->render('index', array(
-                    'reportedContent' => $query->all(),
-                    'pagination' => $pagination,
-        ));
+        return $this->render('index', [
+            'reportedContent' => $query->all(),
+            'pagination' => $pagination,
+        ]);
+    }
+
+    public function actionConfiguration()
+    {
+        $model = $this->module->getConfiguration();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->view->saved();
+            return $this->redirect(['configuration']);
+        }
+
+        return $this->render('configuration', [
+            'model' => $model,
+        ]);
     }
 
 }

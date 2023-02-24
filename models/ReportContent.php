@@ -2,52 +2,40 @@
 
 namespace humhub\modules\reportcontent\models;
 
-use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\components\ActiveRecord;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\reportcontent\notifications\NewReportAdmin;
+use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Group;
 use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use yii\base\InvalidArgumentException;
 
 /**
  * This is the model class for table "report_content".
  *
  * The followings are the available columns in table 'report_content':
  * @property integer $id
- * @property string $object_model
- * @property integer $object_id
+ * @property integer $content_id
+ * @property integer $comment_id
  * @property integer $reason
  * @property string $created_at
  * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
  * @property boolean $system_admin_only
- * 
- * @package humhub.modules.reportcontent.models
+ *
+ * @property User $user
+ * @property Content $content
  */
-class ReportContent extends ContentAddonActiveRecord
+class ReportContent extends ActiveRecord
 {
-
     const REASON_NOT_BELONG = 1;
     const REASON_OFFENSIVE = 2;
     const REASON_SPAM = 3;
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => PolymorphicRelation::className(),
-                'mustBeInstanceOf' => [ContentActiveRecord::className()],
-            ]
-        ];
-    }
+    const REASON_FILTER = 10;
 
     /**
      *
@@ -58,36 +46,94 @@ class ReportContent extends ContentAddonActiveRecord
         return 'report_content';
     }
 
+
     /**
-     * @return array validation rules for model attributes.
+     * @inheritDoc
      */
     public function rules()
     {
         return [
-            [['object_id', 'reason'], 'required'],
-            [['object_id', 'created_by', 'updated_by'], 'integer',],
-            ['created_at', 'string', 'max' => 45],
-            [['updated_at'], 'safe']
+            [['content_id', 'reason'], 'required'],
+            [['reason'], function ($attribute, $params, $validator) {
+                $content = Content::findOne(['id' => $this->content_id]);
+                $user = User::findOne(['id' => $this->created_by]);
+                if (!$content || !$user || !$content->canView($user)) {
+                    throw new InvalidArgumentException('Content or User cannot be null and must be visible!');
+                }
+
+                if (!empty($this->comment_id)) {
+                    $comment = Comment::findOne(['id' => $this->comment_id]);
+                    if (!$comment) {
+                        throw new InvalidArgumentException('Comment not found!');
+                    }
+                    if (!ReportContent::canReportComment($comment, $user)) {
+                        $this->addError('reason', 'You cannot report this comment!');
+                    }
+                } elseif (!ReportContent::canReportContent($content->getModel(), $user)) {
+                    $this->addError('reason', 'You cannot report this content!');
+                }
+            }]
         ];
     }
 
+
     /**
-     * Sends a notification to eihter space admins or system admins after the creation of a report.
+     * @inheritDoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'reason' => Yii::t('ReportcontentModule.base', 'Why do you want to report this?')
+        ];
+    }
+
+    public function beforeSave($insert)
+    {
+        $content = Content::findOne(['id' => $this->content_id]);
+        $contentContainer = $content->container;
+
+        // If we report a space admin post, we create a system admin only report (only visible in admin area)
+        /** @var Space $contentContainer */
+        if ($contentContainer instanceof Space) {
+            $membership = $contentContainer->getMembership($content->created_by);
+
+            if ($membership && $membership->isPrivileged()) {
+                $this->system_admin_only = true;
+            }
+        }
+
+        if (!empty($this->comment_id)) {
+            /** @var Comment $comment */
+            $comment = Comment::find()->where(['id' => $this->comment_id])->one();
+            if (!$comment || $comment->getContent()->id != $this->content_id) {
+                throw new \Exception('Specified comment is not linked to given content');
+            }
+        }
+
+        $noCreator = empty($this->created_by);
+        $beforeSave = parent::beforeSave($insert);
+        if ($noCreator) {
+            $this->created_by = null;
+        }
+        return $beforeSave;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            if ($this->content->contentContainer instanceof Space && !$this->content->contentContainer->isAdmin($this->content->created_by)) {
-                $query = User::find()
-                        ->leftJoin('space_membership', 'space_membership.user_id=user.id AND space_membership.space_id=:spaceId AND space_membership.group_id=:groupId', [':spaceId' => $this->content->contentContainer->id, ':groupId' => 'admin'])
-                        ->where(['IS NOT', 'space_membership.space_id', new \yii\db\Expression('NULL')]);
+            if (empty($this->system_admin_only) && $this->content->container instanceof Space) {
+                $query = Membership::getSpaceMembersQuery($this->content->container)
+                    ->andWhere(['IN', 'group_id', [Space::USERGROUP_OWNER, Space::USERGROUP_ADMIN, Space::USERGROUP_MODERATOR]]);
             } else {
                 $query = Group::getAdminGroup()->getUsers();
             }
 
             $notification = new NewReportAdmin;
             $notification->source = $this;
-            $notification->originator = Yii::$app->user->getIdentity();
+            $notification->originator = (!empty($this->created_by)) ? User::findOne(['id' => $this->created_by]) : null;
             $notification->sendBulk($query);
         }
 
@@ -96,72 +142,71 @@ class ReportContent extends ContentAddonActiveRecord
 
     public static function getReason($reason)
     {
-        switch ($reason) {
-            case ReportContent::REASON_NOT_BELONG:
-                return Yii::t('ReportcontentModule.models_ReportContent', "Doesn't belong to space");
-            case ReportContent::REASON_OFFENSIVE:
-                return Yii::t('ReportcontentModule.models_ReportContent', "Offensive");
-            case ReportContent::REASON_SPAM:
-                return Yii::t('ReportcontentModule.models_ReportContent', "Spam");
-        }
+        return self::getReasons()[$reason];
     }
 
-    public static function canReportPost(ContentActiveRecord $post, $userId = null)
+    public static function getReasons($selectable = false)
     {
-        if (Yii::$app->user->isGuest) {
-            return false;
+        $reasons = [
+            ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', "Doesn't belong in this Space"),
+            ReportContent::REASON_OFFENSIVE => Yii::t('ReportcontentModule.base', "Offensive"),
+            ReportContent::REASON_SPAM => Yii::t('ReportcontentModule.base', "Spam"),
+        ];
+
+        if ($selectable) {
+            return $reasons;
         }
 
-        $user = ($userId != null) ? User::findOne(['id' => $userId]) : Yii::$app->user->getIdentity();
+        $reasons[ReportContent::REASON_FILTER] = Yii::t('ReportcontentModule.base', "Profenity Detection");
 
-        if ($user == null || $user->isSystemAdmin()) {
+        return $reasons;
+    }
+
+
+    public static function canReportContent(ContentActiveRecord $record, ?User $user = null)
+    {
+        if ($user === null) {
             return false;
         }
 
         // Can't report own content
-        if ($post->content->created_by == $user->id) {
-            return false;
-        }
-
-        // Space admins can't report since they can simply delete content
-        if ($post->content->container instanceof Space && $post->content->getContainer()->isAdmin($user->id)) {
-            return false;
-        }
-
-        // Check if post exists
-        if (ReportContent::findOne(['object_model' => $post->className(), 'object_id' => $post->id, 'created_by' => $user->id]) !== null) {
-            return false;
-        }
-
-        // Don't report system admin content
-        if (User::findOne(['id' => $post->content->created_by])->isSystemAdmin()) {
+        if ($record->content->created_by == $user->id) {
             return false;
         }
 
         return true;
     }
 
-    public function canDelete($userId = null)
+    public static function canReportComment(Comment $comment, User $user)
     {
-
-        if (Yii::$app->user->isGuest) {
+        if ($user === null) {
             return false;
         }
 
+        // Can't report own content
+        if ($comment->created_by == $user->id) {
+            return false;
+        }
 
-        $user = ($userId == null) ? Yii::$app->user->getIdentity() : User::findOne(['id' => $userId]);
+        return true;
+    }
+
+
+    public function canDelete(?User $user = null)
+    {
+        if ($user === null) {
+            return false;
+        }
 
         if ($user->isSystemAdmin()) {
             return true;
         }
-        
-        if(version_compare(Yii::$app->version, '1.0', 'gt') 
-                && $this->content->getContainer()->permissionManager->can(new ManageContent())) {
-            return true;
-        }
 
-        if ($this->getSource()->content->container instanceof Space && $this->getSource()->content->container->isAdmin($user->id)) {
-            return true;
+        if (empty($this->system_admin_only)) {
+            if ($this->content->container->getPermissionManager($user)->can(new ManageContent())) {
+                return true;
+            }
+
         }
 
         return false;
@@ -169,14 +214,18 @@ class ReportContent extends ContentAddonActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'created_by']);
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     public function getContent()
     {
-        return $this->hasOne(Content::className(), ['object_id' => 'object_id', 'object_model' => 'object_model']);
+        return $this->hasOne(Content::class, ['id' => 'content_id']);
     }
 
+    public function getComment()
+    {
+        return $this->hasOne(Comment::class, ['id' => 'comment_id']);
+    }
 }
 
 ?>

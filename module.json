@@ -1,18 +1,22 @@
 {
-	"id": "reportcontent",
-	"name": "Report Content",
-	"description": "This module allows users to report posts for various reasons to space and super admins. It will help to reduce spam inside the network.",
-	"keywords": ["report", "content", "spam"],
-	"version": "0.2.9",
-	"authors": [
-		{
-			"name": "Marjana Pesic"
-		}
-	],
-	"homepage": "https://github.com/humhub/humhub-modules-report-content",
-	"license": "AGPL",
-	"time": "2015-02-06",
-	"humhub": {
-		"minVersion": "1.3"
-	}
+  "id": "reportcontent",
+  "name": "Report Content",
+  "description": "This module allows users to report posts for various reasons to space and super admins. It will help to reduce spam inside the network.",
+  "keywords": [
+    "report",
+    "content",
+    "spam",
+    "abuse"
+  ],
+  "version": "1.0.0-beta.1",
+  "authors": [
+    {
+      "name": "Marjana Pesic"
+    }
+  ],
+  "homepage": "https://github.com/humhub-contrib/reportcontent",
+  "license": "AGPLv3",
+  "humhub": {
+    "minVersion": "1.13"
+  }
 }

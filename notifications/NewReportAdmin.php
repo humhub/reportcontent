@@ -8,7 +8,11 @@
 
 namespace humhub\modules\reportcontent\notifications;
 
+use humhub\modules\comment\models\Comment;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\reportcontent\models\ReportContent;
 use Yii;
 use yii\helpers\Html;
 
@@ -19,6 +23,10 @@ use yii\helpers\Html;
  */
 class NewReportAdmin extends BaseNotification
 {
+    /**
+     * @inheritdoc
+     */
+    public $requireOriginator = false;
 
     /**
      * @inheritdoc
@@ -28,23 +36,40 @@ class NewReportAdmin extends BaseNotification
     public function html()
     {
 
+        /** @var ReportContent $report */
+        $report = $this->source;
+
+        /** @var ContentActiveRecord|Comment $reportedRecord */
+        $reportedRecord = null;
+        if (!empty($report->comment_id)) {
+            $reportedRecord = Comment::findOne(['id' => $report->comment_id]);
+        } else {
+            $reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
+        }
+
         switch ($this->source->reason) {
-            case 1:
-                return Yii::t('ReportcontentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% for not belonging to the space.", [
-                    '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
-                    '%contentTitle%' => $this->getContentInfo($this->source->content->getPolymorphicRelation())
+            case ReportContent::REASON_NOT_BELONG:
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% for not belonging to the space.", [
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
+                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
                 ]);
                 break;
-            case 2:
-                return Yii::t('ReportcontentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% as offensive.", [
-                    '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
-                    '%contentTitle%' => $this->getContentInfo($this->source->content->getPolymorphicRelation())
+            case ReportContent::REASON_OFFENSIVE:
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as offensive.", [
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
+                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
                 ]);
                 break;
-            case 3:
-                return Yii::t('ReportcontentModule.views_notifications_newReportAdmin', "%displayName% has reported %contentTitle% as spam.", [
-                    '%displayName%' => '<strong>' . Html::encode($this->originator->displayName) . '</strong>',
-                    '%contentTitle%' => $this->getContentInfo($this->source->content->getPolymorphicRelation())
+            case ReportContent::REASON_SPAM:
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as spam.", [
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
+                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
+                ]);
+                break;
+            case ReportContent::REASON_FILTER:
+                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as profanity.", [
+                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
+                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
                 ]);
                 break;
         }

@@ -1,5 +1,12 @@
 actor: Tester
 namespace: reportcontent
+coverage:
+    c3_url: 'http://localhost:8080/index-test.php'
+    enabled: true
+    include:
+        - ../models/*
+        - ../notifications/*
+        - ../permissions/*
 bootstrap: _bootstrap.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite

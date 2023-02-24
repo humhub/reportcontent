@@ -1,14 +1,28 @@
+<?php
+
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $reportedContent \humhub\modules\reportcontent\models\ReportContent[] */
+
+/* @var $pagination \yii\data\Pagination */
+
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Button;
+
+?>
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <?= Button::asLink(Icon::get('cog'))
+            ->link(['configuration'])
+            ->cssClass('pull-right btn btn-default')
+            ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 
-    <div class="panel-heading"><?php echo Yii::t('ReportcontentModule.base', 'Manage <strong>reported posts</strong>'); ?></div>
-
+        <?= Yii::t('ReportcontentModule.base', 'Manage <strong>Reported Content</strong>') ?>
+    </div>
     <div class="panel-body">
-
         <p>
-            <?php echo Yii::t('ReportcontentModule.views_admin_index', 'Here you can manage reported users posts.'); ?>
+            <?= Yii::t('ReportcontentModule.base', 'Here you can manage reported content.') ?>
         </p>
 
-        <?php echo $this->render('/reportContentAdminGrid', ['isAdmin' => 1, 'reportedContent' => $reportedContent, 'pagination' => $pagination]) ?>
-
+        <?= $this->render('/reportContentAdminGrid', ['isAdmin' => 1, 'reportedContent' => $reportedContent, 'pagination' => $pagination]) ?>
     </div>
 </div>

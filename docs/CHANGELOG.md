@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.0 (Unreleased)
+----------------------
+- Enh: Refactoring
+
 0.2.8 (April 14, 2022)
 ----------------------
 - Enh #4823: Remove CHTML/CActiveForm usages
@@ -13,7 +17,7 @@ Changelog
 
 0.2.6  (July 2, 2018)
 -----------------------
-- Fix #31: Reporting a post creates HTTP500 status and breaks admin overview of reported posts
+- Fix #31: Reporting a post creates HTTP500 status and breaks admin overview of reported content
 - Chg: Updated min HumHub version to 1.3
 
 0.2.5  (July 2, 2018)
