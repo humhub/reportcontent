@@ -8,13 +8,16 @@
     "spam",
     "abuse"
   ],
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "authors": [
+    {
+      "name": "HumHub Team"
+    },
     {
       "name": "Marjana Pesic"
     }
   ],
-  "homepage": "https://github.com/humhub-contrib/reportcontent",
+  "homepage": "https://github.com/humhub/reportcontent",
   "license": "AGPLv3",
   "humhub": {
     "minVersion": "1.13"
