@@ -96,7 +96,7 @@ class Events
                 if (self::matchProfanityFilter($this->message)) {
                     if (self::blockFilteredPosts()) {
                         $this->addError($attribute, Yii::t('ReportcontentModule.base',
-                            'Your comment does not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
+                            'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.'
                         ));
                     }
                 }
@@ -144,7 +144,7 @@ class Events
                 if (self::matchProfanityFilter($this->message)) {
                     if (self::blockFilteredPosts()) {
                         $this->addError($attribute, Yii::t('ReportcontentModule.base',
-                            'Your comment doe not comply with the community guidelines and cannot be published. Please contact the administrator for additional information.'
+                            'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.'
                         ));
                     }
                 }

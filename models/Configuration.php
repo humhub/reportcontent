@@ -31,8 +31,8 @@ class Configuration extends Model
     public function attributeLabels()
     {
         return [
-            'profanityFilterList' => Yii::t('ReportcontentModule.base', 'Profanity Filter List'),
-            'blockContributions' => Yii::t('ReportcontentModule.base', 'Block Contributions'),
+            'profanityFilterList' => Yii::t('ReportcontentModule.base', 'Profanity Filter'),
+            'blockContributions' => Yii::t('ReportcontentModule.base', 'Automatically block content creation'),
         ];
     }
 
@@ -42,8 +42,8 @@ class Configuration extends Model
     public function attributeHints()
     {
         return [
-            'profanityFilterList' => Yii::t('ReportcontentModule.base', 'Each word is separated by a comma. The list is automatically sorted alphabetically when saved.'),
-            'blockContributions' => Yii::t('ReportcontentModule.base', 'For matches in the profanity filter, prevent creation instead of reporting content. '),
+            'profanityFilterList' => Yii::t('ReportcontentModule.base', 'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.'),
+            'blockContributions' => Yii::t('ReportcontentModule.base', 'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.'),
         ];
     }
 

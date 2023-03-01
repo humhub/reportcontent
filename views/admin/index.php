@@ -16,12 +16,10 @@ use humhub\widgets\Button;
             ->cssClass('pull-right btn btn-default')
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 
-        <?= Yii::t('ReportcontentModule.base', 'Manage <strong>Reported Content</strong>') ?>
+        <?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?>
     </div>
     <div class="panel-body">
-        <p>
-            <?= Yii::t('ReportcontentModule.base', 'Here you can manage reported content.') ?>
-        </p>
+        <?= Yii::t('ReportcontentModule.base', 'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.') ?>
 
         <?= $this->render('/reportContentAdminGrid', ['isAdmin' => 1, 'reportedContent' => $reportedContent, 'pagination' => $pagination]) ?>
     </div>

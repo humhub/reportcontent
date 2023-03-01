@@ -6,10 +6,10 @@
 
 ?>
 <div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('ReportcontentModule.base', 'Manage <strong>Reported Content</strong>') ?></div>
+    <div class="panel-heading"><?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?></div>
     <div class="panel-body">
         <p>
-            <?= Yii::t('ReportcontentModule.base', 'Here you can manage reported content for this Space.') ?>
+            <?= Yii::t('ReportcontentModule.base', 'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.') ?>
         </p>
 
         <?= $this->render('/reportContentAdminGrid', ['isAdmin' => 0, 'reportedContent' => $reportedContent, 'pagination' => $pagination]) ?>

@@ -24,7 +24,7 @@ class ReportController extends \humhub\components\Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return ModalClose::widget(['success' => Yii::t('ReportcontentModule.base', 'Thank you for the report.')]);
+            return ModalClose::widget(['success' => Yii::t('ReportcontentModule.base', 'Content successfully reported.')]);
         }
 
         return $this->renderAjax('index', ['model' => $model]);

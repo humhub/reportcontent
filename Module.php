@@ -3,6 +3,7 @@
 namespace humhub\modules\reportcontent;
 
 use humhub\modules\reportcontent\models\Configuration;
+use yii\helpers\Url;
 
 /**
  * ReportContentModule is responsible for allowing useres to report posts.
@@ -29,6 +30,11 @@ class Module extends \humhub\components\Module
         }
 
         parent::disable();
+    }
+
+    public function getConfigUrl()
+    {
+        return Url::to(['/reportcontent/admin/configuration']);
     }
 
     /**

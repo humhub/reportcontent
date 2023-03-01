@@ -15,7 +15,7 @@ use humhub\widgets\Button;
             ->cssClass('pull-right btn btn-default')
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 
-        <?= Yii::t('ReportcontentModule.base', '<strong>Report Content</strong> Configuration'); ?>
+        <?= Yii::t('ReportcontentModule.base', '<strong>Report</strong> Content'); ?>
     </div>
     <div class="panel-body">
         <?php $form = ActiveForm::begin(); ?>
