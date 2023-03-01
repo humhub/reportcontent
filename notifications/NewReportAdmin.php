@@ -47,32 +47,10 @@ class NewReportAdmin extends BaseNotification
             $reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
         }
 
-        switch ($this->source->reason) {
-            case ReportContent::REASON_NOT_BELONG:
-                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% for not belonging to the space.", [
-                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
-                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
-                ]);
-                break;
-            case ReportContent::REASON_OFFENSIVE:
-                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as offensive.", [
-                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
-                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
-                ]);
-                break;
-            case ReportContent::REASON_SPAM:
-                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as spam.", [
-                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
-                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
-                ]);
-                break;
-            case ReportContent::REASON_FILTER:
-                return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle% as profanity.", [
-                    '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
-                    '%contentTitle%' => $this->getContentInfo($reportedRecord)
-                ]);
-                break;
-        }
+        return Yii::t('ReportcontentModule.base', "%displayName% has reported content %contentTitle%.", [
+            '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
+            '%contentTitle%' => $this->getContentInfo($reportedRecord)
+        ]);
     }
 }
 
