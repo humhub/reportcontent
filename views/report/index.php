@@ -21,7 +21,7 @@ use humhub\widgets\ModalDialog;
     <?= $form->field($model, 'reason')->radioList($model::getReasons(true)); ?>
 </div>
 <div class="modal-footer">
-    <?= ModalButton::submitModal() ?>
+    <?= ModalButton::submitModal(null, Yii::t('ReportcontentModule.base', 'Send')) ?>
     <?= ModalButton::cancel() ?>
 </div>
 <?php ActiveForm::end() ?>

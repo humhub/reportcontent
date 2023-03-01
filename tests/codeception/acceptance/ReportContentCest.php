@@ -34,8 +34,8 @@ class ReportContentCest
         $I->click('Report');
         $I->waitForElementVisible('#reportcontent-reason');
         $I->checkOption('//input[@name="ReportContent[reason]" and @value="2"]');
-        $I->click('#submitReport');
-        $I->waitForText('Thank you');
+        $I->click('Send', '#globalModal');
+        $I->waitForText('Content successfully reported.');
 
         /**
          * As SpaceAdmin a Notification
@@ -52,7 +52,7 @@ class ReportContentCest
         $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Manage Reported Content');
+        $I->waitForText('Reported Content');
         $I->seeElement('a[data-original-title="Review"]');
 
         /**
@@ -95,7 +95,7 @@ class ReportContentCest
         $I->click('Report');
         $I->waitForElementVisible('#reportcontent-reason');
         $I->checkOption('//input[@name="ReportContent[reason]" and @value="2"]');
-        $I->click('#submitReport');
+        $I->click('Send', '#globalModal');
         $I->wait(5);
 
         $I->amGoingTo('login as admin');
@@ -112,7 +112,7 @@ class ReportContentCest
         $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
-        $I->waitForText('Manage Reported Content');
+        $I->waitForText('Reported Content');
         $I->seeElement('a[data-original-title="Approve"]');
 
         $I->amGoingTo('approve the post in report view');
@@ -153,7 +153,7 @@ class ReportContentCest
         $I->click('Report');
         $I->waitForElementVisible('#reportcontent-reason');
         $I->jsClick("#reportcontent-reason [value=2]");
-        $I->click('#submitReport');
+        $I->click('Send', '#globalModal');
         $I->wait(1);
 
         /**
@@ -182,7 +182,7 @@ class ReportContentCest
          * Global Admin Approves
          */
 
-        $I->waitForText('Here you can manage reported content for this Space.');
+        $I->waitForText('This overview shows you a list of content that has been reported for various reasons.');
 
         $I->seeElement('a[data-original-title="Approve"]');
         $I->seeElement('a[data-original-title="Review"]');
@@ -221,7 +221,7 @@ class ReportContentCest
         $I->click('Report');
         $I->waitForElementVisible('#reportcontent-reason');
         $I->jsClick("#reportcontent-reason [value=2]");
-        $I->click('#submitReport');
+        $I->click('Send', '#globalModal');
         $I->wait(10);
 
         $I->amGoingTo('login as admin');

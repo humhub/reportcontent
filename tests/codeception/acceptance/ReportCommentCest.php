@@ -34,8 +34,8 @@ class ReportCommentCest
         $I->click('Report', '#comment_1');
         $I->waitForElementVisible('#reportcontent-reason');
         $I->checkOption('//input[@name="ReportContent[reason]" and @value="2"]');
-        $I->click('#submitReport');
-        $I->waitForText('Thank you');
+        $I->click('Send', '#globalModal');
+        $I->waitForText('Content successfully reported.');
 
         $I->amAdmin(true);
         $I->amOnRoute(['/reportcontent/admin']);
