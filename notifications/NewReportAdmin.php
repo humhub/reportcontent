@@ -47,7 +47,7 @@ class NewReportAdmin extends BaseNotification
             $reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
         }
 
-        return Yii::t('ReportcontentModule.base', "%displayName% has reported content %contentTitle%.", [
+        return Yii::t('ReportcontentModule.base', "%displayName% has reported %contentTitle%.", [
             '%displayName%' => ($this->originator) ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>' : 'System',
             '%contentTitle%' => $this->getContentInfo($reportedRecord)
         ]);

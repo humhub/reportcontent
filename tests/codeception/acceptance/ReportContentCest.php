@@ -102,7 +102,7 @@ class ReportContentCest
         $I->amAdmin(true);
         $I->wait(4);
         $I->expectTo('see a report notification');
-        $I->seeInNotifications('has reported content');
+        $I->seeInNotifications('has reported');
         $I->seeInNotifications('Some bad words!');
 
         $I->wantToTest('the deletion of the report post');
@@ -162,7 +162,7 @@ class ReportContentCest
         $I->wantToTest('that the space admin does not get an notification');
         $I->amUser1(true);
         $I->expect('not to see a report notification');
-        $I->dontSeeInNotifications('has reported content');
+        $I->dontSeeInNotifications('has reported');
 
         /**
          * Global Admin gets Notification
@@ -170,7 +170,7 @@ class ReportContentCest
         $I->wantToTest('the approval of the reported post');
         $I->amAdmin(true);
         $I->wait(4);
-        $I->seeInNotifications('has reported content');
+        $I->seeInNotifications('has reported');
         $I->seeInNotifications('Insults!');
 
         $I->amOnSpace4();
@@ -228,7 +228,7 @@ class ReportContentCest
         $I->amAdmin(true);
         $I->wait(2);
         $I->expectTo('see a report notification');
-        $I->seeInNotifications('has reported content');
+        $I->seeInNotifications('has reported');
         $I->seeInNotifications('Some bad words!');
 
         $I->wantToTest('the deletion of the report');

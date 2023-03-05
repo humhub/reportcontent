@@ -150,7 +150,7 @@ class ReportContent extends ActiveRecord
     {
         $reasons = [
             ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', 'Wrong Space'),
-            ReportContent::REASON_INCORRECT => Yii::t('ReportcontentModule.base', 'Misleading oder Factually incorrect'),
+            ReportContent::REASON_INCORRECT => Yii::t('ReportcontentModule.base', 'Misleading'),
             ReportContent::REASON_OFFENSIVE => Yii::t('ReportcontentModule.base', 'Offensive'),
             ReportContent::REASON_SPAM => Yii::t('ReportcontentModule.base', 'Spam'),
         ];
