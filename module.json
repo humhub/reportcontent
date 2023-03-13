@@ -22,5 +22,6 @@
   "license": "AGPL-3.0-or-later",
   "humhub": {
     "minVersion": "1.13"
-  }
+  },
+  "screenshots": ["resources/screen1.PNG", "resources/screen2.PNG", "resources/screen3.PNG", "resources/screen4.PNG", "resources/screen5.PNG"]
 }
