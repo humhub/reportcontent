@@ -1,11 +1,12 @@
 {
   "id": "reportcontent",
   "name": "Report Content",
-  "description": "This module allows users to report posts for various reasons to space and super admins. It will help to reduce spam inside the network.",
+  "description": "Add a profanity filter to your network and enable your users to report undesired content.",
   "keywords": [
     "report",
     "content",
     "spam",
+    "profanity filter",
     "abuse"
   ],
   "version": "1.0.0",
