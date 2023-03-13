@@ -1,21 +1,25 @@
 # Manual
 
-## Global View (Super Admins)
+Once installed and activated, the module becomes available for the entire network. It does not have to be additionally activated in each space.
 
-Is at `Administration -> Reported Content`.
+## Spaces
 
-- The view always shows all current reports from all Spaces.
+The module adds a new view showing content users have reported at `Space -> Settings -> Reported Content`.
 
-- Notifications for new reports are normally only sent to the Space administrators/moderators
-  except the report is filed against a Space administrator/moderator content. Then this report is exclusive for
-  global admins.
+Space Administrators & Moderators are able to access said view to address the reports.
 
-## Space
+## Admins
 
-Is at `Space -> Admin Wheel -> Reported Content`.
+Administrators of the network are able to access all reports via `Administration -> Reported Content`.
 
-- There is a special Space "Report Content" overview for Space Administrators & Moderators.
+- Admins can access all reports via 'Administration -> Reported Content'
+- Admins can adapt the module configuration
+- If a report is against a space admin/mod, it will only be shown to Super Admins (members of the default HumHub Admin group)
 
-## Blacklist
+## Profanity Filter
 
-TBD
+Administrators with the right to modify the module configuration can also add new terms to the Profanity filter.
+
+- Undesired terms can be added separated by commas
+- Content containing a term from the list, will automatically be reported by the module
+- Content creation can also be blocked automatically if a undesired term is used
