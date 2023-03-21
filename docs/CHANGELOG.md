@@ -1,9 +1,12 @@
 Changelog
 =========
 
-1.0.0 (Unreleased)
+1.0.0 (March 21, 2023)
 ----------------------
-- Enh: Refactoring
+- Enh: Major Refactoring
+- Enh: Allow Reprting of Comments
+- Enh: Added Profanity Filter
+- Enh: Improved Testing
 
 0.2.8 (April 14, 2022)
 ----------------------
