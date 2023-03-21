@@ -26,7 +26,10 @@ class Events
         /** @var CommentControls $menu */
         $menu = $event->sender;
 
-        if (!ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())) {
+        if (
+            Yii::$app->user->isGuest
+            || !ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())
+        ) {
             return;
         }
 
