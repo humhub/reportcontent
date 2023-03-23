@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.1 (March 23, 2023)
+----------------------
+- Fix #53: Fatal Error on Guest Mode 
+
 1.0.0 (March 21, 2023)
 ----------------------
 - Enh: Major Refactoring
