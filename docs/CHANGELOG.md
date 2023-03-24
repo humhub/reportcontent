@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.2 (Unreleased)
+----------------------
+- Enh #61: Display badge with count of new reports
+
 1.0.1 (March 23, 2023)
 ----------------------
 - Fix #53: Fatal Error on Guest Mode 

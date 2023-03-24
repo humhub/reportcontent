@@ -2,12 +2,11 @@
 
 namespace humhub\modules\reportcontent\controllers;
 
-use Yii;
-use yii\data\Pagination;
-use yii\web\HttpException;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\reportcontent\models\ReportContent;
+use yii\data\Pagination;
 
-class SpaceAdminController extends \humhub\modules\content\components\ContentContainerController
+class SpaceAdminController extends ContentContainerController
 {
 
     public function beforeAction($action)
@@ -21,13 +20,7 @@ class SpaceAdminController extends \humhub\modules\content\components\ContentCon
 
     public function actionIndex()
     {
-        $query = ReportContent::find()->joinWith('content')
-            ->where(['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id])
-            ->andWhere(['not', ['content.created_by' => Yii::$app->user->id]]);
-
-        if (!Yii::$app->user->isAdmin()) {
-            $query->andWhere(['system_admin_only' => 0]);
-        }
+        $query = ReportContent::find()->readable($this->contentContainer);
 
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);

@@ -5,6 +5,7 @@ namespace humhub\modules\reportcontent\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\reportcontent\components\ActiveQueryReportContent;
 use humhub\modules\reportcontent\notifications\NewReportAdmin;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Group;
@@ -138,7 +139,15 @@ class ReportContent extends ActiveRecord
             $notification->sendBulk($query);
         }
 
-        return parent::afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function find()
+    {
+        return new ActiveQueryReportContent(get_called_class());
     }
 
     public static function getReason($reason)
