@@ -4,6 +4,7 @@ namespace humhub\modules\reportcontent;
 
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\CommentControls;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\post\models\Post;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
@@ -52,7 +53,7 @@ class Events
     public static function onAdminMenuInit($event)
     {
         $event->sender->addItem(array(
-            'label' => Yii::t('ReportcontentModule.base', 'Reported Content'),
+            'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
             'url' => Url::to(['/reportcontent/admin']),
             'group' => 'manage',
             'icon' => '<i class="fa fa-exclamation-triangle"></i>',
@@ -68,7 +69,7 @@ class Events
 
         if ($space->isAdmin(Yii::$app->user->id)) {
             $event->sender->addItem([
-                'label' => Yii::t('ReportcontentModule.base', 'Reported Content'),
+                'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($space),
                 'url' => $space->createUrl('/reportcontent/space-admin'),
                 'group' => 'admin',
                 'icon' => '<i class="fa fa-exclamation-triangle"></i>',
@@ -177,6 +178,15 @@ class Events
         }
 
         return false;
+    }
+
+    private static function getReportsCountBadge(?ContentContainerActiveRecord $container = null): string
+    {
+        $reportsCount = ReportContent::find()->readable($container)->count();
+
+        return $reportsCount > 0
+            ? '&nbsp;&nbsp;<span class="label label-danger">' . $reportsCount . '</span>'
+            : '';
     }
 
 }

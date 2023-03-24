@@ -17,7 +17,7 @@ class AdminController extends Controller
 
     public function actionIndex()
     {
-        $query = ReportContent::find();
+        $query = ReportContent::find()->readable();
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => 20]);
         $query->offset($pagination->offset)->limit($pagination->limit);
