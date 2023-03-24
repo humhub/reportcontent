@@ -9,6 +9,8 @@ use humhub\modules\post\models\Post;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
+use yii\db\AfterSaveEvent;
+use yii\db\Expression;
 use yii\helpers\Url;
 use Yii;
 
@@ -108,13 +110,23 @@ class Events
         ];
     }
 
-
-    public static function onPostAfterSave($event)
+    public static function onPostAfterSave(AfterSaveEvent $event)
     {
         /** @var Post $post */
         $post = $event->sender;
 
-        if (self::matchProfanityFilter($post->message) && !self::blockFilteredPosts()) {
+        if (!array_key_exists('message', $event->changedAttributes)) {
+            return;
+        }
+
+        if (!self::blockFilteredPosts() && self::matchProfanityFilter($post->message)) {
+            $report = ReportContent::find()
+                ->where(['content_id' => $post->content->id])
+                ->andWhere(['IS', 'comment_id', new Expression('NULL')])
+                ->andWhere(['reason' => ReportContent::REASON_FILTER]);
+            if ($report->exists()) {
+                return;
+            }
             $report = new ReportContent();
             $report->reason = ReportContent::REASON_FILTER;
             $report->content_id = $post->content->id;
@@ -124,12 +136,23 @@ class Events
         }
     }
 
-    public static function onCommentAfterSave($event)
+    public static function onCommentAfterSave(AfterSaveEvent $event)
     {
         /** @var Comment $comment */
         $comment = $event->sender;
 
-        if (self::matchProfanityFilter($comment->message) && !self::blockFilteredPosts()) {
+        if (!array_key_exists('message', $event->changedAttributes)) {
+            return;
+        }
+
+        if (!self::blockFilteredPosts() && self::matchProfanityFilter($comment->message)) {
+            $report = ReportContent::find()
+                ->where(['content_id' => $comment->content->id])
+                ->andWhere(['comment_id' => $comment->id])
+                ->andWhere(['reason' => ReportContent::REASON_FILTER]);
+            if ($report->exists()) {
+                return;
+            }
             $report = new ReportContent();
             $report->reason = ReportContent::REASON_FILTER;
             $report->content_id = $comment->content->id;
