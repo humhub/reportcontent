@@ -6,6 +6,7 @@ Changelog
 - Enh #61: Display badge with count of new reports
 - Enh #60: Fix links in notifications
 - Fix #59: Apply profanity filter on update content
+- Fix #65: Profanity Filter - Only match whole words
 
 1.0.1 (March 23, 2023)
 ----------------------

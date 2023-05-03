@@ -192,10 +192,8 @@ class Events
         /** @var Module $module */
         $module = Yii::$app->getModule('reportcontent');
 
-        $text = mb_strtolower($text);
-
         foreach ($module->getConfiguration()->profanityFilter as $word) {
-            if (mb_strpos($text, $word) !== false) {
+            if (preg_match("/\b$word\b/ui", $text)) {
                 return true;
             }
         }
@@ -211,5 +209,4 @@ class Events
             ? '&nbsp;&nbsp;<span class="label label-danger">' . $reportsCount . '</span>'
             : '';
     }
-
 }
