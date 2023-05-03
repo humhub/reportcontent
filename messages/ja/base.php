@@ -20,7 +20,7 @@ return array (
   'Send' => '送信',
   'Spam' => 'スパム',
   'There is no content reported for review.' => '審査のために報告されたコンテンツはありません。',
-  'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => 'この概要には様々な理由で報告されたコンテンツのリストが表示されます。コンテンツを確認しコミュニティ ガイドラインに準拠しているかどうかを判断して下さい。',
+  'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => 'この概要には様々な理由で報告されたコンテンツのリストが表示されます。コンテンツを確認しコミュニティ ガイドラインに準拠しているかどうかを判断してください。',
   'Wrong Space' => '間違ったスペース',
-  'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'あなたの投稿はコミュニティ ガイドラインに準拠していないため、公開できません。詳細については管理者にお問い合わせ下さい。',
+  'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'あなたの投稿はコミュニティ ガイドラインに準拠していないため、公開できません。詳細については管理者にお問い合わせください。',
 );
