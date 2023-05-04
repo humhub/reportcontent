@@ -1,15 +1,11 @@
 <?php
 
-
-
 use reportcontent\AcceptanceTester;
 
 class ReportCommentCest
 {
-
     public function testReportAndDeleteSimplePost(AcceptanceTester $I)
     {
-
         $I->amUser1();
         $I->amOnSpace2();
         $I->waitForText('Admin Space 2 Post Public');
@@ -40,5 +36,26 @@ class ReportCommentCest
         $I->amAdmin(true);
         $I->amOnRoute(['/reportcontent/admin']);
         $I->waitForText('Bad comment');
+    }
+
+    public function testCommentMatchWholeWords(AcceptanceTester $I)
+    {
+        $I->setProfanityFilter();
+
+        $I->amUser1(true);
+        $I->amOnSpace2();
+        $I->waitForText('Admin Space 2 Post Public');
+        $postEntry = '.wall_humhubmodulespostmodelsPost_12';
+        $commentSection  = $postEntry.' .comment-container';
+        $I->click('Comment', $postEntry);
+        $I->wait(1);
+        $I->fillField($commentSection.' .humhub-ui-richtext[contenteditable]', 'Some ass!');
+        $I->click('.btn-comment-submit', $commentSection);
+        $I->waitForText('Your contribution does not comply with our community guidelines and can therefore not be published.', 5);
+
+        $I->fillField($commentSection.' .humhub-ui-richtext[contenteditable]', 'Some bass!');
+        $I->click('.btn-comment-submit', $commentSection);
+        $I->waitForElementVisible('#comment-message-1');
+        $I->see('Some bass!','#comment-message-1');
     }
 }

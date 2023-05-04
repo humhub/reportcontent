@@ -2,15 +2,12 @@
 
 namespace reportcontent\acceptance;
 
-
 use reportcontent\AcceptanceTester;
 
 class ReportContentCest
 {
-
     public function testReportAndDeleteSimplePost(AcceptanceTester $I)
     {
-
         /**
          * Create a Bad Post as User2 on Space2
          */
@@ -257,5 +254,25 @@ class ReportContentCest
         $I->expect('not to see the reported post');
         $I->wait(5);
         $I->dontSee('Some bad words!');
+    }
+
+    public function testPostMatchWholeWords(AcceptanceTester $I)
+    {
+        $I->setProfanityFilter();
+
+        $I->amUser1(true);
+        $I->wantToTest('the report of a simple member post');
+        $I->amGoingTo('add a new post as member');
+        $I->amOnProfile();
+
+        $I->jsClick('#contentForm_message');
+        $I->wait(1);
+        $I->fillField('#contentForm_message .humhub-ui-richtext', 'Some ass!');
+        $I->executeJS("$('#contentForm_message').trigger('focusout');");
+        $I->wait(1);
+        $I->jsClick('#post_submit_button');
+        $I->waitForText('Your contribution does not comply with our community guidelines and can therefore not be published.', 5);
+
+        $I->createPost('Some bass!');
     }
 }
