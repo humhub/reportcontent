@@ -20,7 +20,15 @@ class AcceptanceTester extends \AcceptanceTester
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    public function setProfanityFilter()
+    {
+        $this->amAdmin();
+        $this->wait(2);
+        $this->amOnRoute(['/reportcontent/admin/configuration']);
+        $this->see('Profanity Filter');
+        $this->fillField('#configuration-profanityfilterlist', 'ass');
+        $this->checkOption('#configuration-blockcontributions');
+        $this->click('Save');
+        $this->waitForText('Saved', 5);
+    }
 }
