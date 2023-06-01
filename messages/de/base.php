@@ -15,7 +15,7 @@ return array (
   'Profanity Filter' => 'Obszönitätsfilter',
   'Reason' => 'Grund',
   'Report' => 'Meldung',
-  'Reported Content' => 'Inhalt melden',
+  'Reported Content' => 'Gemeldete Inhalte',
   'Review' => 'Überprüfen',
   'Send' => 'Senden',
   'Spam' => 'Spam',
