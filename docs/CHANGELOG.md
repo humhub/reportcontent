@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.0.2 (Unreleased)
-----------------------
+1.0.2 (June 1, 2023)
+--------------------
 - Enh #61: Display badge with count of new reports
 - Enh #60: Fix links in notifications
 - Fix #59: Apply profanity filter on update content
