@@ -20,6 +20,7 @@ return [
     'Report' => '',
     'Reported Content' => '',
     'Review' => '',
+    'System' => '',
     'There is no content reported for review.' => '',
     'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => '',
     'Wrong Space' => '',
