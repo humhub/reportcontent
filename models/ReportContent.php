@@ -6,14 +6,14 @@ use humhub\components\ActiveRecord;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\reportcontent\components\ActiveQueryReportContent;
+use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\notifications\NewReportAdmin;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Group;
-use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use Yii;
 use yii\base\InvalidArgumentException;
 
 /**
@@ -68,10 +68,10 @@ class ReportContent extends ActiveRecord
                     if (!$comment) {
                         throw new InvalidArgumentException('Comment not found!');
                     }
-                    if (!ReportContent::canReportComment($comment, $user)) {
+                    if (!Permission::canReportComment($comment, $user)) {
                         $this->addError('reason', 'You cannot report this comment!');
                     }
-                } elseif (!ReportContent::canReportContent($content->getModel(), $user)) {
+                } elseif (!Permission::canReportContent($content->getModel(), $user)) {
                     $this->addError('reason', 'You cannot report this content!');
                 }
             }]
@@ -173,36 +173,6 @@ class ReportContent extends ActiveRecord
         return $reasons;
     }
 
-
-    public static function canReportContent(ContentActiveRecord $record, ?User $user = null)
-    {
-        if ($user === null) {
-            return false;
-        }
-
-        // Can't report own content
-        if ($record->content->created_by == $user->id) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function canReportComment(Comment $comment, User $user)
-    {
-        if ($user === null) {
-            return false;
-        }
-
-        // Can't report own content
-        if ($comment->created_by == $user->id) {
-            return false;
-        }
-
-        return true;
-    }
-
-
     public function canDelete(?User $user = null)
     {
         if ($user === null) {
@@ -213,11 +183,14 @@ class ReportContent extends ActiveRecord
             return true;
         }
 
+        if (Permission::canManageReports($this->content->container, $user)) {
+            return true;
+        }
+
         if (empty($this->system_admin_only)) {
             if ($this->content->container->getPermissionManager($user)->can(new ManageContent())) {
                 return true;
             }
-
         }
 
         return false;

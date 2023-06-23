@@ -2,10 +2,10 @@
 
 namespace humhub\modules\reportcontent\controllers;
 
+use humhub\modules\reportcontent\models\ReportContent;
 use humhub\widgets\ModalClose;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\reportcontent\models\ReportContent;
 
 class ReportController extends \humhub\components\Controller
 {
@@ -42,7 +42,7 @@ class ReportController extends \humhub\components\Controller
         if ($report->canDelete(Yii::$app->user->getIdentity())) {
             $report->delete();
         } else {
-            $this->view->setStatusMessage('warning', 'Could not delete Report!');
+            $this->view->warn(Yii::t('ReportcontentModule.base', 'Could not delete Report!'));
 
         }
 

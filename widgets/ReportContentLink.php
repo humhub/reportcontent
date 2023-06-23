@@ -4,7 +4,7 @@ namespace humhub\modules\reportcontent\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
-use humhub\modules\reportcontent\models\ReportContent;
+use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use yii\helpers\Url;
@@ -22,7 +22,7 @@ class ReportContentLink extends Widget
      */
     public function run()
     {
-        if (ReportContent::canReportContent($this->record, Yii::$app->user->getIdentity())) {
+        if (Permission::canReportContent($this->record)) {
             $reportUrl = Url::to(['/reportcontent/report', 'contentId' => $this->record->content->id]);
 
             return Html::tag('li',
@@ -34,7 +34,3 @@ class ReportContentLink extends Widget
     }
 
 }
-
-?>
-
-
