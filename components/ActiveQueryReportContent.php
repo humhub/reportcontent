@@ -8,7 +8,6 @@
 namespace humhub\modules\reportcontent\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\reportcontent\helpers\Permission;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -21,7 +20,7 @@ class ActiveQueryReportContent extends ActiveQuery
             $this->andWhere(new Expression('FALSE'));
         }
 
-        if (!Permission::canManageReports($container)) {
+        if (!Yii::$app->user->isAdmin()) {
             $this->andWhere(['system_admin_only' => 0]);
         }
 
