@@ -150,19 +150,22 @@ class ReportContent extends ActiveRecord
         return new ActiveQueryReportContent(get_called_class());
     }
 
-    public static function getReason($reason)
+    public function getReason(): string
     {
-        return self::getReasons()[$reason];
+        return $this->getReasons()[$this->reason] ?? '';
     }
 
-    public static function getReasons($selectable = false)
+    public function getReasons($selectable = false): array
     {
-        $reasons = [
-            ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', 'Wrong Space'),
-            ReportContent::REASON_INCORRECT => Yii::t('ReportcontentModule.base', 'Misleading'),
-            ReportContent::REASON_OFFENSIVE => Yii::t('ReportcontentModule.base', 'Offensive'),
-            ReportContent::REASON_SPAM => Yii::t('ReportcontentModule.base', 'Spam'),
-        ];
+        $reasons = [];
+
+        if ($this->content->container instanceof Space) {
+            $reasons[ReportContent::REASON_NOT_BELONG] = Yii::t('ReportcontentModule.base', 'Wrong Space');
+        }
+
+        $reasons[ReportContent::REASON_INCORRECT] = Yii::t('ReportcontentModule.base', 'Misleading');
+        $reasons[ReportContent::REASON_OFFENSIVE] = Yii::t('ReportcontentModule.base', 'Offensive');
+        $reasons[ReportContent::REASON_SPAM] = Yii::t('ReportcontentModule.base', 'Spam');
 
         if ($selectable) {
             return $reasons;
@@ -177,10 +180,6 @@ class ReportContent extends ActiveRecord
     {
         if ($user === null) {
             return false;
-        }
-
-        if ($user->isSystemAdmin()) {
-            return true;
         }
 
         if (Permission::canManageReports($this->content->container, $user)) {
