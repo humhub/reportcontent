@@ -6,6 +6,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\CommentControls;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\post\models\Post;
+use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
@@ -29,10 +30,7 @@ class Events
         /** @var CommentControls $menu */
         $menu = $event->sender;
 
-        if (
-            Yii::$app->user->isGuest
-            || !ReportContent::canReportComment($menu->comment, Yii::$app->user->getIdentity())
-        ) {
+        if (!Permission::canReportComment($menu->comment)) {
             return;
         }
 
@@ -69,7 +67,7 @@ class Events
         /** @var Space $space */
         $space = $event->sender->space;
 
-        if ($space->isAdmin(Yii::$app->user->id)) {
+        if (Permission::canManageReports($space)) {
             $event->sender->addItem([
                 'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($space),
                 'url' => $space->createUrl('/reportcontent/space-admin'),

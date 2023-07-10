@@ -6,14 +6,14 @@ use humhub\components\ActiveRecord;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\reportcontent\components\ActiveQueryReportContent;
+use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\notifications\NewReportAdmin;
 use humhub\modules\space\models\Membership;
 use humhub\modules\user\models\Group;
-use Yii;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use Yii;
 use yii\base\InvalidArgumentException;
 
 /**
@@ -68,10 +68,10 @@ class ReportContent extends ActiveRecord
                     if (!$comment) {
                         throw new InvalidArgumentException('Comment not found!');
                     }
-                    if (!ReportContent::canReportComment($comment, $user)) {
+                    if (!Permission::canReportComment($comment, $user)) {
                         $this->addError('reason', 'You cannot report this comment!');
                     }
-                } elseif (!ReportContent::canReportContent($content->getModel(), $user)) {
+                } elseif (!Permission::canReportContent($content->getModel(), $user)) {
                     $this->addError('reason', 'You cannot report this content!');
                 }
             }]
@@ -150,19 +150,22 @@ class ReportContent extends ActiveRecord
         return new ActiveQueryReportContent(get_called_class());
     }
 
-    public static function getReason($reason)
+    public function getReason(): string
     {
-        return self::getReasons()[$reason];
+        return $this->getReasons()[$this->reason] ?? '';
     }
 
-    public static function getReasons($selectable = false)
+    public function getReasons($selectable = false): array
     {
-        $reasons = [
-            ReportContent::REASON_NOT_BELONG => Yii::t('ReportcontentModule.base', 'Wrong Space'),
-            ReportContent::REASON_INCORRECT => Yii::t('ReportcontentModule.base', 'Misleading'),
-            ReportContent::REASON_OFFENSIVE => Yii::t('ReportcontentModule.base', 'Offensive'),
-            ReportContent::REASON_SPAM => Yii::t('ReportcontentModule.base', 'Spam'),
-        ];
+        $reasons = [];
+
+        if ($this->content->container instanceof Space) {
+            $reasons[ReportContent::REASON_NOT_BELONG] = Yii::t('ReportcontentModule.base', 'Wrong Space');
+        }
+
+        $reasons[ReportContent::REASON_INCORRECT] = Yii::t('ReportcontentModule.base', 'Misleading');
+        $reasons[ReportContent::REASON_OFFENSIVE] = Yii::t('ReportcontentModule.base', 'Offensive');
+        $reasons[ReportContent::REASON_SPAM] = Yii::t('ReportcontentModule.base', 'Spam');
 
         if ($selectable) {
             return $reasons;
@@ -173,43 +176,13 @@ class ReportContent extends ActiveRecord
         return $reasons;
     }
 
-
-    public static function canReportContent(ContentActiveRecord $record, ?User $user = null)
-    {
-        if ($user === null) {
-            return false;
-        }
-
-        // Can't report own content
-        if ($record->content->created_by == $user->id) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function canReportComment(Comment $comment, User $user)
-    {
-        if ($user === null) {
-            return false;
-        }
-
-        // Can't report own content
-        if ($comment->created_by == $user->id) {
-            return false;
-        }
-
-        return true;
-    }
-
-
     public function canDelete(?User $user = null)
     {
         if ($user === null) {
             return false;
         }
 
-        if ($user->isSystemAdmin()) {
+        if (Permission::canManageReports($this->content->container, $user)) {
             return true;
         }
 
@@ -217,7 +190,6 @@ class ReportContent extends ActiveRecord
             if ($this->content->container->getPermissionManager($user)->can(new ManageContent())) {
                 return true;
             }
-
         }
 
         return false;

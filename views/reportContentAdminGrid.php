@@ -37,7 +37,7 @@ use yii\grid\DataColumn;
                 'class' => DataColumn::class,
                 'label' => Yii::t('ReportcontentModule.base', 'Content'),
                 'format' => 'raw',
-                'value' => function ($report) {
+                'value' => function (ReportContent $report) {
                     /** @var ContentActiveRecord|Comment $reportedRecord */
                     $reportedRecord = null;
                     if (!empty($report->comment_id)) {
@@ -74,8 +74,8 @@ use yii\grid\DataColumn;
                 'label' => Yii::t('ReportcontentModule.base', 'Reason'),
                 'options' => ['style' => 'width:120px;'],
                 'format' => 'raw',
-                'value' => function ($report) {
-                    return '<strong>' . Html::encode(ReportContent::getReason($report->reason)) . '</strong>';
+                'value' => function (ReportContent $report) {
+                    return '<strong>' . Html::encode($report->getReason()) . '</strong>';
                 }
             ],
             [

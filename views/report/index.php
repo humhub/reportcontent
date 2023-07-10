@@ -18,7 +18,7 @@ use humhub\widgets\ModalDialog;
 <div class="modal-body">
     <?= $form->field($model, 'content_id')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'comment_id')->hiddenInput()->label(false); ?>
-    <?= $form->field($model, 'reason')->radioList($model::getReasons(true)); ?>
+    <?= $form->field($model, 'reason')->radioList($model->getReasons(true)); ?>
 </div>
 <div class="modal-footer">
     <?= ModalButton::submitModal(null, Yii::t('ReportcontentModule.base', 'Send')) ?>

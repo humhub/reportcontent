@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.3 (Unreleased)
+--------------------
+- Enh #69: Allow to manage reports by space moderators
+
 1.0.2 (June 1, 2023)
 --------------------
 - Enh #61: Display badge with count of new reports

@@ -3,6 +3,7 @@
 namespace humhub\modules\reportcontent\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use yii\data\Pagination;
 
@@ -11,8 +12,8 @@ class SpaceAdminController extends ContentContainerController
 
     public function beforeAction($action)
     {
-        if (!$this->contentContainer->isAdmin()) {
-            return $this->forbidden();
+        if (!Permission::canManageReports($this->contentContainer)) {
+            $this->forbidden();
         }
 
         return parent::beforeAction($action);
