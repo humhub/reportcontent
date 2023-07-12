@@ -24,5 +24,6 @@ return [
     'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => 'Cette vue d’ensemble affiche la liste des contenus signalés pour diverses raisons. Veuillez examiner ces contenus et décider s’ils sont conformes ou non aux lignes de conduite de votre communauté.',
     'Wrong Space' => 'Mauvais espace',
     'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'Votre contribution n’est pas conforme à nos lignes de conduite communautaires, elle ne peut donc pas être publiée. Pour plus de détails, veuillez contacter les responsables de l’administration.',
+    'Could not delete Report!' => '',
     'System' => '',
 ];

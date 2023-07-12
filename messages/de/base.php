@@ -25,5 +25,6 @@ return [
 Richtlinien des Netzwerks entsprechen.',
     'Wrong Space' => 'Falscher Space',
     'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'Dein Beitrag entspricht nicht unseren Community-Richtlinien und kann daher nicht veröffentlicht werden. Für weitere Informationen wende dich bitte an die Administratoren.',
+    'Could not delete Report!' => '',
     'System' => '',
 ];

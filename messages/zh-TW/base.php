@@ -10,6 +10,7 @@ return [
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => '',
     'Automatically block content creation' => '',
     'Content successfully reported.' => '',
+    'Could not delete Report!' => '',
     'Created by {author} at {dateTime}. Reported by {reporter}.' => '',
     'For what reason do you want to report this content?' => '',
     'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.' => '',

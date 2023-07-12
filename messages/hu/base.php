@@ -24,5 +24,6 @@ return [
     'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => 'Ez az áttekintés a különféle okok miatt bejelentett tartalmak listáját mutatja be. Kérjük, tekintse át a tartalmat, és döntse el, hogy megfelel-e a közösségi irányelveknek.',
     'Wrong Space' => 'Rossz közösség',
     'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'Hozzájárulása nem felel meg közösségi irányelveinknek, ezért nem tehető közzé. További részletekért forduljon a rendszergazdákhoz.',
+    'Could not delete Report!' => '',
     'System' => '',
 ];
