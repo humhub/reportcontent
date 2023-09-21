@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.0.4 (Unreleased)
+----------------------
+- Enh #71: Tests for `next` version
+
 1.0.3 (July 10, 2023)
 ---------------------
 - Enh #69: Allow to manage reports by space moderators
