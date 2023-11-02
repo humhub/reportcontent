@@ -4,6 +4,7 @@ Changelog
 1.0.4 (Unreleased)
 ----------------------
 - Enh #71: Tests for `next` version
+- Fix #72: Fix error on open old notification
 
 1.0.3 (July 10, 2023)
 ---------------------
