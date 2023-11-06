@@ -62,6 +62,10 @@ class NewReportAdmin extends BaseNotification
     {
         $reportedRecord = $this->getReportedRecord();
 
+        if ($reportedRecord === null) {
+            return Url::to([Yii::$app->user->isAdmin() ? '/reportcontent/admin' : '/dashboard']);
+        }
+
         if (Yii::$app->user->isGuest) {
             return $reportedRecord->getUrl();
         }
@@ -89,6 +93,10 @@ class NewReportAdmin extends BaseNotification
 
         /* @var ReportContent $report */
         $report = $this->source;
+
+        if (!$report instanceof ReportContent) {
+            return null;
+        }
 
         if (empty($report->comment_id)) {
             $this->_reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();

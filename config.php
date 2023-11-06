@@ -5,6 +5,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\CommentControls;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\post\models\Post;
 use humhub\modules\reportcontent\Events;
@@ -27,5 +28,6 @@ return [
         [Comment::class, ActiveRecord::EVENT_APPEND_RULES, [Events::class, 'onCommentAppendRules']],
         [Comment::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onCommentAfterSave']],
         [Comment::class, ActiveRecord::EVENT_AFTER_UPDATE, [Events::class, 'onCommentAfterSave']],
+        [Content::class, Content::EVENT_BEFORE_DELETE, [Events::class, 'onContentBeforeDelete']],
     ]
 ];
