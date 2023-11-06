@@ -177,6 +177,14 @@ class Events
         ];
     }
 
+    public static function onContentBeforeDelete($event)
+    {
+        $reports = ReportContent::find()->where(['content_id' => $event->sender->id]);
+        foreach ($reports->each() as $report) {
+            $report->delete();
+        }
+    }
+
     private static function blockFilteredPosts(): bool
     {
         /** @var Module $module */
