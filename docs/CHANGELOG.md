@@ -5,6 +5,7 @@ Changelog
 ----------------------
 - Enh #71: Tests for `next` version
 - Fix #72: Fix error on open old notification
+- Fix #74: Fix memory usage on integrity check
 
 1.0.3 (July 10, 2023)
 ---------------------
