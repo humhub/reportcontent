@@ -83,7 +83,7 @@ class Events
     {
         $integrityController = $event->sender;
         $integrityController->showTestHeadline("ReportContent Module (" . ReportContent::find()->count() . " entries)");
-        foreach (ReportContent::find()->joinWith('content')->all() as $rc) {
+        foreach (ReportContent::find()->joinWith('content')->each() as $rc) {
             if ($rc->content === null) {
                 if ($integrityController->showFix("Deleting report id " . $rc->id . " without existing content!")) {
                     $rc->delete();
