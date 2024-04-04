@@ -5,7 +5,7 @@ return array (
   '<strong>Reported</strong> Content' => '',
   'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => '',
   'Automatically block content creation' => '',
-  'Content' => '',
+  'Content' => 'Edukia',
   'Content successfully reported.' => '',
   'Could not delete Report!' => '',
   'Created by {author} at {dateTime}. Reported by {reporter}.' => '',
