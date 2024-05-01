@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.0 (Unreleased)
+----------------------
+- Fix #75: Display only published contents
+
 1.0.4 (Unreleased)
 ----------------------
 - Enh #71: Tests for `next` version

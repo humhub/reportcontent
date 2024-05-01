@@ -8,6 +8,7 @@
 namespace humhub\modules\reportcontent\components;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -24,9 +25,10 @@ class ActiveQueryReportContent extends ActiveQuery
             $this->andWhere(['system_admin_only' => 0]);
         }
 
+        $this->joinWith('content')->andWhere(['content.state' => Content::STATE_PUBLISHED]);
+
         if ($container !== null) {
-            $this->joinWith('content')
-                ->andWhere(['content.contentcontainer_id' => $container->contentcontainer_id])
+            $this->andWhere(['content.contentcontainer_id' => $container->contentcontainer_id])
                 ->andWhere(['not', ['content.created_by' => Yii::$app->user->id]]);
         }
 
