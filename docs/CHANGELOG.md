@@ -1,12 +1,9 @@
 Changelog
 =========
 
-1.1.0 (Unreleased)
+1.1.0 (May 1, 2024)
 ----------------------
 - Fix #75: Display only published contents
-
-1.0.4 (Unreleased)
-----------------------
 - Enh #71: Tests for `next` version
 - Fix #72: Fix error on open old notification
 - Fix #74: Fix memory usage on integrity check
