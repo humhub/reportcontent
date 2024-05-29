@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.0 (Unreleased)
+----------------------
+- Fix #81: Update module resources path
+
 1.1.0 (May 1, 2024)
 ----------------------
 - Fix #75: Display only published contents
