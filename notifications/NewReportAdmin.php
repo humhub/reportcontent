@@ -8,6 +8,7 @@
 
 namespace humhub\modules\reportcontent\notifications;
 
+use humhub\modules\admin\notifications\AdminNotificationCategory;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
@@ -39,6 +40,14 @@ class NewReportAdmin extends BaseNotification
      * @var Comment|ContentActiveRecord|null Cached record
      */
     private $_reportedRecord = null;
+
+    /**
+     * @inheritdoc
+     */
+    protected function category()
+    {
+        return new AdminNotificationCategory();
+    }
 
     /**
      * @inheritdoc
