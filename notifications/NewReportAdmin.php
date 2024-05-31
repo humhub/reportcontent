@@ -96,20 +96,26 @@ class NewReportAdmin extends BaseNotification
      */
     private function getReportedRecord()
     {
-        if ($this->_reportedRecord) {
+        if ($this->_reportedRecord !== null) {
             return $this->_reportedRecord;
         }
 
-        /* @var ReportContent $report */
-        $report = $this->source;
-
-        if (!$report instanceof ReportContent) {
+        // Ensure that the source is an instance of ReportContent
+        if (!$this->source instanceof ReportContent) {
             return null;
         }
 
-        if (empty($report->comment_id)) {
+        $report = $this->source;
+
+        // Check if content_id or comment_id is empty
+        if (empty($report->content_id) && empty($report->comment_id)) {
+            return null;
+        }
+
+        // Attempt to retrieve the reported record based on content_id or comment_id
+        if (!empty($report->content_id)) {
             $this->_reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
-        } else {
+        } elseif (!empty($report->comment_id)) {
             $this->_reportedRecord = Comment::findOne(['id' => $report->comment_id]);
         }
 
