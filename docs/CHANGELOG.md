@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.1 (Unreleased)
+----------------------
+- Enh #82: Set notification category "Administrative"
+
 1.1.0 (May 1, 2024)
 ----------------------
 - Fix #75: Display only published contents
