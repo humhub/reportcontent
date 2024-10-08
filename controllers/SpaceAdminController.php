@@ -9,7 +9,6 @@ use yii\data\Pagination;
 
 class SpaceAdminController extends ContentContainerController
 {
-
     public function beforeAction($action)
     {
         if (!Permission::canManageReports($this->contentContainer)) {

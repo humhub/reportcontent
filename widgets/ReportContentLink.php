@@ -11,7 +11,6 @@ use yii\helpers\Url;
 
 class ReportContentLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -25,10 +24,13 @@ class ReportContentLink extends Widget
         if (Permission::canReportContent($this->record)) {
             $reportUrl = Url::to(['/reportcontent/report', 'contentId' => $this->record->content->id]);
 
-            return Html::tag('li',
-                Html::tag('a',
+            return Html::tag(
+                'li',
+                Html::tag(
+                    'a',
                     '<i class="fa fa-exclamation-circle"></i>' . Yii::t('ReportcontentModule.base', 'Report'),
-                    ['data-action-click' => 'ui.modal.load', 'data-action-click-url' => $reportUrl])
+                    ['data-action-click' => 'ui.modal.load', 'data-action-click-url' => $reportUrl],
+                ),
             );
         }
     }

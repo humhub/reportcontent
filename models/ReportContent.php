@@ -20,24 +20,24 @@ use yii\base\InvalidArgumentException;
  * This is the model class for table "report_content".
  *
  * The followings are the available columns in table 'report_content':
- * @property integer $id
- * @property integer $content_id
- * @property integer $comment_id
- * @property integer $reason
+ * @property int $id
+ * @property int $content_id
+ * @property int $comment_id
+ * @property int $reason
  * @property string $created_at
- * @property integer $created_by
- * @property boolean $system_admin_only
+ * @property int $created_by
+ * @property bool $system_admin_only
  *
  * @property User $user
  * @property Content $content
  */
 class ReportContent extends ActiveRecord
 {
-    const REASON_NOT_BELONG = 1;
-    const REASON_OFFENSIVE = 2;
-    const REASON_SPAM = 3;
-    const REASON_INCORRECT = 4;
-    const REASON_FILTER = 10;
+    public const REASON_NOT_BELONG = 1;
+    public const REASON_OFFENSIVE = 2;
+    public const REASON_SPAM = 3;
+    public const REASON_INCORRECT = 4;
+    public const REASON_FILTER = 10;
 
     /**
      *
@@ -74,7 +74,7 @@ class ReportContent extends ActiveRecord
                 } elseif (!Permission::canReportContent($content->getModel(), $user)) {
                     $this->addError('reason', 'You cannot report this content!');
                 }
-            }]
+            }],
         ];
     }
 
@@ -85,7 +85,7 @@ class ReportContent extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'reason' => Yii::t('ReportcontentModule.base', 'For what reason do you want to report this content?')
+            'reason' => Yii::t('ReportcontentModule.base', 'For what reason do you want to report this content?'),
         ];
     }
 
@@ -133,7 +133,7 @@ class ReportContent extends ActiveRecord
                 $query = Group::getAdminGroup()->getUsers();
             }
 
-            $notification = new NewReportAdmin;
+            $notification = new NewReportAdmin();
             $notification->source = $this;
             $notification->originator = (!empty($this->created_by)) ? User::findOne(['id' => $this->created_by]) : null;
             $notification->sendBulk($query);
@@ -210,5 +210,3 @@ class ReportContent extends ActiveRecord
         return $this->hasOne(Comment::class, ['id' => 'comment_id']);
     }
 }
-
-?>

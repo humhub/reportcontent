@@ -12,7 +12,6 @@ use yii\test\ActiveFixture;
 
 class ReportContentFixture extends ActiveFixture
 {
-
     public $modelClass = 'humhub\modules\reportcontent\models\ReportContent';
     public $dataFile = '@reportcontent/tests/codeception/fixtures/data/reportContent.php';
 

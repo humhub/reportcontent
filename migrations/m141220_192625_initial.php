@@ -2,10 +2,9 @@
 
 class m141220_192625_initial extends humhub\components\Migration
 {
-
     public function up()
     {
-        $this->createTable('report_content', array(
+        $this->createTable('report_content', [
             'id' => 'pk',
             'object_model' => 'varchar(100) NOT NULL',
             'object_id' => 'int(11) NOT NULL',
@@ -13,8 +12,8 @@ class m141220_192625_initial extends humhub\components\Migration
             'created_at' => 'datetime DEFAULT NULL',
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
-            'updated_by' => 'int(11) DEFAULT NULL'
-                ), '');
+            'updated_by' => 'int(11) DEFAULT NULL',
+        ], '');
     }
 
     public function down()
@@ -24,5 +23,3 @@ class m141220_192625_initial extends humhub\components\Migration
     }
 
 }
-
-?>
