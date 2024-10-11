@@ -4,6 +4,7 @@ Changelog
 1.1.1 (Unreleased)
 ----------------------
 - Enh #82: Set notification category "Administrative"
+- Enh #83: Use PHP CS Fixer
 
 1.1.0 (May 1, 2024)
 ----------------------

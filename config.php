@@ -29,5 +29,5 @@ return [
         [Comment::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onCommentAfterSave']],
         [Comment::class, ActiveRecord::EVENT_AFTER_UPDATE, [Events::class, 'onCommentAfterSave']],
         [Content::class, Content::EVENT_BEFORE_DELETE, [Events::class, 'onContentBeforeDelete']],
-    ]
+    ],
 ];

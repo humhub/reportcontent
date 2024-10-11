@@ -49,5 +49,3 @@ class Module extends \humhub\components\Module
         return $this->_configuration;
     }
 }
-
-?>

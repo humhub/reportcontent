@@ -60,7 +60,7 @@ class NewReportAdmin extends BaseNotification
             '%displayName%' => $this->originator
                 ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>'
                 : Yii::t('ReportcontentModule.base', 'System'),
-            '%contentTitle%' => $this->getContentInfo($reportedRecord)
+            '%contentTitle%' => $this->getContentInfo($reportedRecord),
         ]);
     }
 

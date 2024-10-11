@@ -1,4 +1,5 @@
 <?php
+
 namespace reportcontent;
 
 /**
@@ -20,7 +21,7 @@ class UnitTester extends \UnitTester
 {
     use _generated\UnitTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Define custom actions here
+     */
 }

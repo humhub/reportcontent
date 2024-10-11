@@ -7,7 +7,6 @@ use humhub\modules\post\models\Post;
 
 class m150723_161111_yii2 extends Migration
 {
-
     public function up()
     {
         $this->renameClass('ReportContent', ReportContent::className());
