@@ -10,6 +10,7 @@ use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\bootstrap\Badge;
 use yii\db\AfterSaveEvent;
 use yii\db\Expression;
 use yii\helpers\Url;
@@ -214,7 +215,7 @@ class Events
         $reportsCount = ReportContent::find()->readable($container)->count();
 
         return $reportsCount > 0
-            ? '&nbsp;&nbsp;<span class="label label-danger">' . $reportsCount . '</span>'
+            ? '&nbsp;&nbsp;' . Badge::danger($reportsCount)
             : '';
     }
 }

@@ -3,7 +3,7 @@
 namespace humhub\modules\reportcontent\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;

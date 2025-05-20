@@ -1,6 +1,6 @@
 <?php
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $reportedContent \humhub\modules\reportcontent\models\ReportContent[] */
 /* @var $pagination \yii\data\Pagination */
 

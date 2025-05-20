@@ -1,6 +1,6 @@
 <?php
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $reportedContent \humhub\modules\reportcontent\models\ReportContent[] */
 
 /* @var $pagination \yii\data\Pagination */
@@ -13,7 +13,7 @@ use humhub\widgets\Button;
     <div class="panel-heading">
         <?= Button::asLink(Icon::get('cog'))
             ->link(['configuration'])
-            ->cssClass('pull-right btn btn-default')
+            ->cssClass('float-end btn btn-light')
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 
         <?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?>

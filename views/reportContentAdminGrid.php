@@ -5,9 +5,10 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\reportcontent\models\ReportContent;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\GridView;
+use humhub\widgets\bootstrap\Alert;
 use yii\data\ArrayDataProvider;
 use yii\grid\DataColumn;
 
@@ -17,10 +18,7 @@ use yii\grid\DataColumn;
 ?>
 
 <?php if (empty($reportedContent)) : ?>
-    <br/>
-    <p class="alert alert-success">
-        <?= Yii::t('ReportcontentModule.base', 'There is no content reported for review.') ?>
-    </p>
+    <?= Alert::success(Yii::t('ReportcontentModule.base', 'There is no content reported for review.')) ?>
 <?php else : ?>
     <?= GridView::widget([
         'dataProvider' => new ArrayDataProvider(['allModels' => $reportedContent]),
