@@ -18,9 +18,7 @@ use humhub\widgets\modal\Modal;
         'footer' => ModalButton::cancel() . ModalButton::save(Yii::t('ReportcontentModule.base', 'Send')),
         'form' => ['id' => 'report-content-form'],
     ]); ?>
-<div class="modal-body">
     <?= $form->field($model, 'content_id')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'comment_id')->hiddenInput()->label(false); ?>
     <?= $form->field($model, 'reason')->radioList($model->getReasons(true)); ?>
-</div>
 <?php Modal::endFormDialog(); ?>
