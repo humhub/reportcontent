@@ -215,7 +215,7 @@ class Events
         $reportsCount = ReportContent::find()->readable($container)->count();
 
         return $reportsCount > 0
-            ? '&nbsp;&nbsp;' . Badge::danger($reportsCount)
+            ? Badge::danger($reportsCount)->cssClass('ms-1')
             : '';
     }
 }
