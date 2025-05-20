@@ -37,7 +37,7 @@ class Events
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('ReportcontentModule.base', 'Report'),
-            'icon' => 'fa-exclamation-triangle',
+            'icon' => 'exclamation-triangle',
             'url' => '#',
             'htmlOptions' => [
                 'data-action-click' => 'ui.modal.load',
@@ -57,7 +57,7 @@ class Events
             'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
             'url' => Url::to(['/reportcontent/admin']),
             'group' => 'manage',
-            'icon' => '<i class="fa fa-exclamation-triangle"></i>',
+            'icon' => 'exclamation-triangle',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'admin'),
             'sortOrder' => 510,
         ]);
@@ -73,7 +73,7 @@ class Events
                 'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($space),
                 'url' => $space->createUrl('/reportcontent/space-admin'),
                 'group' => 'admin',
-                'icon' => '<i class="fa fa-exclamation-triangle"></i>',
+                'icon' => 'exclamation-triangle',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'space-admin'),
                 'sortOrder' => 510,
             ]);
