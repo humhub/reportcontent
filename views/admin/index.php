@@ -6,9 +6,10 @@
 /* @var $pagination \yii\data\Pagination */
 
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <?= Button::asLink(Icon::get('cog'))
