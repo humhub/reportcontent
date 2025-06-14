@@ -28,7 +28,7 @@ class ReportContentLink extends Widget
             return Html::tag(
                 'li',
                 Html::a(
-                    Icon::get('exclamation-triangle'). ' ' . Yii::t('ReportcontentModule.base', 'Report'),
+                    Icon::get('exclamation-triangle') . ' ' . Yii::t('ReportcontentModule.base', 'Report'),
                     '#',
                     ['data-action-click' => 'ui.modal.load', 'data-action-click-url' => $reportUrl],
                 ),
