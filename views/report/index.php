@@ -14,7 +14,7 @@ use humhub\widgets\modal\ModalButton;
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('ReportcontentModule.base', '<strong>Report</strong> Content'),
-    'footer' => ModalButton::cancel() . ModalButton::save(Yii::t('ReportcontentModule.base', 'Send')),
+    'footer' => ModalButton::cancel() . ModalButton::save(Yii::t('ReportcontentModule.base', 'Send'))->submit(),
     'form' => ['id' => 'report-content-form'],
 ]); ?>
     <?= $form->field($model, 'content_id')->hiddenInput()->label(false) ?>
