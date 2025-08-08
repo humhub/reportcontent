@@ -4,15 +4,15 @@ namespace humhub\modules\reportcontent\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\reportcontent\components\ActiveQueryReportContent;
 use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\notifications\NewReportAdmin;
 use humhub\modules\space\models\Membership;
-use humhub\modules\user\models\Group;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
-use humhub\modules\content\models\Content;
 use Yii;
 use yii\base\InvalidArgumentException;
 

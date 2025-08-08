@@ -50,13 +50,13 @@ class ReportContentCest
 
         $I->expectTo('see a report notification');
         $I->waitForText('Reported Content');
-        $I->seeElement('a[data-original-title="Review"]');
+        $I->seeElement('a[data-bs-title="Review"]');
 
         /**
          * Delete Reported Post as Admin
          */
         $I->amGoingTo('delete the post after review');
-        $I->jsClick('a[data-original-title="Review"]');
+        $I->jsClick('a[data-bs-title="Review"]');
         $I->waitForElement('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');
         $I->click('Delete');
@@ -110,10 +110,10 @@ class ReportContentCest
 
         $I->expectTo('see a report notification');
         $I->waitForText('Reported Content');
-        $I->seeElement('a[data-original-title="Approve"]');
+        $I->seeElement('a[data-bs-title="Approve"]');
 
         $I->amGoingTo('approve the post in report view');
-        $I->jsClick('a[data-original-title="Approve"]');
+        $I->jsClick('a[data-bs-title="Approve"]');
         //$I->waitForText('Do you really want to approve this post?');
         //$I->jsClick('.modalConfirm:visible');
 
@@ -181,11 +181,11 @@ class ReportContentCest
 
         $I->waitForText('This overview shows you a list of content that has been reported for various reasons.');
 
-        $I->seeElement('a[data-original-title="Approve"]');
-        $I->seeElement('a[data-original-title="Review"]');
+        $I->seeElement('a[data-bs-title="Approve"]');
+        $I->seeElement('a[data-bs-title="Review"]');
 
         $I->amGoingTo('approve the reported post');
-        $I->click('a[data-original-title="Approve"]');
+        $I->click('a[data-bs-title="Approve"]');
         $I->wait(5);
 
         $I->expect('not to see the report');
@@ -232,11 +232,11 @@ class ReportContentCest
         $I->amOnRoute(['/reportcontent/admin']);
 
         $I->expectTo('see a report notification');
-        $I->seeElement('a[data-original-title="Approve"]');
-        $I->seeElement('a[data-original-title="Review"]');
+        $I->seeElement('a[data-bs-title="Approve"]');
+        $I->seeElement('a[data-bs-title="Review"]');
 
         $I->amGoingTo('delete the post after review');
-        $I->jsClick('a[data-original-title="Review"]');
+        $I->jsClick('a[data-bs-title="Review"]');
         $I->waitForText('Some bad words');
         $I->wait(2);
         $I->jsClick('.dropdown-toggle[aria-label="Toggle stream entry menu"]');

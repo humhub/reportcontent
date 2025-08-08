@@ -1,18 +1,18 @@
 <?php
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $model \humhub\modules\reportcontent\models\Configuration */
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\libs\Html;
-use humhub\widgets\Button;
+use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <?= Button::asLink(Icon::get('back'))
             ->link(['index'])
-            ->cssClass('pull-right btn btn-default')
+            ->cssClass('float-end btn btn-light')
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 
         <?= Yii::t('ReportcontentModule.base', '<strong>Report</strong> Content'); ?>
@@ -22,7 +22,7 @@ use humhub\widgets\Button;
         <?= $form->field($model, 'profanityFilterList')->textarea(['rows' => 10]); ?>
         <?= $form->field($model, 'blockContributions')->checkbox(); ?>
         <br/>
-        <div class="form-group">
+        <div class="mb-3">
             <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
         </div>
         <?php ActiveForm::end(); ?>

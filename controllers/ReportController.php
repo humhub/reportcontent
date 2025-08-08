@@ -3,7 +3,7 @@
 namespace humhub\modules\reportcontent\controllers;
 
 use humhub\modules\reportcontent\models\ReportContent;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\helpers\Url;
 

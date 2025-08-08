@@ -25,7 +25,7 @@ class ReportCommentCest
         $I->wait(1);
         $I->moveMouseOver('#comment-message-1');
         $I->wait(1);
-        $I->click('.fa.fa-angle-down', '#comment_1');
+        $I->click('a.nav-link.dropdown-toggle', '#comment_1');
         $I->wait(1);
         $I->click('Report', '#comment_1');
         $I->waitForElementVisible('#reportcontent-reason');

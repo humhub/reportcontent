@@ -3,9 +3,10 @@
 namespace humhub\modules\reportcontent\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\helpers\Url;
 
@@ -26,9 +27,9 @@ class ReportContentLink extends Widget
 
             return Html::tag(
                 'li',
-                Html::tag(
-                    'a',
-                    '<i class="fa fa-exclamation-circle"></i>' . Yii::t('ReportcontentModule.base', 'Report'),
+                Html::a(
+                    Icon::get('exclamation-triangle') . ' ' . Yii::t('ReportcontentModule.base', 'Report'),
+                    '#',
                     ['data-action-click' => 'ui.modal.load', 'data-action-click-url' => $reportUrl],
                 ),
             );

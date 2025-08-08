@@ -1,8 +1,9 @@
 Changelog
 =========
 
-1.1.1 (Unreleased)
-----------------------
+1.2.0 (July 26, 2025)
+---------------------
+- Enh #84: Migration to Bootstrap 5 for HumHub 1.18
 - Enh #82: Set notification category "Administrative"
 - Enh #83: Use PHP CS Fixer
 
