@@ -83,8 +83,8 @@ class NewReportAdmin extends BaseNotification
             return Url::to(['/reportcontent/admin']);
         }
 
-        if ($reportedRecord->content->container instanceof Space &&
-            $reportedRecord->content->container->isAdmin(Yii::$app->user->id)) {
+        if ($reportedRecord->content->container instanceof Space
+            && $reportedRecord->content->container->isAdmin(Yii::$app->user->id)) {
             return $reportedRecord->content->container->createUrl('/reportcontent/space-admin');
         }
 
