@@ -18,7 +18,7 @@ return array (
   'Report' => '',
   'Reported Content' => '',
   'Review' => '',
-  'Send' => '',
+  'Send' => 'Odoslať',
   'Spam' => '',
   'System' => '',
   'There is no content reported for review.' => '',

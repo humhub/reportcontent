@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -15,7 +16,6 @@ use humhub\modules\user\models\User;
 
 class Permission
 {
-
     public static function canReportContent(ContentActiveRecord $record, ?User $user = null): bool
     {
         $service = new PermissionService($record->content->container, $user);

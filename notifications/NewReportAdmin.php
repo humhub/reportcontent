@@ -8,14 +8,15 @@
 
 namespace humhub\modules\reportcontent\notifications;
 
+use humhub\modules\admin\notifications\AdminNotificationCategory;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
+use humhub\helpers\Html;
 use Yii;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -43,6 +44,14 @@ class NewReportAdmin extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function category()
+    {
+        return new AdminNotificationCategory();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function html()
     {
         $reportedRecord = $this->getReportedRecord();
@@ -51,7 +60,7 @@ class NewReportAdmin extends BaseNotification
             '%displayName%' => $this->originator
                 ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>'
                 : Yii::t('ReportcontentModule.base', 'System'),
-            '%contentTitle%' => $this->getContentInfo($reportedRecord)
+            '%contentTitle%' => $this->getContentInfo($reportedRecord),
         ]);
     }
 
@@ -74,8 +83,8 @@ class NewReportAdmin extends BaseNotification
             return Url::to(['/reportcontent/admin']);
         }
 
-        if ($reportedRecord->content->container instanceof Space &&
-            $reportedRecord->content->container->isAdmin(Yii::$app->user->id)) {
+        if ($reportedRecord->content->container instanceof Space
+            && $reportedRecord->content->container->isAdmin(Yii::$app->user->id)) {
             return $reportedRecord->content->container->createUrl('/reportcontent/space-admin');
         }
 

@@ -32,7 +32,7 @@ class PermissionTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'Comment 1',
             'object_model' => Post::class,
-            'object_id' => 1
+            'object_id' => 1,
         ]);
         $comment->save();
 

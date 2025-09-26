@@ -10,6 +10,7 @@ use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\bootstrap\Badge;
 use yii\db\AfterSaveEvent;
 use yii\db\Expression;
 use yii\helpers\Url;
@@ -20,7 +21,7 @@ class Events
     public static function onWallEntryControlsInit($event)
     {
         $event->sender->addWidget(widgets\ReportContentLink::class, [
-            'record' => $event->sender->object
+            'record' => $event->sender->object,
         ]);
     }
 
@@ -36,14 +37,14 @@ class Events
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('ReportcontentModule.base', 'Report'),
-            'icon' => 'fa-exclamation-triangle',
+            'icon' => 'exclamation-triangle',
             'url' => '#',
             'htmlOptions' => [
                 'data-action-click' => 'ui.modal.load',
                 'data-action-click-url' => Url::to([
                     '/reportcontent/report', 'contentId' => $menu->comment->content->id,
-                    'commentId' => $menu->comment->id
-                ])
+                    'commentId' => $menu->comment->id,
+                ]),
             ],
             'sortOrder' => 1000,
         ]));
@@ -52,14 +53,14 @@ class Events
 
     public static function onAdminMenuInit($event)
     {
-        $event->sender->addItem(array(
+        $event->sender->addItem([
             'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
             'url' => Url::to(['/reportcontent/admin']),
             'group' => 'manage',
-            'icon' => '<i class="fa fa-exclamation-triangle"></i>',
+            'icon' => 'exclamation-triangle',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'admin'),
             'sortOrder' => 510,
-        ));
+        ]);
     }
 
     public static function onSpaceAdminMenuInit($event)
@@ -72,7 +73,7 @@ class Events
                 'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($space),
                 'url' => $space->createUrl('/reportcontent/space-admin'),
                 'group' => 'admin',
-                'icon' => '<i class="fa fa-exclamation-triangle"></i>',
+                'icon' => 'exclamation-triangle',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'space-admin'),
                 'sortOrder' => 510,
             ]);
@@ -99,8 +100,9 @@ class Events
                 /* @var Post $this */
                 if (self::matchProfanityFilter($this->message)) {
                     if (self::blockFilteredPosts()) {
-                        $this->addError($attribute, Yii::t('ReportcontentModule.base',
-                            'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.'
+                        $this->addError($attribute, Yii::t(
+                            'ReportcontentModule.base',
+                            'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.',
                         ));
                     }
                 }
@@ -168,8 +170,9 @@ class Events
                 /* @var Comment $this */
                 if (self::matchProfanityFilter($this->message)) {
                     if (self::blockFilteredPosts()) {
-                        $this->addError($attribute, Yii::t('ReportcontentModule.base',
-                            'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.'
+                        $this->addError($attribute, Yii::t(
+                            'ReportcontentModule.base',
+                            'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.',
                         ));
                     }
                 }
@@ -212,7 +215,7 @@ class Events
         $reportsCount = ReportContent::find()->readable($container)->count();
 
         return $reportsCount > 0
-            ? '&nbsp;&nbsp;<span class="label label-danger">' . $reportsCount . '</span>'
+            ? Badge::danger($reportsCount)->cssClass('ms-1')
             : '';
     }
 }

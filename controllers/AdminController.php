@@ -14,7 +14,6 @@ use yii\data\Pagination;
  */
 class AdminController extends Controller
 {
-
     public function actionIndex()
     {
         $query = ReportContent::find()->readable();

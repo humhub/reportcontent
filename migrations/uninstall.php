@@ -2,7 +2,6 @@
 
 class uninstall extends humhub\components\Migration
 {
-
     public function up()
     {
         $this->dropTable('report_content');
@@ -15,5 +14,3 @@ class uninstall extends humhub\components\Migration
     }
 
 }
-
-?>

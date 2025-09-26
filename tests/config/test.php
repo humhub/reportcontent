@@ -4,6 +4,6 @@ return [
     'modules' => ['reportcontent'],
     'fixtures' => [
         'default',
-        'reportcontent' => 'tests\codeception\fixtures\ReportContentFixture'
-    ]
+        'reportcontent' => 'tests\codeception\fixtures\ReportContentFixture',
+    ],
 ];

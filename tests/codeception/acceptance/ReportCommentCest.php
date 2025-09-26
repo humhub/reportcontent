@@ -10,13 +10,13 @@ class ReportCommentCest
         $I->amOnSpace2();
         $I->waitForText('Admin Space 2 Post Public');
         $postEntry = '.wall_humhubmodulespostmodelsPost_12';
-        $commentSection  = $postEntry.' .comment-container';
+        $commentSection  = $postEntry . ' .comment-container';
         $I->click('Comment', $postEntry);
         $I->wait(1);
-        $I->fillField($commentSection.' .humhub-ui-richtext[contenteditable]', 'Bad comment');
+        $I->fillField($commentSection . ' .humhub-ui-richtext[contenteditable]', 'Bad comment');
         $I->click('.btn-comment-submit', $commentSection);
         $I->waitForElementVisible('#comment-message-1');
-        $I->see('Bad comment','#comment-message-1');
+        $I->see('Bad comment', '#comment-message-1');
 
         $I->amUser2(true);
         $I->amOnSpace2();
@@ -25,7 +25,7 @@ class ReportCommentCest
         $I->wait(1);
         $I->moveMouseOver('#comment-message-1');
         $I->wait(1);
-        $I->click('.fa.fa-angle-down', '#comment_1');
+        $I->click('a.nav-link.dropdown-toggle', '#comment_1');
         $I->wait(1);
         $I->click('Report', '#comment_1');
         $I->waitForElementVisible('#reportcontent-reason');
@@ -46,16 +46,16 @@ class ReportCommentCest
         $I->amOnSpace2();
         $I->waitForText('Admin Space 2 Post Public');
         $postEntry = '.wall_humhubmodulespostmodelsPost_12';
-        $commentSection  = $postEntry.' .comment-container';
+        $commentSection  = $postEntry . ' .comment-container';
         $I->click('Comment', $postEntry);
         $I->wait(1);
-        $I->fillField($commentSection.' .humhub-ui-richtext[contenteditable]', 'Some ass!');
+        $I->fillField($commentSection . ' .humhub-ui-richtext[contenteditable]', 'Some ass!');
         $I->click('.btn-comment-submit', $commentSection);
         $I->waitForText('Your contribution does not comply with our community guidelines and can therefore not be published.', 5);
 
-        $I->fillField($commentSection.' .humhub-ui-richtext[contenteditable]', 'Some bass!');
+        $I->fillField($commentSection . ' .humhub-ui-richtext[contenteditable]', 'Some bass!');
         $I->click('.btn-comment-submit', $commentSection);
         $I->waitForElementVisible('#comment-message-1');
-        $I->see('Some bass!','#comment-message-1');
+        $I->see('Some bass!', '#comment-message-1');
     }
 }

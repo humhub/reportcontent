@@ -5,9 +5,11 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\reportcontent\models\ReportContent;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\GridView;
+use humhub\widgets\bootstrap\Alert;
+use humhub\widgets\bootstrap\Button;
 use yii\data\ArrayDataProvider;
 use yii\grid\DataColumn;
 
@@ -17,10 +19,7 @@ use yii\grid\DataColumn;
 ?>
 
 <?php if (empty($reportedContent)) : ?>
-    <br/>
-    <p class="alert alert-success">
-        <?= Yii::t('ReportcontentModule.base', 'There is no content reported for review.') ?>
-    </p>
+    <?= Alert::success(Yii::t('ReportcontentModule.base', 'There is no content reported for review.')) ?>
 <?php else : ?>
     <?= GridView::widget([
         'dataProvider' => new ArrayDataProvider(['allModels' => $reportedContent]),
@@ -83,16 +82,18 @@ use yii\grid\DataColumn;
                 'format' => 'raw',
                 'options' => ['style' => 'width:85px;'],
                 'value' => function ($report) use ($isAdmin) {
-                    $approve = Html::a(
-                        '<i class="fa fa-check-square-o"></i>', ['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin],
-                        ['data-method' => 'POST', 'class' => 'btn btn-success btn-sm tt', 'data-original-title' => 'Approve']
-                    );
+                    $approve = Button::success()
+                        ->icon('check-square-o')
+                        ->link(['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin])
+                        ->options(['data-method' => 'POST'])
+                        ->sm()
+                        ->tooltip(Yii::t('ReportcontentModule.base', 'Approve'));
 
-                    $review = Html::a('<i aria-hidden="true" class="fa fa-eye"></i>', $report->content->getUrl(), [
-                        'class' => 'btn btn-sm btn-primary tt',
-                        'title' => Yii::t('ReportcontentModule.base', 'Review'),
-                        'data-ui-loader' => '1'
-                    ]);
+                    $review = Button::primary()
+                        ->icon('eye')
+                        ->link($report->content->getUrl())
+                        ->sm()
+                        ->tooltip(Yii::t('ReportcontentModule.base', 'Review'));
 
                     return $approve . ' ' . $review;
                 }
