@@ -15,8 +15,8 @@ use humhub\modules\content\models\Content;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
+use humhub\helpers\Html;
 use Yii;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
