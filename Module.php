@@ -13,11 +13,6 @@ use yii\helpers\Url;
  */
 class Module extends \humhub\components\Module
 {
-    /**
-     * @inheritdoc
-     */
-    public $resourcesPath = 'resources';
-
     private ?Configuration $_configuration = null;
 
     /**

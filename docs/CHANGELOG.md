@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.1 (Unreleased)
+----------------------
+- Fix #81: Update module resources path
+
 1.2.0 (July 26, 2025)
 ---------------------
 - Enh #84: Migration to Bootstrap 5 for HumHub 1.18
