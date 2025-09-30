@@ -4,6 +4,7 @@ Changelog
 1.2.1 (Unreleased)
 ----------------------
 - Fix #81: Update module resources path
+- Enh #93: Improved Module Test GitHub Actions
 
 1.2.0 (July 26, 2025)
 ---------------------
