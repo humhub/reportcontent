@@ -5,6 +5,7 @@ return [
     '<strong>Report</strong> Content' => '',
     '<strong>Reported</strong> Content' => '',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => '',
+    'Approve' => '',
     'Automatically block content creation' => '',
     'Content' => '',
     'Content successfully reported.' => '',
