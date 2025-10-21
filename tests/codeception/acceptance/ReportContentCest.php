@@ -271,7 +271,7 @@ class ReportContentCest
         $I->executeJS("$('#contentForm_message').trigger('focusout');");
         $I->wait(1);
         $I->jsClick('#post_submit_button');
-        $I->waitForText('Your contribution does not comply with our community guidelines and can therefore not be published.', 5);
+        $I->waitForText('Your contribution does not comply with our community guidelines and can therefore not be published.');
 
         $I->createPost('Some bass!');
     }
