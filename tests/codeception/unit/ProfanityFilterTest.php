@@ -49,14 +49,14 @@ class ProfanityFilterTest extends HumHubDbTestCase
 
         $post = Post::findOne(['id' => 1]);
 
-        $comment = new Comment(['object_model' => get_class($post), 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
+        $comment = new Comment(['object_model' => $post::class, 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
         $this->assertTrue($comment->save());
 
         $this->getConfiguration()->profanityFilterList = 'bad,satan';
         $this->getConfiguration()->blockContributions = true;
         $this->getConfiguration()->save();
 
-        $comment = new Comment(['object_model' => get_class($post), 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
+        $comment = new Comment(['object_model' => $post::class, 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
         $this->assertFalse($comment->save());
     }
 
@@ -88,7 +88,7 @@ class ProfanityFilterTest extends HumHubDbTestCase
 
         $post = Post::findOne(['id' => 1]);
 
-        $comment = new Comment(['object_model' => get_class($post), 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
+        $comment = new Comment(['object_model' => $post::class, 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
         $this->assertTrue($comment->save());
         $this->assertNull(ReportContent::findOne(['comment_id' => $comment->id]));
 
@@ -96,7 +96,7 @@ class ProfanityFilterTest extends HumHubDbTestCase
         $this->getConfiguration()->blockContributions = false;
         $this->getConfiguration()->save();
 
-        $comment = new Comment(['object_model' => get_class($post), 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
+        $comment = new Comment(['object_model' => $post::class, 'object_id' => $post->id, 'message' => 'Some bad comment by regular space member']);
         $this->assertTrue($comment->save());
         $this->assertNotNull(ReportContent::findOne(['comment_id' => $comment->id]));
     }

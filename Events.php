@@ -96,7 +96,7 @@ class Events
     public static function onPostAppendRules($event)
     {
         $event->result = [
-            [['message'], function ($attribute) {
+            [['message'], function ($attribute): void {
                 /* @var Post $this */
                 if (self::matchProfanityFilter($this->message)) {
                     if (self::blockFilteredPosts()) {
@@ -166,7 +166,7 @@ class Events
     public static function onCommentAppendRules($event)
     {
         $event->result = [
-            [['message'], function ($attribute) {
+            [['message'], function ($attribute): void {
                 /* @var Comment $this */
                 if (self::matchProfanityFilter($this->message)) {
                     if (self::blockFilteredPosts()) {
@@ -202,7 +202,7 @@ class Events
         $module = Yii::$app->getModule('reportcontent');
 
         foreach ($module->getConfiguration()->profanityFilter as $word) {
-            if (preg_match("/\b$word\b/ui", $text)) {
+            if (preg_match("/\b$word\b/ui", (string) $text)) {
                 return true;
             }
         }
