@@ -56,7 +56,7 @@ class ReportContent extends ActiveRecord
     {
         return [
             [['content_id', 'reason'], 'required'],
-            [['reason'], function ($attribute, $params, $validator) {
+            [['reason'], function ($attribute, $params, $validator): void {
                 $content = Content::findOne(['id' => $this->content_id]);
                 $user = User::findOne(['id' => $this->created_by]);
                 if (!$content || !$user || !$content->canView($user)) {
@@ -147,7 +147,7 @@ class ReportContent extends ActiveRecord
      */
     public static function find()
     {
-        return new ActiveQueryReportContent(get_called_class());
+        return new ActiveQueryReportContent(static::class);
     }
 
     public function getReason(): string

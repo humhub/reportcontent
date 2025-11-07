@@ -28,9 +28,7 @@ use yii\grid\DataColumn;
             [
                 'class' => DataColumn::class,
                 'format' => 'raw',
-                'value' => function ($report) {
-                    return UserImage::widget(['user' => $report->content->createdBy, 'width' => 34]);
-                }
+                'value' => fn($report) => UserImage::widget(['user' => $report->content->createdBy, 'width' => 34])
             ],
             [
                 'class' => DataColumn::class,
@@ -73,9 +71,7 @@ use yii\grid\DataColumn;
                 'label' => Yii::t('ReportcontentModule.base', 'Reason'),
                 'options' => ['style' => 'width:120px;'],
                 'format' => 'raw',
-                'value' => function (ReportContent $report) {
-                    return '<strong>' . Html::encode($report->getReason()) . '</strong>';
-                }
+                'value' => fn(ReportContent $report) => '<strong>' . Html::encode($report->getReason()) . '</strong>'
             ],
             [
                 'class' => DataColumn::class,
