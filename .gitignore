@@ -1,6 +1,7 @@
 .htaccess
 nbproject
 .idea/*
+composer.lock
 .gitmodules
 /vendor/
 tests/codeception/_support/_generated/*
