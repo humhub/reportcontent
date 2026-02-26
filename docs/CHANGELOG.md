@@ -6,7 +6,7 @@ Changelog
 - Fix #81: Update module resources path
 - Enh #93: Improved Module Test GitHub Actions
 - Enh #95: Implement module-coding-standards
-- Fix: Labels encoding (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181))
+- Fix #103: Labels encoding (see [migration guide](https://github.com/humhub/humhub/blob/master/MIGRATE-DEV.md#version-1181))
 
 1.2.0 (July 26, 2025)
 ---------------------
