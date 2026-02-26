@@ -2,13 +2,17 @@
 
 namespace humhub\modules\reportcontent;
 
+use humhub\commands\IntegrityController;
+use humhub\helpers\ControllerHelper;
+use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\widgets\CommentControls;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\post\models\Post;
 use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
-use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\bootstrap\Badge;
 use yii\db\AfterSaveEvent;
@@ -20,15 +24,17 @@ class Events
 {
     public static function onWallEntryControlsInit($event)
     {
-        $event->sender->addWidget(widgets\ReportContentLink::class, [
-            'record' => $event->sender->object,
+        /* @var WallEntryControls $controls */
+        $controls = $event->sender;
+
+        $controls->addWidget(widgets\ReportContentLink::class, [
+            'record' => $controls->object,
         ]);
     }
 
-
     public static function onCommentControlsInit($event)
     {
-        /** @var CommentControls $menu */
+        /* @var CommentControls $menu */
         $menu = $event->sender;
 
         if (!Permission::canReportComment($menu->comment)) {
@@ -50,39 +56,41 @@ class Events
         ]));
     }
 
-
     public static function onAdminMenuInit($event)
     {
-        $event->sender->addItem([
+        /* @var AdminMenu $menu */
+        $menu = $event->sender;
+
+        $menu->addEntry(new MenuLink([
             'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
-            'url' => Url::to(['/reportcontent/admin']),
-            'group' => 'manage',
+            'url' => ['/reportcontent/admin'],
             'icon' => 'exclamation-triangle',
-            'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'admin'),
+            'isActive' => ControllerHelper::isActivePath('reportcontent', 'admin'),
             'sortOrder' => 510,
-        ]);
+        ]));
     }
 
     public static function onSpaceAdminMenuInit($event)
     {
-        /** @var Space $space */
-        $space = $event->sender->space;
+        /* @var HeaderControlsMenu $menu */
+        $menu = $event->sender;
 
-        if (Permission::canManageReports($space)) {
-            $event->sender->addItem([
-                'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($space),
-                'url' => $space->createUrl('/reportcontent/space-admin'),
-                'group' => 'admin',
+        if (Permission::canManageReports($menu->space)) {
+            $menu->addEntry(new MenuLink([
+                'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($menu->space),
+                'url' => $menu->space->createUrl('/reportcontent/space-admin'),
                 'icon' => 'exclamation-triangle',
-                'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'space-admin'),
+                'isActive' => ControllerHelper::isActivePath('reportcontent', 'space-admin'),
                 'sortOrder' => 510,
-            ]);
+            ]));
         }
     }
 
     public static function onIntegrityCheck($event)
     {
+        /* @var IntegrityController $integrityController */
         $integrityController = $event->sender;
+
         $integrityController->showTestHeadline("ReportContent Module (" . ReportContent::find()->count() . " entries)");
         foreach (ReportContent::find()->joinWith('content')->each() as $rc) {
             if ($rc->content === null) {
@@ -112,7 +120,7 @@ class Events
 
     public static function onPostAfterSave(AfterSaveEvent $event)
     {
-        /** @var Post $post */
+        /* @var Post $post */
         $post = $event->sender;
 
         if (!array_key_exists('message', $event->changedAttributes)) {
@@ -138,7 +146,7 @@ class Events
 
     public static function onCommentAfterSave(AfterSaveEvent $event)
     {
-        /** @var Comment $comment */
+        /* @var Comment $comment */
         $comment = $event->sender;
 
         if (!array_key_exists('message', $event->changedAttributes)) {
@@ -190,7 +198,7 @@ class Events
 
     private static function blockFilteredPosts(): bool
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('reportcontent');
 
         return $module->getConfiguration()->blockContributions;
@@ -198,7 +206,7 @@ class Events
 
     private static function matchProfanityFilter($text): bool
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('reportcontent');
 
         foreach ($module->getConfiguration()->profanityFilter as $word) {

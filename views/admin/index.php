@@ -1,20 +1,20 @@
 <?php
 
-/* @var $this \humhub\components\View */
-/* @var $reportedContent \humhub\modules\reportcontent\models\ReportContent[] */
-
-/* @var $pagination \yii\data\Pagination */
-
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\components\View;
+use humhub\modules\reportcontent\models\ReportContent;
 use humhub\widgets\bootstrap\Button;
+use yii\data\Pagination;
 
+/* @var View $this */
+/* @var ReportContent[] $reportedContent */
+/* @var Pagination $pagination */
 ?>
-
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Button::asLink(Icon::get('cog'))
+        <?= Button::light()
             ->link(['configuration'])
-            ->cssClass('float-end btn btn-light')
+            ->icon('cog')
+            ->right()
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 
         <?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?>
