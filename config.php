@@ -17,7 +17,7 @@ return [
     'class' => 'humhub\modules\reportcontent\Module',
     'namespace' => 'humhub\modules\reportcontent',
     'events' => [
-        [WallEntryControls::class, WallEntryControls::EVENT_INIT, [Events::class, 'onWallEntryControlsInit']],
+        [WallEntryControls::class, WallEntryControls::EVENT_BEFORE_RUN, [Events::class, 'onWallEntryControlsBeforeRun']],
         [AdminMenu::class, AdminMenu::EVENT_INIT, [Events::class, 'onAdminMenuInit']],
         [HeaderControlsMenu::class, HeaderControlsMenu::EVENT_INIT, [Events::class, 'onSpaceAdminMenuInit']],
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],

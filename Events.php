@@ -18,7 +18,7 @@ use Yii;
 
 class Events
 {
-    public static function onWallEntryControlsInit($event)
+    public static function onWallEntryControlsBeforeRun($event)
     {
         $event->sender->addWidget(widgets\ReportContentLink::class, [
             'record' => $event->sender->object,
