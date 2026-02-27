@@ -53,14 +53,14 @@ class Events
 
     public static function onAdminMenuInit($event)
     {
-        $event->sender->addItem([
+        $event->sender->addEntry(new MenuLink([
             'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
+            'encodeLabel' => false,
             'url' => Url::to(['/reportcontent/admin']),
-            'group' => 'manage',
             'icon' => 'exclamation-triangle',
             'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'admin'),
             'sortOrder' => 510,
-        ]);
+        ]));
     }
 
     public static function onSpaceAdminMenuInit($event)
@@ -69,14 +69,14 @@ class Events
         $space = $event->sender->space;
 
         if (Permission::canManageReports($space)) {
-            $event->sender->addItem([
+            $event->sender->addEntry(new MenuLink([
                 'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($space),
+                'encodeLabel' => false,
                 'url' => $space->createUrl('/reportcontent/space-admin'),
-                'group' => 'admin',
                 'icon' => 'exclamation-triangle',
                 'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'reportcontent' && Yii::$app->controller->id == 'space-admin'),
                 'sortOrder' => 510,
-            ]);
+            ]));
         }
     }
 

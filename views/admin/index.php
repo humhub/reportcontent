@@ -5,14 +5,14 @@
 
 /* @var $pagination \yii\data\Pagination */
 
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
 
 ?>
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <?= Button::asLink(Icon::get('cog'))
+        <?= Button::asLink()
+            ->icon('cog')
             ->link(['configuration'])
             ->cssClass('float-end btn btn-light')
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
