@@ -22,10 +22,6 @@ class ActiveQueryReportContent extends ActiveQuery
             $this->andWhere(new Expression('FALSE'));
         }
 
-        if (!Yii::$app->user->isAdmin()) {
-            $this->andWhere(['system_admin_only' => 0]);
-        }
-
         $this->joinWith('content')->andWhere(['content.state' => Content::STATE_PUBLISHED]);
 
         if ($container !== null) {
