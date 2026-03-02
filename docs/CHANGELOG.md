@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.2 (Unreleased)
+--------------------------
+- Fix #105: Fix wall entry menu link
+
 1.2.1 (Februrary 27, 2026)
 --------------------------
 - Fix #81: Update module resources path
