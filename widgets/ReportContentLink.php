@@ -8,7 +8,6 @@ use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\widgets\bootstrap\Link;
 use Yii;
-use yii\helpers\Url;
 
 class ReportContentLink extends Widget
 {
@@ -18,21 +17,25 @@ class ReportContentLink extends Widget
     public $record;
 
     /**
-     * Executes the widget.
+     * @inheritdoc
+     */
+    public function beforeRun()
+    {
+        return parent::beforeRun() && Permission::canReportContent($this->record);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function run()
     {
-        if (Permission::canReportContent($this->record)) {
-            $reportUrl = Url::to(['/reportcontent/report', 'contentId' => $this->record->content->id]);
-
-            return Html::tag(
-                'li',
-                Link::modal(Yii::t('ReportcontentModule.base', 'Report'))
-                    ->icon('exclamation-triangle')
-                    ->load(['/reportcontent/report', 'contentId' => $this->record->content->id])
-                    ->cssClass('dropdown-item '),
-            );
-        }
+        return Html::tag(
+            'li',
+            Link::modal(Yii::t('ReportcontentModule.base', 'Report'))
+                ->icon('exclamation-triangle')
+                ->load(['/reportcontent/report', 'contentId' => $this->record->content->id])
+                ->cssClass('dropdown-item '),
+        );
     }
 
 }
