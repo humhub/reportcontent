@@ -63,6 +63,7 @@ class Events
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
+            'encodeLabel' => false,
             'url' => ['/reportcontent/admin'],
             'icon' => 'exclamation-triangle',
             'isActive' => ControllerHelper::isActivePath('reportcontent', 'admin'),
@@ -78,6 +79,7 @@ class Events
         if (Permission::canManageReports($menu->space)) {
             $menu->addEntry(new MenuLink([
                 'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($menu->space),
+                'encodeLabel' => false,
                 'url' => $menu->space->createUrl('/reportcontent/space-admin'),
                 'icon' => 'exclamation-triangle',
                 'isActive' => ControllerHelper::isActivePath('reportcontent', 'space-admin'),
