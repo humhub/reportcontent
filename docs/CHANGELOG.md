@@ -4,6 +4,7 @@ Changelog
 1.2.2 (Unreleased)
 --------------------------
 - Fix #105: Fix wall entry menu link
+- Enh #106: Allow review all reports
 
 1.2.1 (Februrary 27, 2026)
 --------------------------
