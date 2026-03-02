@@ -176,20 +176,26 @@ class ReportContent extends ActiveRecord
         return $reasons;
     }
 
-    public function canDelete(?User $user = null)
+    public function canDelete(?User $user = null): bool
     {
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+        }
+
         if ($user === null) {
             return false;
+        }
+
+        if ($this->system_admin_only) {
+            return Yii::$app->user->isAdmin();
         }
 
         if (Permission::canManageReports($this->content->container, $user)) {
             return true;
         }
 
-        if (empty($this->system_admin_only)) {
-            if ($this->content->container->getPermissionManager($user)->can(new ManageContent())) {
-                return true;
-            }
+        if ($this->content->container->getPermissionManager($user)->can(new ManageContent())) {
+            return true;
         }
 
         return false;

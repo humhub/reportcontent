@@ -77,13 +77,24 @@ use yii\grid\DataColumn;
                 'class' => DataColumn::class,
                 'format' => 'raw',
                 'options' => ['style' => 'width:85px;'],
-                'value' => function ($report) use ($isAdmin) {
-                    $approve = Button::success()
-                        ->icon('check-square-o')
-                        ->link(['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin])
-                        ->options(['data-method' => 'POST'])
-                        ->sm()
-                        ->tooltip(Yii::t('ReportcontentModule.base', 'Approve'));
+                'value' => function (ReportContent $report) use ($isAdmin) {
+                    if ($report->canDelete()) {
+                        $approve = Button::success()
+                            ->icon('check-square-o')
+                            ->link(['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin])
+                            ->options(['data-method' => 'POST'])
+                            ->sm()
+                            ->tooltip(Yii::t('ReportcontentModule.base', 'Approve'));
+                    } else {
+                        $approve = Html::tag('span', Button::secondary()
+                            ->icon('check-square-o')
+                            ->disabled()
+                            ->sm(), [
+                                'class' => 'd-inline-block',
+                                'data-bs-toggle' => 'tooltip',
+                                'data-bs-title' => Yii::t('ReportcontentModule.base', 'Only system administrator can approve it'),
+                            ]);
+                    }
 
                     $review = Button::primary()
                         ->icon('eye')
