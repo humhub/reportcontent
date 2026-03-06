@@ -16,6 +16,7 @@ return [
     'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.' => '',
     'Misleading' => '',
     'Offensive' => '',
+    'Only system administrator can approve it' => '',
     'Profanity Filter' => '',
     'Reason' => '',
     'Report' => '',

@@ -18,6 +18,7 @@ return [
     'For what reason do you want to report this content?' => '',
     'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.' => '',
     'Misleading' => '',
+    'Only system administrator can approve it' => '',
     'Profanity Filter' => '',
     'Report' => '',
     'Reported Content' => '',
