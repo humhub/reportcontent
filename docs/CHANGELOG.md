@@ -4,6 +4,7 @@ Changelog
 1.3.0 (Unreleased)
 -----------------------
 - Enh #101: Update for HumHub 1.19
+- Fix: Use `RichTextToShortHtmlConverter` for the report admin grid preview (the core `RichTextToShortTextConverter` now returns unencoded plain text — see humhub/humhub#8181)
 
 1.2.1 (Februrary 27, 2026)
 --------------------------
