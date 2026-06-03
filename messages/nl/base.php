@@ -14,6 +14,7 @@ return [
   'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.' => 'Als deze optie is aangevinkt, kunnen gebruikers geen bijdragen publiceren die termen uit uw godslasteringfilter bevat. Laat dit uitgeschakeld als u wilt dat de bijdrage in plaats daarvan automatisch aan u wordt gerapporteerd.',
   'Misleading' => 'Misleidend',
   'Offensive' => 'Beledigend',
+  'Only system administrator can approve it' => 'Alleen de systeembeheerder kan dit goedkeuren.',
   'Profanity Filter' => 'Godslastering filter',
   'Reason' => 'Reden',
   'Report' => 'Melden',

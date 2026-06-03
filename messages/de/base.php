@@ -14,6 +14,7 @@ return [
   'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.' => 'Wenn diese Option aktiviert ist, können Nutzer keine Inhalte veröffentlichen, die Begriffe aus deinem Obszönitätsfilter enthalten. Lass das Häkchen weg, wenn du möchtest, dass der Inhalt stattdessen automatisch an dich gemeldet wird.',
   'Misleading' => 'Irreführend',
   'Offensive' => 'Beleidigend',
+  'Only system administrator can approve it' => 'Nur der Systemadministrator kann dies genehmigen.',
   'Profanity Filter' => 'Obszönitätsfilter',
   'Reason' => 'Grund',
   'Report' => 'Meldung',

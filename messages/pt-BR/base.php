@@ -14,6 +14,7 @@ return [
   'If checked, users will not be able to publish content containing terms from your profanity filter. Leave this unchecked if you want the content to be automatically reported to you instead.' => 'Se marcado, os usuários não poderão publicar conteúdo contendo termos do seu filtro de profanidade. Deixe isso desmarcado se quiser que o conteúdo seja automaticamente reportado a você.',
   'Misleading' => 'Errôneo',
   'Offensive' => 'Ofensivo',
+  'Only system administrator can approve it' => 'Somente o administrador do sistema pode aprovar',
   'Profanity Filter' => 'Filtro de profanidade',
   'Reason' => 'Motivo',
   'Report' => 'Denunciar',

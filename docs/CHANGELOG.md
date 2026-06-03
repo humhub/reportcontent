@@ -6,6 +6,11 @@ Changelog
 - Enh #101: Update for HumHub 1.19
 - Fix: Use `RichTextToShortHtmlConverter` for the report admin grid preview (the core `RichTextToShortTextConverter` now returns unencoded plain text — see humhub/humhub#8181)
 
+1.2.2 (Unreleased)
+--------------------------
+- Fix #105: Fix wall entry menu link
+- Enh #106: Allow review all reports
+
 1.2.1 (Februrary 27, 2026)
 --------------------------
 - Fix #81: Update module resources path
