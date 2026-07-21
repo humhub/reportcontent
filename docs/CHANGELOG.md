@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3.0 (June 5, 2026)
+--------------------
+- Enh #101: Update for HumHub 1.19
+- Fix: Use `RichTextToShortHtmlConverter` for the report admin grid preview (the core `RichTextToShortTextConverter` now returns unencoded plain text — see humhub/humhub#8181)
+
 1.2.2 (July 8, 2026)
 --------------------
 - Fix #105: Fix wall entry menu link
