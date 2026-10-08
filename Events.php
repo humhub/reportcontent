@@ -202,7 +202,7 @@ class Events
         $module = Yii::$app->getModule('reportcontent');
 
         foreach ($module->getConfiguration()->profanityFilter as $word) {
-            if (preg_match("/\b$word\b/ui", (string) $text)) {
+            if (preg_match('/\b' . preg_quote($word, '/') . '\b/ui', (string) $text)) {
                 return true;
             }
         }

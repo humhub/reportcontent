@@ -14,7 +14,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 /**
  * This is the model class for table "report_content".
@@ -60,19 +59,26 @@ class ReportContent extends ActiveRecord
                 $content = Content::findOne(['id' => $this->content_id]);
                 $user = User::findOne(['id' => $this->created_by]);
                 if (!$content || !$user || !$content->canView($user)) {
-                    throw new InvalidArgumentException('Content or User cannot be null and must be visible!');
+                    $this->addError($attribute, Yii::t('ReportcontentModule.base', 'Content or User must be visible!'));
+                    return;
+                }
+
+                if (!in_array((string)$this->reason, array_map('strval', array_keys($this->getReasons(true))), true)) {
+                    $this->addError($attribute, Yii::t('ReportcontentModule.base', 'Invalid reason!'));
+                    return;
                 }
 
                 if (!empty($this->comment_id)) {
                     $comment = Comment::findOne(['id' => $this->comment_id]);
-                    if (!$comment) {
-                        throw new InvalidArgumentException('Comment not found!');
+                    if (!$comment || $comment->getContent()?->id != $this->content_id) {
+                        $this->addError($attribute, Yii::t('ReportcontentModule.base', 'Comment not found!'));
+                        return;
                     }
                     if (!Permission::canReportComment($comment, $user)) {
-                        $this->addError('reason', 'You cannot report this comment!');
+                        $this->addError('reason', Yii::t('ReportcontentModule.base', 'You cannot report this comment!'));
                     }
                 } elseif (!Permission::canReportContent($content->getModel(), $user)) {
-                    $this->addError('reason', 'You cannot report this content!');
+                    $this->addError('reason', Yii::t('ReportcontentModule.base', 'You cannot report this content!'));
                 }
             }],
         ];

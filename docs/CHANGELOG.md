@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.3 (Unreleased)
+------------------
+- Fix #108: Unknown content, comment or report ID caused 500 errors; Report reason is now validated; Profanity filter words with special characters blocked posting
+
 1.2.2 (July 8, 2026)
 --------------------
 - Fix #105: Fix wall entry menu link
