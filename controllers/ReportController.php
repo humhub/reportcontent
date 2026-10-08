@@ -2,18 +2,43 @@
 
 namespace humhub\modules\reportcontent\controllers;
 
+use humhub\components\Controller;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\content\models\Content;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\widgets\modal\ModalClose;
 use Yii;
-use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 
-class ReportController extends \humhub\components\Controller
+class ReportController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
+    {
+        return [
+            ['login'],
+        ];
+    }
+
     public function actionIndex()
     {
         $contentId = (int)Yii::$app->request->get('contentId');
         $commentId = Yii::$app->request->get('commentId');
         $userId = (int)Yii::$app->user->id;
+
+        $content = Content::findOne(['id' => $contentId]);
+        if ($content === null || !$content->canView()) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!empty($commentId)) {
+            $comment = Comment::findOne(['id' => $commentId]);
+            if ($comment === null || $comment->getContent()?->id != $contentId) {
+                throw new NotFoundHttpException();
+            }
+        }
 
         $model = ReportContent::findOne(['content_id' => $contentId, 'comment_id' => $commentId, 'created_by' => $userId]);
         if ($model === null) {
@@ -34,8 +59,12 @@ class ReportController extends \humhub\components\Controller
     {
         $this->forcePostRequest();
 
-        $reportId = Yii::$app->request->get('id');
+        $reportId = (int)Yii::$app->request->get('id');
         $report = ReportContent::findOne(['id' => $reportId]);
+
+        if ($report === null || $report->content === null) {
+            throw new NotFoundHttpException();
+        }
 
         $container = $report->content->getContainer();
 
@@ -43,14 +72,11 @@ class ReportController extends \humhub\components\Controller
             $report->delete();
         } else {
             $this->view->warn(Yii::t('ReportcontentModule.base', 'Could not delete Report!'));
-
         }
 
-        if (Yii::$app->request->get('admin')) {
-            return $this->htmlRedirect(Url::to(['/reportcontent/admin']));
-        } else {
-            return $this->htmlRedirect($container->createUrl('/reportcontent/space-admin'));
-        }
+        return $this->htmlRedirect(Yii::$app->request->get('admin')
+            ? ['/reportcontent/admin']
+            : $container->createUrl('/reportcontent/space-admin'));
     }
 
 }
