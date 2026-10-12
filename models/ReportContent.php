@@ -70,7 +70,7 @@ class ReportContent extends ActiveRecord
 
                 if (!empty($this->comment_id)) {
                     $comment = Comment::findOne(['id' => $this->comment_id]);
-                    if (!$comment || $comment->getContent()?->id != $this->content_id) {
+                    if (!$comment || $comment->content_id != $this->content_id) {
                         $this->addError($attribute, Yii::t('ReportcontentModule.base', 'Comment not found!'));
                         return;
                     }
@@ -113,7 +113,7 @@ class ReportContent extends ActiveRecord
         if (!empty($this->comment_id)) {
             /** @var Comment $comment */
             $comment = Comment::find()->where(['id' => $this->comment_id])->one();
-            if (!$comment || $comment->getContent()->id != $this->content_id) {
+            if (!$comment || $comment->content_id != $this->content_id) {
                 throw new \Exception('Specified comment is not linked to given content');
             }
         }

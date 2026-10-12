@@ -3,7 +3,7 @@
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\helpers\Html;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -45,9 +45,9 @@ use yii\grid\DataColumn;
 
                     $result = Html::beginTag('p');
                     $result .= Html::encode($reportedRecord->getContentName()) . ': ';
-                    $result .= RichTextToShortTextConverter::process(
+                    $result .= RichTextToShortHtmlConverter::process(
                         $reportedRecord->getContentDescription(),
-                        [RichTextToShortTextConverter::OPTION_MAX_LENGTH => 200]
+                        [RichTextToShortHtmlConverter::OPTION_MAX_LENGTH => 200]
                     );
                     $result .= Html::endTag('p');
 

@@ -35,7 +35,7 @@ class ReportController extends Controller
 
         if (!empty($commentId)) {
             $comment = Comment::findOne(['id' => $commentId]);
-            if ($comment === null || $comment->getContent()?->id != $contentId) {
+            if ($comment === null || $comment->content_id != $contentId) {
                 throw new NotFoundHttpException();
             }
         }
