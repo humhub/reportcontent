@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.3.1 (Unreleased)
-------------------
+1.3.1 (October 13, 2026)
+------------------------
 - Fix #108: Unknown content, comment or report ID caused 500 errors; Report reason is now validated; Profanity filter words with special characters blocked posting
 
 1.3.0 (June 5, 2026)
