@@ -27,5 +27,10 @@ return [
     'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => 'Šioje apžvalgoje pateikiamas turinio, apie kurį pranešta dėl įvairių priežasčių, sąrašas. Peržiūrėkite turinį ir nuspręskite, ar jis atitinka bendruomenės gaires.',
     'Wrong Space' => 'Neteisinga Erdvė',
     'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'Jūsų medžiaga neatitinka mūsų bendruomenės gairių, todėl ji negali būti paskelbta. Dėl išsamesnės informacijos kreipkitės į administratorius.',
+    'Comment not found!' => '',
+    'Content or User must be visible!' => '',
+    'Invalid reason!' => '',
     'Only system administrator can approve it' => '',
+    'You cannot report this comment!' => '',
+    'You cannot report this content!' => '',
 ];

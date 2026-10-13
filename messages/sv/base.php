@@ -27,5 +27,10 @@ return [
     'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.' => 'Den här översikten visar dig en lista över innehåll som har rapporterats av olika anledningar. Granska innehållet och avgör om det uppfyller communityns riktlinjer.',
     'Wrong Space' => 'Fel forum',
     'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => 'Ditt bidrag följer inte våra riktlinjer för communityn och kan därför inte publiceras. Kontakta administratörerna för mer information.',
+    'Comment not found!' => '',
+    'Content or User must be visible!' => '',
+    'Invalid reason!' => '',
     'Only system administrator can approve it' => '',
+    'You cannot report this comment!' => '',
+    'You cannot report this content!' => '',
 ];
