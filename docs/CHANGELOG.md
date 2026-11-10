@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.4.0 (Unreleased)
+------------------
+- Enh #109: Compatibility with HumHub 1.20, notification ported to the new notification API
+
 1.3.1 (October 13, 2026)
 ------------------------
 - Fix #108: Unknown content, comment or report ID caused 500 errors; Report reason is now validated; Profanity filter words with special characters blocked posting

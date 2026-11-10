@@ -8,14 +8,14 @@
 
 namespace humhub\modules\reportcontent\notifications;
 
-use humhub\modules\admin\notifications\AdminNotificationCategory;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\models\Space;
-use humhub\helpers\Html;
 use Yii;
 use yii\helpers\Url;
 
@@ -24,18 +24,8 @@ use yii\helpers\Url;
  *
  * @since 0.5
  */
-class NewReportAdmin extends BaseNotification
+final class NewReportAdmin extends BaseNotification
 {
-    /**
-     * @inheritdoc
-     */
-    public $requireOriginator = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $moduleId = 'reportcontent';
-
     /**
      * @var Comment|ContentActiveRecord|null Cached record
      */
@@ -44,51 +34,65 @@ class NewReportAdmin extends BaseNotification
     /**
      * @inheritdoc
      */
-    protected function category()
+    public static function category(): NotificationCategory
     {
-        return new AdminNotificationCategory();
+        return NotificationCategory::admin();
     }
 
     /**
      * @inheritdoc
      */
-    public function html()
+    protected function getMessage(array $params): string
     {
-        $reportedRecord = $this->getReportedRecord();
-
-        return Yii::t('ReportcontentModule.base', '%displayName% has reported %contentTitle%.', [
-            '%displayName%' => $this->originator
-                ? '<strong>' . Html::encode($this->originator->displayName) . '</strong>'
-                : Yii::t('ReportcontentModule.base', 'System'),
-            '%contentTitle%' => $this->getContentInfo($reportedRecord),
-        ]);
+        return Yii::t('ReportcontentModule.base', '{displayName} has reported {content}.', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function getUrl()
+    protected function getMessageParams(): array
+    {
+        // A report without a reporter was created by the profanity filter
+        return $this->originator === null
+            ? ['displayName' => Yii::t('ReportcontentModule.base', 'System')]
+            : [];
+    }
+
+    /**
+     * The sentence names the reported content or comment, not the content of the report.
+     *
+     * @inheritdoc
+     */
+    public function getSubjectRecord(): ?ContentOwner
+    {
+        $record = $this->getReportedRecord();
+
+        return $record instanceof ContentOwner ? $record : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUrl(bool $scheme = false): ?string
     {
         $reportedRecord = $this->getReportedRecord();
 
         if ($reportedRecord === null) {
-            return Url::to([Yii::$app->user->isAdmin() ? '/reportcontent/admin' : '/dashboard']);
+            return Url::to([$this->recipient->isSystemAdmin() ? '/reportcontent/admin' : '/dashboard'], $scheme);
         }
 
-        if (Yii::$app->user->isGuest) {
-            return $reportedRecord->getUrl();
+        if ($this->recipient->isSystemAdmin()) {
+            return Url::to(['/reportcontent/admin'], $scheme);
         }
 
-        if (Yii::$app->user->isAdmin()) {
-            return Url::to(['/reportcontent/admin']);
+        $container = $reportedRecord->content->container;
+        if ($container instanceof Space && $container->isAdmin($this->recipient->id)) {
+            return $container->createUrl('/reportcontent/space-admin', [], $scheme);
         }
 
-        if ($reportedRecord->content->container instanceof Space
-            && $reportedRecord->content->container->isAdmin(Yii::$app->user->id)) {
-            return $reportedRecord->content->container->createUrl('/reportcontent/space-admin');
-        }
-
-        return $reportedRecord->getUrl();
+        return $reportedRecord instanceof Comment
+            ? $reportedRecord->getUrl($scheme)
+            : $reportedRecord->content->getUrl($scheme);
     }
 
     /**
@@ -101,14 +105,14 @@ class NewReportAdmin extends BaseNotification
         }
 
         /* @var ReportContent $report */
-        $report = $this->source;
+        $report = $this->sourceRecord;
 
         if (!$report instanceof ReportContent) {
             return null;
         }
 
         if (empty($report->comment_id)) {
-            $this->_reportedRecord = Content::findOne(['id' => $report->content_id])->getModel();
+            $this->_reportedRecord = Content::findOne(['id' => $report->content_id])?->getModel();
         } else {
             $this->_reportedRecord = Comment::findOne(['id' => $report->comment_id]);
         }

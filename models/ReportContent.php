@@ -139,10 +139,11 @@ class ReportContent extends ActiveRecord
                 $query = Group::getAdminGroup()->getUsers();
             }
 
-            $notification = new NewReportAdmin();
-            $notification->source = $this;
-            $notification->originator = (!empty($this->created_by)) ? User::findOne(['id' => $this->created_by]) : null;
-            $notification->sendBulk($query);
+            NewReportAdmin::send(
+                $query,
+                source: $this,
+                originator: (!empty($this->created_by)) ? User::findOne(['id' => $this->created_by]) : null,
+            );
         }
 
         parent::afterSave($insert, $changedAttributes);
