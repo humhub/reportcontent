@@ -27,9 +27,12 @@ class ReportContentCest
         $I->amOnSpace2();
         $I->waitForElementVisible('membership-button a');
         $I->click('membership-button a');
+        // The space is re-rendered after joining, wait for it before touching the stream
+        $I->waitForText('on your mind');
         $I->amGoingTo('report the new post as another member');
         $I->waitForElementVisible('.wall-entry');
         $I->jsClick('.wall-entry .dropdown-toggle');
+        $I->wait(1);
         $I->click('Report');
         $I->waitForElementVisible('#reportcontent-reason');
         $I->checkOption('//input[@name="ReportContent[reason]" and @value="2"]');
