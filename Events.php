@@ -6,10 +6,10 @@ use humhub\commands\IntegrityController;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\comment\widgets\CommentControls;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\post\models\Post;
+use humhub\modules\reportcontent\assets\ReportContentVueAsset;
 use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\widgets\HeaderControlsMenu;
@@ -17,7 +17,6 @@ use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\bootstrap\Badge;
 use yii\db\AfterSaveEvent;
 use yii\db\Expression;
-use yii\helpers\Url;
 use Yii;
 
 class Events
@@ -27,33 +26,15 @@ class Events
         /* @var WallEntryControls $controls */
         $controls = $event->sender;
 
+        // Wall entries come with comments: provides the "Report" entry of the comment menu (Vue)
+        ReportContentVueAsset::register($controls->view);
+        $controls->view->registerJsConfig('reportcontent', [
+            'text' => ['report' => Yii::t('ReportcontentModule.base', 'Report')],
+        ]);
+
         $controls->addWidget(widgets\ReportContentLink::class, [
             'record' => $controls->object,
         ]);
-    }
-
-    public static function onCommentControlsInit($event)
-    {
-        /* @var CommentControls $menu */
-        $menu = $event->sender;
-
-        if (!Permission::canReportComment($menu->comment)) {
-            return;
-        }
-
-        $menu->addEntry(new MenuLink([
-            'label' => Yii::t('ReportcontentModule.base', 'Report'),
-            'icon' => 'exclamation-triangle',
-            'url' => '#',
-            'htmlOptions' => [
-                'data-action-click' => 'ui.modal.load',
-                'data-action-click-url' => Url::to([
-                    '/reportcontent/report', 'contentId' => $menu->comment->content->id,
-                    'commentId' => $menu->comment->id,
-                ]),
-            ],
-            'sortOrder' => 1000,
-        ]));
     }
 
     public static function onAdminMenuInit($event)

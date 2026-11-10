@@ -4,6 +4,7 @@ Changelog
 1.4.0 (Unreleased)
 ------------------
 - Enh #109: Compatibility with HumHub 1.20, notification ported to the new notification API
+- Fix #109: "Report" entry of the comment menu restored (comment menu is a Vue component since HumHub 1.20)
 
 1.3.1 (October 13, 2026)
 ------------------------

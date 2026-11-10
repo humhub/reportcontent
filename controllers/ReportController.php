@@ -5,9 +5,11 @@ namespace humhub\modules\reportcontent\controllers;
 use humhub\components\Controller;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
+use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\widgets\modal\ModalClose;
 use Yii;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 class ReportController extends Controller
@@ -37,6 +39,9 @@ class ReportController extends Controller
             $comment = Comment::findOne(['id' => $commentId]);
             if ($comment === null || $comment->content_id != $contentId) {
                 throw new NotFoundHttpException();
+            }
+            if (!Permission::canReportComment($comment)) {
+                throw new ForbiddenHttpException();
             }
         }
 

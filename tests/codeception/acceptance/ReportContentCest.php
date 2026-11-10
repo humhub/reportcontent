@@ -15,7 +15,7 @@ class ReportContentCest
         $I->wantToTest('the report of a simple member post');
         $I->amGoingTo('add a new post as member');
         $I->amOnSpace2();
-        $I->click('Join');
+        $I->click('membership-button a');
         $I->waitForText('on your mind');
         $I->createPost('Some bad words2!');
 
@@ -24,7 +24,7 @@ class ReportContentCest
          */
         $I->amUser3(true);
         $I->amOnSpace2();
-        $I->click('Join');
+        $I->click('membership-button a');
         $I->amGoingTo('report the new post as another member');
         $I->waitForElementVisible('.wall-entry');
         $I->jsClick('.wall-entry .dropdown-toggle');
@@ -45,7 +45,7 @@ class ReportContentCest
 
         $I->wantToTest('the deletion of the report post');
         $I->amOnSpace2();
-        $I->jsClick('.controls-header .fa-cog');
+        $I->jsClick('.controls-header .dropdown-toggle');
         $I->click('Reported Content');
 
         $I->expectTo('see a report notification');
@@ -104,7 +104,7 @@ class ReportContentCest
 
         $I->wantToTest('the deletion of the report post');
         $I->amOnSpace3();
-        $I->jsClick('.controls-header .fa-cog');
+        $I->jsClick('.controls-header .dropdown-toggle');
         $I->waitForText('Reported Content');
         $I->click('Reported Content');
 
@@ -171,7 +171,7 @@ class ReportContentCest
         $I->seeInNotifications('Insults!');
 
         $I->amOnSpace4();
-        $I->jsClick('.controls-header .fa-cog');
+        $I->jsClick('.controls-header .dropdown-toggle');
         $I->wait(2);
         $I->click('Reported Content');
 
