@@ -15,6 +15,7 @@ class ReportContentCest
         $I->wantToTest('the report of a simple member post');
         $I->amGoingTo('add a new post as member');
         $I->amOnSpace2();
+        $I->waitForElementVisible('membership-button a');
         $I->click('membership-button a');
         $I->waitForText('on your mind');
         $I->createPost('Some bad words2!');
@@ -24,6 +25,7 @@ class ReportContentCest
          */
         $I->amUser3(true);
         $I->amOnSpace2();
+        $I->waitForElementVisible('membership-button a');
         $I->click('membership-button a');
         $I->amGoingTo('report the new post as another member');
         $I->waitForElementVisible('.wall-entry');
