@@ -5,7 +5,6 @@ return [
     'Content' => 'المحتوى',
     'Reason' => 'السبب',
     'Send' => 'ارسل',
-    '%displayName% has reported %contentTitle%.' => '',
     '<strong>Report</strong> Content' => '',
     '<strong>Reported</strong> Content' => '',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => '',
@@ -33,4 +32,5 @@ return [
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
     'Your contribution does not comply with our community guidelines and can therefore not be published. For further details, please contact the administrators.' => '',
+    '{displayName} has reported {content}.' => '',
 ];

@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% denunciou %contentTitle%.',
     '<strong>Report</strong> Content' => 'Conteúdo da <strong>Denúncia</strong>',
     '<strong>Reported</strong> Content' => 'Conteúdo <strong>Denunciado</strong>',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'Adicione termos proibidos separados por vírgulas. Ao salvar, a lista será automaticamente classificada em ordem alfabética.',
@@ -33,4 +32,5 @@ return [
     'Invalid reason!' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];

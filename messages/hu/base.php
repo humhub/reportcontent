@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% bejelentette: %contentTitle%.',
     '<strong>Report</strong> Content' => 'A tartalom <strong>jelentése</strong>',
     '<strong>Reported</strong> Content' => '<strong>Bejelentett</strong> tartalom',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'Adjon hozzá tiltott kifejezéseket vesszővel elválasztva. Mentéskor a lista automatikusan ábécé sorrendbe kerül.',
@@ -33,4 +32,5 @@ return [
     'Only system administrator can approve it' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];
