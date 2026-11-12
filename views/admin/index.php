@@ -13,7 +13,7 @@ use yii\data\Pagination;
     <div class="panel-heading">
         <?= Button::light()
             ->link(['configuration'])
-            ->icon('cog')
+            ->icon('settings')
             ->right()
             ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
 

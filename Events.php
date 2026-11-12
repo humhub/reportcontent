@@ -13,8 +13,8 @@ use humhub\modules\reportcontent\assets\ReportContentVueAsset;
 use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\reportcontent\models\ReportContent;
 use humhub\modules\space\widgets\HeaderControlsMenu;
-use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\menu\MenuLink;
 use yii\db\AfterSaveEvent;
 use yii\db\Expression;
 use Yii;
@@ -46,7 +46,7 @@ class Events
             'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge(),
             'encodeLabel' => false,
             'url' => ['/reportcontent/admin'],
-            'icon' => 'exclamation-triangle',
+            'icon' => 'alert-triangle',
             'isActive' => ControllerHelper::isActivePath('reportcontent', 'admin'),
             'sortOrder' => 510,
         ]));
@@ -62,7 +62,7 @@ class Events
                 'label' => Yii::t('ReportcontentModule.base', 'Reported Content') . self::getReportsCountBadge($menu->space),
                 'encodeLabel' => false,
                 'url' => $menu->space->createUrl('/reportcontent/space-admin'),
-                'icon' => 'exclamation-triangle',
+                'icon' => 'alert-triangle',
                 'isActive' => ControllerHelper::isActivePath('reportcontent', 'space-admin'),
                 'sortOrder' => 510,
             ]));

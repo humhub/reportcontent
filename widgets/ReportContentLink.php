@@ -2,14 +2,18 @@
 
 namespace humhub\modules\reportcontent\widgets;
 
-use humhub\components\Widget;
-use humhub\helpers\Html;
-use humhub\modules\reportcontent\helpers\Permission;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\bootstrap\Link;
+use humhub\modules\reportcontent\helpers\Permission;
+use humhub\widgets\menu\MenuLink;
 use Yii;
+use yii\helpers\Url;
 
-class ReportContentLink extends Widget
+/**
+ * The "Report" entry of a content's context menu ({@see \humhub\modules\content\widgets\WallEntryControls}).
+ *
+ * A menu entry, not a widget, since 1.20: the context menu describes its entries to the client.
+ */
+class ReportContentLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -19,23 +23,21 @@ class ReportContentLink extends Widget
     /**
      * @inheritdoc
      */
-    public function beforeRun()
+    public function init()
     {
-        return parent::beforeRun() && Permission::canReportContent($this->record);
-    }
+        parent::init();
 
-    /**
-     * @inheritdoc
-     */
-    public function run()
-    {
-        return Html::tag(
-            'li',
-            Link::modal(Yii::t('ReportcontentModule.base', 'Report'))
-                ->icon('exclamation-triangle')
-                ->load(['/reportcontent/report', 'contentId' => $this->record->content->id])
-                ->cssClass('dropdown-item '),
-        );
-    }
+        if (!Permission::canReportContent($this->record)) {
+            $this->setIsVisible(false);
+            return;
+        }
 
+        $this->setLabel(Yii::t('ReportcontentModule.base', 'Report'));
+        $this->setIcon('alert-triangle');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => 'ui.modal.load',
+            'data-action-url' => Url::to(['/reportcontent/report', 'contentId' => $this->record->content->id]),
+        ]);
+    }
 }

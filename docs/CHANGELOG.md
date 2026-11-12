@@ -5,6 +5,7 @@ Changelog
 ------------------
 - Enh #109: Compatibility with HumHub 1.20, notification ported to the new notification API
 - Fix #109: "Report" entry of the comment menu restored (comment menu is a Vue component since HumHub 1.20)
+- Enh #109: "Report" entry of the content menu is a menu entry, menu and icon names of the core 1.20
 
 1.3.1 (October 13, 2026)
 ------------------------

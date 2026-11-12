@@ -80,14 +80,14 @@ use yii\grid\DataColumn;
                 'value' => function (ReportContent $report) use ($isAdmin) {
                     if ($report->canDelete()) {
                         $approve = Button::success()
-                            ->icon('check-square-o')
+                            ->icon('square-check')
                             ->link(['/reportcontent/report/appropriate', 'id' => $report->id, 'admin' => $isAdmin])
                             ->options(['data-method' => 'POST'])
                             ->sm()
                             ->tooltip(Yii::t('ReportcontentModule.base', 'Approve'));
                     } else {
                         $approve = Html::tag('span', Button::secondary()
-                            ->icon('check-square-o')
+                            ->icon('square-check')
                             ->disabled()
                             ->sm(), [
                                 'class' => 'd-inline-block',
