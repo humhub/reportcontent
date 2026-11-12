@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% a signalé %contentTitle%.',
     '<strong>Report</strong> Content' => '<strong>Signaler</strong> un contenu',
     '<strong>Reported</strong> Content' => 'Contenu <strong>signalé</strong>',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'Ajouter des termes interdits séparés par des virgules. Lors de l’enregistrement, la liste sera automatiquement triée par ordre alphabétique.',
@@ -33,4 +32,5 @@ return [
     'Only system administrator can approve it' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];

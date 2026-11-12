@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% が %contentTitle% を報告しました。',
     '<strong>Report</strong> Content' => '内容の <strong>報告</strong>',
     '<strong>Reported</strong> Content' => '<strong>報告された</strong> コンテンツ',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'コンマで区切って禁止用語を追加します。保存するとリストは自動的にアルファベット順にソートされます。',
@@ -33,4 +32,5 @@ return [
     'Only system administrator can approve it' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];

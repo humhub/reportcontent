@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% har rapporterat %contentTitle%.',
     '<strong>Report</strong> Content' => '<strong>Rapportera</strong> innehåll',
     '<strong>Reported</strong> Content' => '<strong>Rapporterat</strong> innehåll',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'Lägg till förbjudna termer avgränsade med kommatecken. När listan har sparats sorteras den automatiskt i alfabetisk ordning.',
@@ -33,4 +32,5 @@ return [
     'Only system administrator can approve it' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];

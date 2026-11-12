@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% heeft %contentTitle% gerapporteerd.',
     '<strong>Report</strong> Content' => 'Bijdrage <strong>rapporteren</strong>',
     '<strong>Reported</strong> Content' => '<strong>Gerapporteerde</strong> bijdrage',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'Voeg verboden termen toe, gescheiden door komma\'s. Bij het opslaan wordt de lijst automatisch alfabetisch gesorteerd.',
@@ -33,4 +32,5 @@ return [
     'Invalid reason!' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];

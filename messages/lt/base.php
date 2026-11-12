@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '%displayName% has reported %contentTitle%.' => '%displayName% pranešė apie  %contentTitle%.',
     '<strong>Report</strong> Content' => '<strong>Pranešti</strong> Apie turinį',
     '<strong>Reported</strong> Content' => '<strong>Praneštas</strong> turinys',
     'Add prohibited terms separated by commas. Upon saving, the list will automatically be sorted in alphabetical order.' => 'Pridėkite draudžiamų terminų, atskirtų kableliais. Išsaugojus sąrašą, jis bus automatiškai surūšiuotas abėcėlės tvarka.',
@@ -33,4 +32,5 @@ return [
     'Only system administrator can approve it' => '',
     'You cannot report this comment!' => '',
     'You cannot report this content!' => '',
+    '{displayName} has reported {content}.' => '',
 ];
