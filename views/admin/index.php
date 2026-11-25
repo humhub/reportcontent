@@ -9,17 +9,17 @@ use yii\data\Pagination;
 /* @var ReportContent[] $reportedContent */
 /* @var Pagination $pagination */
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Button::light()
-            ->link(['configuration'])
-            ->icon('settings')
-            ->right()
-            ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
-
-        <?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?>
+<div class="card content-card">
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?></div>
+        <div class="card-header-actions">
+            <?= Button::light()
+                ->link(['configuration'])
+                ->icon('settings')
+                ->tooltip(Yii::t('AdminModule.base', 'Settings')) ?>
+        </div>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <?= Yii::t('ReportcontentModule.base', 'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.') ?>
 
         <?= $this->render('/reportContentAdminGrid', ['isAdmin' => 1, 'reportedContent' => $reportedContent, 'pagination' => $pagination]) ?>

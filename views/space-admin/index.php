@@ -5,9 +5,9 @@
 /* @var $pagination \yii\data\Pagination */
 
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading"><?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?></div>
-    <div class="panel-body">
+<div class="card content-card">
+    <div class="card-header"><div class="card-title"><?= Yii::t('ReportcontentModule.base', '<strong>Reported</strong> Content') ?></div></div>
+    <div class="card-body">
         <p>
             <?= Yii::t('ReportcontentModule.base', 'This overview shows you a list of content that has been reported for various reasons. Please review the content and determine if it meets the community guidelines.') ?>
         </p>

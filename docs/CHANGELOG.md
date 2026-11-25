@@ -3,6 +3,7 @@ Changelog
 
 1.4.0 (Unreleased)
 ------------------
+- Enh: Cards instead of Bootstrap 3 panels of the core 1.20 (humhub/humhub#8777)
 - Enh #109: Compatibility with HumHub 1.20, notification ported to the new notification API
 - Fix #109: "Report" entry of the comment menu restored (comment menu is a Vue component since HumHub 1.20)
 - Enh #109: "Report" entry of the content menu is a menu entry, menu and icon names of the core 1.20
